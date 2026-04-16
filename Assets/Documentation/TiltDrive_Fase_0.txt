@@ -1,0 +1,266 @@
+TILTDRIVE — DOCUMENTACIÓN INICIAL DEL PROYECTO
+FASE 0: FUNDACIÓN Y ESTRUCTURA BASE
+
+---
+
+1. OBJETIVO DE ESTA FASE
+
+Establecer una base técnica sólida, organizada y escalable para el proyecto TiltDrive, evitando problemas comunes de arquitectura en Unity desde etapas tempranas.
+Esta fase no implementa lógica de simulación, sino que prepara el entorno para soportarla correctamente.
+
+---
+
+2. CONFIGURACIÓN INICIAL DEL PROYECTO
+
+* Motor: Unity 6.3 LTS (6000.3.13f1)
+* Plantilla: Universal Render Pipeline (URP)
+* Control de versiones: Git + GitHub
+* Manejo de archivos pesados: Git LFS instalado y configurado
+
+INTENCIÓN:
+Garantizar estabilidad (LTS), rendimiento (URP) y manejo adecuado de assets grandes desde el inicio.
+
+---
+
+3. ESTRUCTURA DE CARPETAS (NIVEL RAÍZ)
+
+Assets/
+├── _TiltDrive/
+├── Plugins/
+└── ThirdParty/
+
+INTENCIÓN:
+
+* `_TiltDrive`: Contiene TODO el desarrollo propio.
+* `Plugins`: SDKs externos (ej: Logitech).
+* `ThirdParty`: Assets externos (Asset Store u otros).
+
+Esto evita mezclar código propio con dependencias externas.
+
+---
+
+4. ESTRUCTURA INTERNA DE _TiltDrive
+
+_TiltDrive/
+├── Art/
+├── Audio/
+├── Prefabs/
+├── Scenes/
+├── Scripts/
+├── ScriptableObjects/
+└── Settings/
+
+INTENCIÓN:
+Separar claramente responsabilidades:
+
+* Visual (Art)
+* Sonido (Audio)
+* Reutilización (Prefabs)
+* Lógica (Scripts)
+* Configuración desacoplada (ScriptableObjects)
+
+---
+
+5. ESTRUCTURA DE SCRIPTS
+
+Scripts/
+├── Core/
+├── Input/
+├── Vehicle/
+├── UI/
+├── Systems/
+├── Integrations/
+└── Utilities/
+
+INTENCIÓN:
+Organización por dominio funcional, no por tipo genérico.
+
+* Core: núcleo del sistema (GameManager)
+* Input: entrada de usuario y hardware
+* Vehicle: lógica de conducción
+* UI: interfaz y HUD
+* Systems: sistemas globales
+* Integrations: hardware externo (ESP32, volante)
+* Utilities: herramientas auxiliares
+
+Esto permite escalar sin desorden estructural.
+
+---
+
+6. CREACIÓN DE ESCENAS
+
+Scenes/
+├── Bootstrap/
+│   └── BootstrapScene.unity
+└── Test/
+└── VehicleTestScene.unity
+
+INTENCIÓN:
+Separar responsabilidades:
+
+* BootstrapScene:
+  Punto de entrada del proyecto.
+  Inicializa sistemas globales.
+
+* VehicleTestScene:
+  Escena aislada para pruebas de vehículo, input y HUD.
+
+---
+
+7. CONFIGURACIÓN DE BUILD SETTINGS
+
+Orden de escenas:
+
+0 - BootstrapScene
+1 - VehicleTestScene
+
+INTENCIÓN:
+Garantizar que el flujo de ejecución inicie correctamente desde Bootstrap.
+
+---
+
+8. IMPLEMENTACIÓN DE GAMEMANAGER
+
+Ubicación:
+Scripts/Core/GameManager.cs
+
+Funciones implementadas:
+
+* Awake():
+  Verifica inicialización del sistema.
+
+* Start():
+  Ejecuta la carga de la escena inicial.
+
+* CargarEscenaInicial():
+
+  * Valida la escena actual
+  * Evita recarga innecesaria
+  * Carga VehicleTestScene mediante SceneManager
+
+INTENCIÓN:
+Establecer un punto central de control del flujo del juego.
+
+---
+
+9. FLUJO DE EJECUCIÓN ACTUAL
+
+10. Unity inicia
+
+11. Se carga BootstrapScene
+
+12. GameManager se ejecuta
+
+13. Se valida escena actual
+
+14. Se carga VehicleTestScene automáticamente
+
+INTENCIÓN:
+Separar inicialización del entorno de la lógica de gameplay.
+
+---
+
+10. CONFIGURACIÓN DE GIT LFS
+
+Instalación completada antes de crear el proyecto.
+
+Configuración posterior:
+
+* Seguimiento de archivos pesados:
+  *.psd, *.png, *.jpg, *.fbx, *.wav, *.mp4
+
+INTENCIÓN:
+Evitar problemas de rendimiento y límites de GitHub con assets pesados.
+
+---
+
+11. ESTADO ACTUAL DEL PROYECTO
+
+El proyecto cuenta con:
+
+* Arquitectura base organizada
+* Escena de arranque funcional
+* Sistema de carga de escenas operativo
+* Separación de dominios clara
+* Control de versiones preparado
+
+NO incluye aún:
+
+* Lógica de vehículo
+* Input
+* UI/HUD
+* Física
+
+---
+
+12. DIRECCIÓN FUTURA (ARQUITECTURA AVANZADA)
+
+Se plantea implementar:
+
+### 12.1 Estado Global (STATE)
+
+Representación centralizada del estado del vehículo:
+
+* velocidad
+* RPM
+* marcha
+* dirección
+* estado de luces
+* inputs actuales
+
+---
+
+### 12.2 Store (GESTOR DE ESTADO)
+
+Sistema encargado de:
+
+* almacenar el estado global
+* actualizarlo mediante acciones
+* notificar cambios a otros sistemas
+
+Inspiración: patrones tipo Redux / arquitectura desacoplada
+
+---
+
+### 12.3 Configuración (CONFIG)
+
+Definición externa de parámetros:
+
+* curvas de torque
+* límites de velocidad
+* sensibilidad de controles
+* comportamiento del vehículo
+
+Uso de ScriptableObjects para desacoplar datos de lógica.
+
+---
+
+INTENCIÓN DE ESTA ARQUITECTURA
+
+Separar completamente:
+
+* Datos (State)
+* Lógica (Systems / Vehicle)
+* Configuración (ScriptableObjects)
+
+Esto permitirá:
+
+* escalar el proyecto
+* integrar hardware sin acoplamiento
+* facilitar debugging
+* soportar multijugador o telemetría en el futuro
+
+---
+
+13. JUSTIFICACIÓN DE DOCUMENTACIÓN
+
+Este documento se genera para:
+
+* mantener trazabilidad del desarrollo
+* evitar pérdida de decisiones técnicas
+* facilitar trabajo en equipo
+* permitir escalabilidad controlada
+
+---
+
+FIN DE LA FASE 0
