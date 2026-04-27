@@ -26,6 +26,9 @@ namespace TiltDrive.TransmissionSystem
         [Min(0f)] public float totalDriveRatio = 0f;
 
         [Header("Entrada")]
+        [Range(0f, 100f)] public float componentHealthPercent = 100f;
+        [Min(0f)] public float accumulatedDamagePercent = 0f;
+
         [Min(0f)] public float inputTorqueNm = 0f;
         [Min(0f)] public float inputRPM = 0f;
 
@@ -42,6 +45,15 @@ namespace TiltDrive.TransmissionSystem
         public bool isReverse = false;
         public bool shiftAllowed = true;
         public bool hasTransmissionWarning = false;
+        public bool hasMisuseWarning = false;
+        public string lastMisuseCode = string.Empty;
+        public string lastMisuseMessage = string.Empty;
+        [Min(0f)] public float lastMisuseSeverity = 0f;
+        [Min(0f)] public float lastRequiredEngineRPM = 0f;
+        [Min(0f)] public float lastMisuseEngineRPM = 0f;
+        [Range(0f, 1f)] public float lastMisuseThrottleInput = 0f;
+        [Min(0f)] public float engineDamageThisTickPercent = 0f;
+        [Min(0f)] public float transmissionDamageThisTickPercent = 0f;
 
         [Tooltip("Texto corto de diagnóstico del tick actual.")]
         public string diagnosticMessage = string.Empty;
@@ -73,7 +85,7 @@ namespace TiltDrive.TransmissionSystem
 
             clutchDisengaged = clutchEngagement <= 0.05f;
 
-            hasTransmissionWarning = false;
+            hasTransmissionWarning = hasMisuseWarning;
 
             if (config != null)
             {
@@ -101,6 +113,8 @@ namespace TiltDrive.TransmissionSystem
             finalDriveRatio = 0f;
             totalDriveRatio = 0f;
 
+            componentHealthPercent = 100f;
+            accumulatedDamagePercent = 0f;
             inputTorqueNm = 0f;
             inputRPM = 0f;
             outputTorqueNm = 0f;
@@ -112,6 +126,15 @@ namespace TiltDrive.TransmissionSystem
             isReverse = false;
             shiftAllowed = true;
             hasTransmissionWarning = false;
+            hasMisuseWarning = false;
+            lastMisuseCode = string.Empty;
+            lastMisuseMessage = string.Empty;
+            lastMisuseSeverity = 0f;
+            lastRequiredEngineRPM = 0f;
+            lastMisuseEngineRPM = 0f;
+            lastMisuseThrottleInput = 0f;
+            engineDamageThisTickPercent = 0f;
+            transmissionDamageThisTickPercent = 0f;
 
             diagnosticMessage = string.Empty;
 
@@ -138,6 +161,8 @@ namespace TiltDrive.TransmissionSystem
                 finalDriveRatio = Mathf.Max(0f, finalDriveRatio),
                 totalDriveRatio = Mathf.Max(0f, totalDriveRatio),
 
+                componentHealthPercent = Mathf.Clamp(componentHealthPercent, 0f, 100f),
+                accumulatedDamagePercent = Mathf.Max(0f, accumulatedDamagePercent),
                 inputTorqueNm = Mathf.Max(0f, inputTorqueNm),
                 inputRPM = Mathf.Max(0f, inputRPM),
                 outputTorqueNm = Mathf.Max(0f, outputTorqueNm),
@@ -150,6 +175,13 @@ namespace TiltDrive.TransmissionSystem
                 isReverse = isReverse,
                 shiftAllowed = shiftAllowed,
                 hasTransmissionWarning = hasTransmissionWarning,
+                hasMisuseWarning = hasMisuseWarning,
+                lastMisuseCode = lastMisuseCode,
+                lastMisuseMessage = lastMisuseMessage,
+                lastMisuseSeverity = Mathf.Max(0f, lastMisuseSeverity),
+                lastRequiredEngineRPM = Mathf.Max(0f, lastRequiredEngineRPM),
+                lastMisuseEngineRPM = Mathf.Max(0f, lastMisuseEngineRPM),
+                lastMisuseThrottleInput = Mathf.Clamp01(lastMisuseThrottleInput),
 
                 simulationTick = Mathf.Max(0, simulationTick),
                 lastUpdateTime = Mathf.Max(0f, lastUpdateTime)
@@ -177,6 +209,8 @@ namespace TiltDrive.TransmissionSystem
             finalDriveRatio = Mathf.Max(0f, state.finalDriveRatio);
             totalDriveRatio = Mathf.Max(0f, state.totalDriveRatio);
 
+            componentHealthPercent = Mathf.Clamp(state.componentHealthPercent, 0f, 100f);
+            accumulatedDamagePercent = Mathf.Max(0f, state.accumulatedDamagePercent);
             inputTorqueNm = Mathf.Max(0f, state.inputTorqueNm);
             inputRPM = Mathf.Max(0f, state.inputRPM);
             outputTorqueNm = Mathf.Max(0f, state.outputTorqueNm);
@@ -189,6 +223,13 @@ namespace TiltDrive.TransmissionSystem
             isReverse = state.isReverse;
             shiftAllowed = state.shiftAllowed;
             hasTransmissionWarning = state.hasTransmissionWarning;
+            hasMisuseWarning = state.hasMisuseWarning;
+            lastMisuseCode = state.lastMisuseCode;
+            lastMisuseMessage = state.lastMisuseMessage;
+            lastMisuseSeverity = Mathf.Max(0f, state.lastMisuseSeverity);
+            lastRequiredEngineRPM = Mathf.Max(0f, state.lastRequiredEngineRPM);
+            lastMisuseEngineRPM = Mathf.Max(0f, state.lastMisuseEngineRPM);
+            lastMisuseThrottleInput = Mathf.Clamp01(state.lastMisuseThrottleInput);
 
             simulationTick = Mathf.Max(0, state.simulationTick);
             lastUpdateTime = Mathf.Max(0f, state.lastUpdateTime);

@@ -108,6 +108,8 @@ namespace TiltDrive.DebugSystem
             if (showTorque)
             {
                 message +=
+                    $" | Health={state.componentHealthPercent:F1}" +
+                    $" | Damage={state.accumulatedDamagePercent:F1}" +
                     $" | InputTorqueNm={state.inputTorqueNm:F2}" +
                     $" | InputRPM={state.inputRPM:F0}" +
                     $" | OutputTorqueNm={state.outputTorqueNm:F2}" +
@@ -121,7 +123,10 @@ namespace TiltDrive.DebugSystem
                     $" | IsNeutral={state.isNeutral}" +
                     $" | IsReverse={state.isReverse}" +
                     $" | ShiftAllowed={state.shiftAllowed}" +
-                    $" | Warning={state.hasTransmissionWarning}";
+                    $" | Warning={state.hasTransmissionWarning}" +
+                    $" | Misuse={state.hasMisuseWarning}" +
+                    $" | MisuseCode={state.lastMisuseCode}" +
+                    $" | RequiredRPM={state.lastRequiredEngineRPM:F0}";
             }
 
             if (showTrace)

@@ -103,9 +103,16 @@ namespace TiltDrive.DebugSystem
             if (showLoadAndTorque)
             {
                 message +=
+                    $" | Health={state.componentHealthPercent:F1}" +
+                    $" | Damage={state.accumulatedDamagePercent:F1}" +
                     $" | Load={state.engineLoad:F2}" +
+                    $" | ClutchLoad={state.clutchFrictionLoad:F2}" +
+                    $" | ClutchRPMDrop={state.clutchFrictionRPMDrop:F0}" +
+                    $" | IdleAssist={state.idleLaunchAssistFactor:F2}" +
                     $" | TorqueNm={state.engineTorqueNm:F2}" +
-                    $" | EngineBrakeTorqueNm={state.engineBrakeTorqueNm:F2}";
+                    $" | EngineBrakeTorqueNm={state.engineBrakeTorqueNm:F2}" +
+                    $" | RevLimiter={state.revLimiterActive}" +
+                    $" | RevTorqueFactor={state.revLimiterTorqueFactor:F2}";
             }
 
             if (showWarnings)
@@ -114,6 +121,10 @@ namespace TiltDrive.DebugSystem
                     $" | BelowIdle={state.isBelowIdle}" +
                     $" | CriticalZone={state.isInCriticalZone}" +
                     $" | OverRevving={state.isOverRevving}" +
+                    $" | LaunchWarning={state.hasLaunchWarning}" +
+                    $" | LaunchMisuse={state.hasLaunchMisuse}" +
+                    $" | StallRisk={state.launchStallRisk}" +
+                    $" | LaunchCode={state.lastLaunchWarningCode}" +
                     $" | Warning={state.hasEngineWarning}";
             }
 
@@ -148,7 +159,11 @@ namespace TiltDrive.DebugSystem
                     $" | IdleRPM={config.idleRPM:F0}" +
                     $" | StallRPM={config.stallRPM:F0}" +
                     $" | MaxRPM={config.maxRPM:F0}" +
-                    $" | CriticalRPM={config.criticalRPM:F0}";
+                    $" | CriticalRPM={config.criticalRPM:F0}" +
+                    $" | RevLimiter={config.enableRevLimiter}" +
+                    $" | RevDropRPM={config.revLimiterDropRPM:F0}" +
+                    $" | RevPulseHz={config.revLimiterPulseFrequency:F1}" +
+                    $" | RevTorqueMultiplier={config.revLimiterTorqueMultiplier:F2}";
             }
 
             if (showDynamicResponse)

@@ -16,8 +16,17 @@ namespace TiltDrive.InputSystemRuntime
         [SerializeField] private bool enableWheel = true;
         [SerializeField] private bool enableGamepad = true;
 
+        [Header("Pedales")]
+        [SerializeField] private PedalAxisMode throttleAxisMode = PedalAxisMode.ZeroToOne;
+        [SerializeField] private PedalAxisMode brakeAxisMode = PedalAxisMode.InvertedMinusOneToOne;
+        [SerializeField] private PedalAxisMode clutchAxisMode = PedalAxisMode.InvertedMinusOneToOne;
+        [SerializeField] private bool autoDetectSignedPedalRanges = true;
+
         private bool wheelCallbacksRegistered = false;
         private bool gamepadCallbacksRegistered = false;
+        private bool throttleUsesSignedRange = false;
+        private bool brakeUsesSignedRange = false;
+        private bool clutchUsesSignedRange = false;
 
         private void Awake()
         {
@@ -146,6 +155,36 @@ namespace TiltDrive.InputSystemRuntime
             return Mathf.Clamp01((1f - rawValue) * 0.5f);
         }
 
+        private float NormalizePedal(float rawValue, PedalAxisMode axisMode, ref bool usesSignedRange)
+        {
+            if (autoDetectSignedPedalRanges && rawValue < -0.05f)
+            {
+                usesSignedRange = true;
+            }
+
+            switch (axisMode)
+            {
+                case PedalAxisMode.MinusOneToOne:
+                    return NormalizePedalFromMinusOneToOne(rawValue);
+                case PedalAxisMode.InvertedMinusOneToOne:
+                    return NormalizeInvertedPedalFromMinusOneToOne(rawValue);
+                case PedalAxisMode.InvertedZeroToOne:
+                    if (usesSignedRange)
+                    {
+                        return NormalizeInvertedPedalFromMinusOneToOne(rawValue);
+                    }
+
+                    return Mathf.Clamp01(1f - rawValue);
+                default:
+                    if (usesSignedRange)
+                    {
+                        return NormalizePedalFromMinusOneToOne(rawValue);
+                    }
+
+                    return Mathf.Clamp01(rawValue);
+            }
+        }
+
         // --------------------------------------------------
         // WHEEL
         // --------------------------------------------------
@@ -166,7 +205,7 @@ namespace TiltDrive.InputSystemRuntime
             if (store == null) return;
 
             float raw = context.ReadValue<float>();
-            float normalized = NormalizePedalFromMinusOneToOne(raw);
+            float normalized = NormalizePedal(raw, throttleAxisMode, ref throttleUsesSignedRange);
 
             store.SetSource(InputSourceType.Wheel);
             store.SetThrottle(normalized);
@@ -177,7 +216,7 @@ namespace TiltDrive.InputSystemRuntime
             if (store == null) return;
 
             float raw = context.ReadValue<float>();
-            float normalized = NormalizeInvertedPedalFromMinusOneToOne(raw);
+            float normalized = NormalizePedal(raw, brakeAxisMode, ref brakeUsesSignedRange);
 
             store.SetSource(InputSourceType.Wheel);
             store.SetBrake(normalized);
@@ -188,7 +227,7 @@ namespace TiltDrive.InputSystemRuntime
             if (store == null) return;
 
             float raw = context.ReadValue<float>();
-            float normalized = NormalizeInvertedPedalFromMinusOneToOne(raw);
+            float normalized = NormalizePedal(raw, clutchAxisMode, ref clutchUsesSignedRange);
 
             store.SetSource(InputSourceType.Wheel);
             store.SetClutch(normalized);
@@ -308,10 +347,18 @@ namespace TiltDrive.InputSystemRuntime
 
         public void OnEngineStart(InputAction.CallbackContext context)
         {
-            if (store == null || !context.performed) return;
+            if (store == null) return;
 
             store.SetSource(InputSourceType.Wheel);
-            store.RequestEngineStart();
+
+            if (context.started || context.performed)
+            {
+                store.RequestEngineStart();
+            }
+            else if (context.canceled)
+            {
+                store.SetEngineStartHeld(false);
+            }
         }
 
         // --------------------------------------------------
@@ -417,10 +464,18 @@ namespace TiltDrive.InputSystemRuntime
 
         void TiltDriveControls.IGamepadActions.OnEngineStart(InputAction.CallbackContext context)
         {
-            if (store == null || !context.performed) return;
+            if (store == null) return;
 
             store.SetSource(InputSourceType.Gamepad);
-            store.RequestEngineStart();
+
+            if (context.started || context.performed)
+            {
+                store.RequestEngineStart();
+            }
+            else if (context.canceled)
+            {
+                store.SetEngineStartHeld(false);
+            }
         }
     }
 }

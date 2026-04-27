@@ -77,6 +77,7 @@ namespace TiltDrive.DebugSystem
                     $" | GearDown={state.gearDownPressed}" +
                     $" | DirectGear={state.directGearRequest}" +
                     $" | EngineStart={state.engineStartPressed}" +
+                    $" | EngineStartHeld={state.engineStartHeld}" +
                     $" | Low={state.lightsLowPressed}" +
                     $" | High={state.lightsHighPressed}" +
                     $" | Hazard={state.hazardPressed}" +

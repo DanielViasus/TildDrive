@@ -23,14 +23,19 @@ namespace TiltDrive.VehicleSystem
 
         [Header("Entrada de Motor")]
         [Min(0f)] public float engineRPM = 0f;
+        [Min(0f)] public float engineMaxRPM = 0f;
         [Min(0f)] public float engineBrakeTorqueNm = 0f;
         public bool engineOn = false;
 
         [Header("Entrada del Usuario")]
+        [Range(-1f, 1f)] public float steerInput = 0f;
         [Range(0f, 1f)] public float brakeInput = 0f;
 
         [Header("Estado Previo")]
         public float previousSpeedMS = 0f;
+        [Range(-1f, 1f)] public float previousSteerInput = 0f;
+        public float previousHeadingDegrees = 0f;
+        [Min(0f)] public float previousBrakeTemperatureC = 0f;
 
         [Header("Configuracion")]
         public VehicleOutputConfig vehicleOutputConfig;
@@ -58,6 +63,7 @@ namespace TiltDrive.VehicleSystem
             if (engineState == null) return;
 
             engineRPM = Mathf.Max(0f, engineState.currentRPM);
+            engineMaxRPM = Mathf.Max(0f, engineState.maxRPM);
             engineBrakeTorqueNm = Mathf.Max(0f, engineState.engineBrakeTorqueNm);
             engineOn = engineState.engineOn;
         }
@@ -66,6 +72,7 @@ namespace TiltDrive.VehicleSystem
         {
             if (inputState == null) return;
 
+            steerInput = Mathf.Clamp(inputState.steer, -1f, 1f);
             brakeInput = Mathf.Clamp01(inputState.brake);
         }
 
@@ -74,6 +81,9 @@ namespace TiltDrive.VehicleSystem
             if (state == null) return;
 
             previousSpeedMS = state.finalSpeedMS;
+            previousSteerInput = Mathf.Clamp(state.steerInput, -1f, 1f);
+            previousHeadingDegrees = state.headingDegrees;
+            previousBrakeTemperatureC = Mathf.Max(0f, state.brakeTemperatureC);
         }
 
         public void SetConfig(VehicleOutputConfig config)
@@ -92,10 +102,15 @@ namespace TiltDrive.VehicleSystem
             totalDriveRatio = 0f;
             clutchEngagement = 0f;
             engineRPM = 0f;
+            engineMaxRPM = 0f;
             engineBrakeTorqueNm = 0f;
             engineOn = false;
+            steerInput = 0f;
             brakeInput = 0f;
             previousSpeedMS = 0f;
+            previousSteerInput = 0f;
+            previousHeadingDegrees = 0f;
+            previousBrakeTemperatureC = 0f;
             vehicleOutputConfig = null;
         }
 

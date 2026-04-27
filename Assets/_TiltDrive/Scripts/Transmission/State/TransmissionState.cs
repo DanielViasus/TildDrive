@@ -36,6 +36,9 @@ namespace TiltDrive.TransmissionSystem
         [Min(0f)] public float totalDriveRatio = 0f;
 
         [Header("Entrada")]
+        [Range(0f, 100f)] public float componentHealthPercent = 100f;
+        [Min(0f)] public float accumulatedDamagePercent = 0f;
+
         [Min(0f)] public float inputTorqueNm = 0f;
 
         [Tooltip("RPM de entrada provenientes del motor.")]
@@ -59,6 +62,13 @@ namespace TiltDrive.TransmissionSystem
         public bool isReverse = false;
         public bool shiftAllowed = true;
         public bool hasTransmissionWarning = false;
+        public bool hasMisuseWarning = false;
+        public string lastMisuseCode = string.Empty;
+        public string lastMisuseMessage = string.Empty;
+        [Min(0f)] public float lastMisuseSeverity = 0f;
+        [Min(0f)] public float lastRequiredEngineRPM = 0f;
+        [Min(0f)] public float lastMisuseEngineRPM = 0f;
+        [Range(0f, 1f)] public float lastMisuseThrottleInput = 0f;
 
         [Header("Trazabilidad")]
         [Min(0)] public int simulationTick = 0;
@@ -92,7 +102,7 @@ namespace TiltDrive.TransmissionSystem
 
             clutchDisengaged = clutchEngagement <= 0.05f;
 
-            hasTransmissionWarning = false;
+            hasTransmissionWarning = hasMisuseWarning;
 
             if (config != null)
             {
@@ -142,6 +152,8 @@ namespace TiltDrive.TransmissionSystem
             clutchEngagement = 0f;
             clutchDisengaged = true;
 
+            componentHealthPercent = 100f;
+            accumulatedDamagePercent = 0f;
             inputTorqueNm = 0f;
             inputRPM = 0f;
             outputTorqueNm = 0f;
@@ -149,6 +161,13 @@ namespace TiltDrive.TransmissionSystem
             transmittedTorqueNm = 0f;
 
             shiftAllowed = true;
+            hasMisuseWarning = false;
+            lastMisuseCode = string.Empty;
+            lastMisuseMessage = string.Empty;
+            lastMisuseSeverity = 0f;
+            lastRequiredEngineRPM = 0f;
+            lastMisuseEngineRPM = 0f;
+            lastMisuseThrottleInput = 0f;
             simulationTick = 0;
             lastUpdateTime = 0f;
 
@@ -190,6 +209,8 @@ namespace TiltDrive.TransmissionSystem
             clutchEngagement = 0f;
             clutchDisengaged = true;
 
+            componentHealthPercent = 100f;
+            accumulatedDamagePercent = 0f;
             inputTorqueNm = 0f;
             inputRPM = 0f;
             outputTorqueNm = 0f;
@@ -197,6 +218,13 @@ namespace TiltDrive.TransmissionSystem
             transmittedTorqueNm = 0f;
 
             shiftAllowed = true;
+            hasMisuseWarning = false;
+            lastMisuseCode = string.Empty;
+            lastMisuseMessage = string.Empty;
+            lastMisuseSeverity = 0f;
+            lastRequiredEngineRPM = 0f;
+            lastMisuseEngineRPM = 0f;
+            lastMisuseThrottleInput = 0f;
             simulationTick = 0;
             lastUpdateTime = 0f;
 

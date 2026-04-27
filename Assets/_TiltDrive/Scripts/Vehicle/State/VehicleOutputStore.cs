@@ -93,16 +93,45 @@ namespace TiltDrive.VehicleSystem
             current.absoluteSpeedKMH = Mathf.Max(0f, snapshot.absoluteSpeedKMH);
 
             current.driveSpeedPercent = Mathf.Clamp(snapshot.driveSpeedPercent, 0f, 100f);
+            current.activeGearSpeedLimitKMH = Mathf.Max(0f, snapshot.activeGearSpeedLimitKMH);
+            current.gearSpeedLimited = snapshot.gearSpeedLimited;
             current.outputPowerKW = Mathf.Max(0f, snapshot.outputPowerKW);
             current.outputPowerHP = Mathf.Max(0f, snapshot.outputPowerHP);
             current.tractionForceN = snapshot.tractionForceN;
 
             current.accelerationMS2 = snapshot.accelerationMS2;
             current.brakeInput = Mathf.Clamp01(snapshot.brakeInput);
+            current.requestedBrakeForceN = Mathf.Max(0f, snapshot.requestedBrakeForceN);
             current.aerodynamicDragForceN = Mathf.Max(0f, snapshot.aerodynamicDragForceN);
             current.rollingResistanceForceN = Mathf.Max(0f, snapshot.rollingResistanceForceN);
             current.brakeForceN = Mathf.Max(0f, snapshot.brakeForceN);
             current.engineBrakeForceN = Mathf.Max(0f, snapshot.engineBrakeForceN);
+
+            current.handbrakeActive = snapshot.handbrakeActive;
+            current.absActive = snapshot.absActive;
+            current.wheelsLocked = snapshot.wheelsLocked;
+            current.hasBrakeWarning = snapshot.hasBrakeWarning;
+            current.brakeSeverity = Mathf.Clamp01(snapshot.brakeSeverity);
+            current.brakeDemandDecelerationMS2 = Mathf.Max(0f, snapshot.brakeDemandDecelerationMS2);
+            current.brakeTemperatureC = Mathf.Max(0f, snapshot.brakeTemperatureC);
+            current.brakeThermalEfficiency = Mathf.Clamp01(snapshot.brakeThermalEfficiency);
+            current.brakeOverheated = snapshot.brakeOverheated;
+            current.brakeFadeActive = snapshot.brakeFadeActive;
+            current.lastBrakeWarningCode = snapshot.lastBrakeWarningCode;
+            current.lastBrakeWarningMessage = snapshot.lastBrakeWarningMessage;
+
+            current.steerInput = Mathf.Clamp(snapshot.steerInput, -1f, 1f);
+            current.effectiveSteerInput = Mathf.Clamp(snapshot.effectiveSteerInput, -1f, 1f);
+            current.steeringAngleDegrees = snapshot.steeringAngleDegrees;
+            current.yawRateDegreesPerSecond = snapshot.yawRateDegreesPerSecond;
+            current.headingDegrees = snapshot.headingDegrees;
+            current.turnRadiusMeters = Mathf.Max(0f, snapshot.turnRadiusMeters);
+            current.steeringControlLost = snapshot.steeringControlLost;
+            current.hasSteeringWarning = snapshot.hasSteeringWarning;
+            current.steeringSeverity = Mathf.Clamp01(snapshot.steeringSeverity);
+            current.steeringInputDelta = Mathf.Max(0f, snapshot.steeringInputDelta);
+            current.lastSteeringWarningCode = snapshot.lastSteeringWarningCode;
+            current.lastSteeringWarningMessage = snapshot.lastSteeringWarningMessage;
 
             current.driveDirection = snapshot.driveDirection;
             current.isMoving = snapshot.isMoving;

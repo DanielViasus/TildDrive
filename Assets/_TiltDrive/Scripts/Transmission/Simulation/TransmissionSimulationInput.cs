@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using TiltDrive.State;
 using TiltDrive.EngineSystem;
+using TiltDrive.Simulation;
 
 namespace TiltDrive.TransmissionSystem
 {
@@ -25,14 +26,22 @@ namespace TiltDrive.TransmissionSystem
         public bool shiftInProgress = false;
         [Min(0f)] public float currentShiftTimer = 0f;
         [Range(0f, 1f)] public float currentClutchEngagement = 0f;
+        [Range(0f, 100f)] public float componentHealthPercent = 100f;
+        [Min(0f)] public float accumulatedDamagePercent = 0f;
 
         [Header("Estado del Motor")]
         public bool engineOn = false;
         [Min(0f)] public float engineRPM = 0f;
+        [Min(0f)] public float engineMaxRPM = 0f;
         [Min(0f)] public float engineTorqueNm = 0f;
+
+        [Header("Estado del Vehiculo")]
+        public float vehicleSpeedMS = 0f;
+        [Min(0f)] public float wheelCircumferenceMeters = 0f;
 
         [Header("Configuración")]
         public TransmissionConfig transmissionConfig;
+        public DriveDamagePenaltyConfig damagePenaltyConfig;
 
         [Header("Control de Simulación")]
         public bool shiftingAllowed = true;
@@ -64,6 +73,8 @@ namespace TiltDrive.TransmissionSystem
             shiftInProgress = transmissionState.shiftInProgress;
             currentShiftTimer = Mathf.Max(0f, transmissionState.shiftTimer);
             currentClutchEngagement = Mathf.Clamp01(transmissionState.clutchEngagement);
+            componentHealthPercent = Mathf.Clamp(transmissionState.componentHealthPercent, 0f, 100f);
+            accumulatedDamagePercent = Mathf.Max(0f, transmissionState.accumulatedDamagePercent);
         }
 
         public void SetEngineState(EngineState engineState)
@@ -72,12 +83,26 @@ namespace TiltDrive.TransmissionSystem
 
             engineOn = engineState.engineOn;
             engineRPM = Mathf.Max(0f, engineState.currentRPM);
+            engineMaxRPM = Mathf.Max(0f, engineState.maxRPM);
             engineTorqueNm = Mathf.Max(0f, engineState.engineTorqueNm);
+        }
+
+        public void SetVehicleState(TiltDrive.VehicleSystem.VehicleOutputState vehicleState)
+        {
+            if (vehicleState == null) return;
+
+            vehicleSpeedMS = vehicleState.finalSpeedMS;
+            wheelCircumferenceMeters = Mathf.Max(0f, vehicleState.wheelCircumferenceMeters);
         }
 
         public void SetConfig(TransmissionConfig config)
         {
             transmissionConfig = config;
+        }
+
+        public void SetDamagePenaltyConfig(DriveDamagePenaltyConfig config)
+        {
+            damagePenaltyConfig = config;
         }
 
         public void Reset()
@@ -96,12 +121,19 @@ namespace TiltDrive.TransmissionSystem
             shiftInProgress = false;
             currentShiftTimer = 0f;
             currentClutchEngagement = 0f;
+            componentHealthPercent = 100f;
+            accumulatedDamagePercent = 0f;
 
             engineOn = false;
             engineRPM = 0f;
+            engineMaxRPM = 0f;
             engineTorqueNm = 0f;
 
+            vehicleSpeedMS = 0f;
+            wheelCircumferenceMeters = 0f;
+
             transmissionConfig = null;
+            damagePenaltyConfig = null;
 
             shiftingAllowed = true;
             useDirectGearSelection = true;

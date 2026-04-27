@@ -1,6 +1,8 @@
 using UnityEngine;
 using TiltDrive.State;
 using TiltDrive.EngineSystem;
+using TiltDrive.VehicleSystem;
+using TiltDrive.Simulation;
 
 namespace TiltDrive.TransmissionSystem
 {
@@ -10,6 +12,7 @@ namespace TiltDrive.TransmissionSystem
         [SerializeField] private InputStore inputStore;
         [SerializeField] private EngineStore engineStore;
         [SerializeField] private TransmissionStore transmissionStore;
+        [SerializeField] private VehicleOutputStore vehicleOutputStore;
 
         [Header("Simulación")]
         [SerializeField] private bool runSimulation = true;
@@ -20,6 +23,9 @@ namespace TiltDrive.TransmissionSystem
         [SerializeField] private bool useDirectGearSelection = true;
         [SerializeField] private bool bufferShiftRequests = true;
         [SerializeField] [Min(0.05f)] private float shiftRequestBufferSeconds = 0.75f;
+
+        [Header("Diagnostico y Danio")]
+        [SerializeField] private DriveDamagePenaltyConfig damagePenaltyConfig = new DriveDamagePenaltyConfig();
 
         [Header("Debug Interno")]
         [SerializeField] [Min(0)] private int simulationTick = 0;
@@ -33,6 +39,10 @@ namespace TiltDrive.TransmissionSystem
         private int previousCurrentGear = 0;
         private int previousRequestedGear = 0;
         private bool previousShiftInProgress = false;
+        private string previousMisuseWarningCode = string.Empty;
+        private float nextMisuseWarningLogTime = 0f;
+
+        public DriveDamagePenaltyConfig DamagePenaltyConfig => damagePenaltyConfig;
 
         private void Awake()
         {
@@ -70,7 +80,9 @@ namespace TiltDrive.TransmissionSystem
             output.lastUpdateTime = Time.time;
 
             transmissionStore.ApplyStateSnapshot(output.ToTransmissionState());
+            ApplyMisuseDamage(output);
             LogShiftOutput(output);
+            LogMisuseDiagnostics(output);
             ClearAcceptedShiftRequest(output);
 
             simulationTick++;
@@ -109,6 +121,16 @@ namespace TiltDrive.TransmissionSystem
                     transmissionStore = FindFirstObjectByType<TransmissionStore>();
                 }
             }
+
+            if (vehicleOutputStore == null)
+            {
+                vehicleOutputStore = VehicleOutputStore.Instance;
+
+                if (vehicleOutputStore == null)
+                {
+                    vehicleOutputStore = FindFirstObjectByType<VehicleOutputStore>();
+                }
+            }
         }
 
         private void BuildSimulationInput(float deltaTime, float simulationTime)
@@ -117,8 +139,10 @@ namespace TiltDrive.TransmissionSystem
 
             simulationInput.SetTime(deltaTime, simulationTime);
             simulationInput.SetConfig(transmissionStore.Config);
+            simulationInput.SetDamagePenaltyConfig(damagePenaltyConfig);
             simulationInput.SetTransmissionState(transmissionStore.Current);
             simulationInput.SetEngineState(engineStore.Current);
+            simulationInput.SetVehicleState(vehicleOutputStore != null ? vehicleOutputStore.Current : null);
             simulationInput.SetUserInput(inputStore.Current);
             ApplyBufferedShiftRequest(deltaTime);
 
@@ -282,6 +306,60 @@ namespace TiltDrive.TransmissionSystem
             previousCurrentGear = output.currentGear;
             previousRequestedGear = output.requestedGear;
             previousShiftInProgress = output.shiftInProgress;
+        }
+
+        private void ApplyMisuseDamage(TransmissionSimulationOutput output)
+        {
+            if (output == null || output.engineDamageThisTickPercent <= 0f || engineStore == null)
+            {
+                return;
+            }
+
+            engineStore.ApplyDamagePercent(output.engineDamageThisTickPercent, output.lastMisuseMessage);
+        }
+
+        private void LogMisuseDiagnostics(TransmissionSimulationOutput output)
+        {
+            if (output == null || !output.hasMisuseWarning)
+            {
+                previousMisuseWarningCode = string.Empty;
+                return;
+            }
+
+            bool repeatedWarning = output.lastMisuseCode == previousMisuseWarningCode;
+            bool canLogRepeatedWarning = Time.time >= nextMisuseWarningLogTime;
+            bool shouldThrottleWarning = output.lastMisuseCode.StartsWith("HIGH_GEAR_ENGINE_STRAIN");
+
+            if (shouldThrottleWarning && repeatedWarning && !canLogRepeatedWarning)
+            {
+                return;
+            }
+
+            Debug.LogWarning(
+                $"[TiltDrive][DriveMisuse]" +
+                $" | Code={output.lastMisuseCode}" +
+                $" | Severity={output.lastMisuseSeverity:F2}" +
+                $" | RequiredRPM={output.lastRequiredEngineRPM:F0}" +
+                $" | EngineRPM={output.lastMisuseEngineRPM:F0}" +
+                $" | Throttle={output.lastMisuseThrottleInput:F2}" +
+                $" | Gear={FormatGear(output.currentGear)}" +
+                $" | EngineDamage={output.engineDamageThisTickPercent:F2}%" +
+                $" | TransmissionDamage={output.transmissionDamageThisTickPercent:F2}%" +
+                $" | TransmissionHealth={output.componentHealthPercent:F1}%" +
+                $" | Message={output.lastMisuseMessage}");
+
+            previousMisuseWarningCode = output.lastMisuseCode;
+            if (shouldThrottleWarning)
+            {
+                float interval = damagePenaltyConfig != null
+                    ? damagePenaltyConfig.highGearStrainLogIntervalSeconds
+                    : 0.75f;
+                nextMisuseWarningLogTime = Time.time + Mathf.Max(0.1f, interval);
+            }
+            else
+            {
+                nextMisuseWarningLogTime = 0f;
+            }
         }
 
         private string GetBufferedRequestLabel()

@@ -22,7 +22,7 @@ namespace TiltDrive.TransmissionSystem
 
         [Header("Relaciones")]
         [Tooltip("Relación final del diferencial.")]
-        [Min(0.01f)] public float finalDriveRatio = 7.50f;
+        [Min(0.01f)] public float finalDriveRatio = 14.50f;
 
         [Tooltip("Eficiencia general de transmisión.")]
         [Range(0.1f, 1f)] public float transmissionEfficiency = 0.9f;
@@ -56,10 +56,10 @@ namespace TiltDrive.TransmissionSystem
         public bool automaticEngageFirstFromNeutral = true;
 
         [Tooltip("RPM del motor para subir marcha en automatico.")]
-        [Min(100f)] public float automaticUpshiftRPM = 5200f;
+        [Min(100f)] public float automaticUpshiftRPM = 9500f;
 
         [Tooltip("RPM del motor para bajar marcha en automatico.")]
-        [Min(100f)] public float automaticDownshiftRPM = 1800f;
+        [Min(100f)] public float automaticDownshiftRPM = 3000f;
 
         public void ClampValues()
         {

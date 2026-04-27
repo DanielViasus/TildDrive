@@ -148,6 +148,14 @@ namespace TiltDrive.State
             NotifyStateChanged();
         }
 
+        public void SetEngineStartHeld(bool value)
+        {
+            if (current.engineStartHeld == value) return;
+
+            current.SetEngineStartHeld(value);
+            NotifyStateChanged();
+        }
+
         // --------------------------------------------------
         // LUCES
         // --------------------------------------------------

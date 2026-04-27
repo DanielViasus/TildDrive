@@ -10,7 +10,7 @@ namespace TiltDrive.DebugSystem
 
         [Header("Logs")]
         [SerializeField] private bool logStateChanges = true;
-        [SerializeField] private bool logConfigChanges = true;
+        [SerializeField] private bool logConfigChanges = false;
 
         private void Awake()
         {
@@ -65,14 +65,13 @@ namespace TiltDrive.DebugSystem
 
             Debug.Log(
                 $"[TiltDrive][VehicleOutputState]" +
-                $" | SimulationSpeed={state.simulationSpeed:F2} {GetSpeedUnitLabel(state.simulationSpeedUnit)}" +
-                $" | MotorSpeedPercent={state.motorSpeedPercent:F1}" +
+                $" | Direction={state.effectiveSteerInput:F2}" +
+                $" | FinalSpeedKMH={state.finalSpeedKMH:F1}" +
                 $" | EngineRPM={state.engineRPM:F0}" +
+                $" | Gear={FormatGear(state.currentGear)}" +
+                $" | HandBrake={state.handbrakeActive}" +
                 $" | EngineOn={state.engineOn}" +
-                $" | CurrentGear={FormatGear(state.currentGear)}" +
-                $" | AccelMS2={state.accelerationMS2:F2}" +
-                $" | Brake={state.brakeInput:F2}" +
-                $" | EngineBrakeN={state.engineBrakeForceN:F0}");
+                $" | MotorSpeed={state.motorSpeedPercent:F1}%");
         }
 
         private void HandleConfigChanged(VehicleOutputConfig config)
@@ -82,14 +81,7 @@ namespace TiltDrive.DebugSystem
             Debug.Log(
                 $"[TiltDrive][VehicleOutputConfig]" +
                 $" | Name={config.outputName}" +
-                $" | SpeedUnit={GetSpeedUnitLabel(config.speedDisplayUnit)}" +
-                $" | WheelRadiusM={config.wheelRadiusMeters:F2}" +
-                $" | MassKg={config.vehicleMassKg:F0}" +
-                $" | Drag={config.aerodynamicDragCoefficient:F2}" +
-                $" | Rolling={config.rollingResistanceCoefficient:F3}" +
-                $" | BrakeForceN={config.brakeForceN:F0}" +
-                $" | TheoreticalMaxSpeedKMH={config.theoreticalMaxSpeedKmh:F2}" +
-                $" | ClampSpeed={config.clampSpeedToTheoreticalMax}");
+                $" | SpeedUnit={GetSpeedUnitLabel(config.speedDisplayUnit)}");
         }
 
         private static string GetSpeedUnitLabel(VehicleSpeedUnit speedUnit)

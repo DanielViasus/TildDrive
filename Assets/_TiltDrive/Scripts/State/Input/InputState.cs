@@ -30,6 +30,7 @@ namespace TiltDrive.State
 
         [Header("Motor")]
         public bool engineStartPressed = false;
+        public bool engineStartHeld = false;
 
         [Header("Luces y Señalización")]
         public bool lightsLowPressed = false;
@@ -89,6 +90,12 @@ namespace TiltDrive.State
         public void RequestEngineStart()
         {
             engineStartPressed = true;
+            engineStartHeld = true;
+        }
+
+        public void SetEngineStartHeld(bool value)
+        {
+            engineStartHeld = value;
         }
 
         public void RequestLightsLow()
@@ -146,6 +153,7 @@ namespace TiltDrive.State
             throttle = 0f;
             brake = 0f;
             clutch = 0f;
+            engineStartHeld = false;
 
             ClearTransient();
         }

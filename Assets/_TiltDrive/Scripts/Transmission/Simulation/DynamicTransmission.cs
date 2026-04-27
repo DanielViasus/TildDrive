@@ -1,4 +1,5 @@
 using UnityEngine;
+using TiltDrive.Simulation;
 
 namespace TiltDrive.TransmissionSystem
 {
@@ -38,6 +39,8 @@ namespace TiltDrive.TransmissionSystem
 
             output.inputTorqueNm = Mathf.Max(0f, input.engineTorqueNm);
             output.inputRPM = Mathf.Max(0f, input.engineRPM);
+            output.componentHealthPercent = Mathf.Clamp(input.componentHealthPercent, 0f, 100f);
+            output.accumulatedDamagePercent = Mathf.Max(0f, input.accumulatedDamagePercent);
 
             output.simulationTick = 0;
             output.lastUpdateTime = input.simulationTime;
@@ -110,7 +113,21 @@ namespace TiltDrive.TransmissionSystem
 
                 if (output.shiftTimer >= config.shiftDuration)
                 {
-                    output.currentGear = SanitizeRequestedGear(output.requestedGear, config);
+                    int previousGear = output.currentGear;
+                    int targetGear = SanitizeRequestedGear(output.requestedGear, config);
+                    DriveMisuseDiagnostics.MisuseReport misuseReport =
+                        DriveMisuseDiagnostics.AnalyzeGearChange(
+                            previousGear,
+                            targetGear,
+                            input.vehicleSpeedMS,
+                            input.wheelCircumferenceMeters,
+                            input.engineMaxRPM,
+                            config,
+                            input.damagePenaltyConfig);
+
+                    ApplyMisuseReport(output, misuseReport);
+
+                    output.currentGear = targetGear;
                     output.shiftInProgress = false;
                     output.shiftTimer = 0f;
                 }
@@ -133,6 +150,20 @@ namespace TiltDrive.TransmissionSystem
             // 5. FLAGS Y DIRECCION
             // --------------------------------------------------
             output.EvaluateFlags(config);
+
+            DriveMisuseDiagnostics.MisuseReport highGearStrainReport =
+                DriveMisuseDiagnostics.AnalyzeHighGearEngineStrain(
+                    output.currentGear,
+                    input.vehicleSpeedMS,
+                    input.throttleInput,
+                    output.clutchEngagement,
+                    input.engineRPM,
+                    input.damagePenaltyConfig);
+
+            if (highGearStrainReport.hasFault)
+            {
+                ApplyMisuseReport(output, highGearStrainReport);
+            }
 
             // --------------------------------------------------
             // 6. MOTOR APAGADO
@@ -185,7 +216,8 @@ namespace TiltDrive.TransmissionSystem
                 output.inputTorqueNm *
                 totalRatio *
                 efficiency *
-                engagement;
+                engagement *
+                Mathf.Clamp01(output.componentHealthPercent / 100f);
 
             float outputRPM =
                 (output.inputRPM / totalRatio) *
@@ -217,6 +249,33 @@ namespace TiltDrive.TransmissionSystem
             }
 
             return output;
+        }
+
+        private static void ApplyMisuseReport(
+            TransmissionSimulationOutput output,
+            DriveMisuseDiagnostics.MisuseReport report)
+        {
+            output.hasMisuseWarning = report.hasFault;
+            output.lastMisuseCode = report.code;
+            output.lastMisuseMessage = report.message;
+            output.lastMisuseSeverity = report.severity;
+            output.lastRequiredEngineRPM = report.requiredEngineRPM;
+            output.lastMisuseEngineRPM = report.currentEngineRPM;
+            output.lastMisuseThrottleInput = report.throttleInput;
+            output.engineDamageThisTickPercent = report.engineDamagePercent;
+            output.transmissionDamageThisTickPercent = report.transmissionDamagePercent;
+
+            if (!report.hasFault)
+            {
+                return;
+            }
+
+            output.componentHealthPercent = Mathf.Clamp(
+                output.componentHealthPercent - report.transmissionDamagePercent,
+                0f,
+                100f);
+            output.accumulatedDamagePercent += report.transmissionDamagePercent;
+            output.hasTransmissionWarning = true;
         }
 
         private float CalculateClutchEngagement(float clutchInput)

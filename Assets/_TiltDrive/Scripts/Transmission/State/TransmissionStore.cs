@@ -274,6 +274,8 @@ namespace TiltDrive.TransmissionSystem
             current.finalDriveRatio = Mathf.Max(0f, snapshot.finalDriveRatio);
             current.totalDriveRatio = Mathf.Max(0f, snapshot.totalDriveRatio);
 
+            current.componentHealthPercent = Mathf.Clamp(snapshot.componentHealthPercent, 0f, 100f);
+            current.accumulatedDamagePercent = Mathf.Max(0f, snapshot.accumulatedDamagePercent);
             current.inputTorqueNm = Mathf.Max(0f, snapshot.inputTorqueNm);
             current.inputRPM = Mathf.Max(0f, snapshot.inputRPM);
             current.outputTorqueNm = Mathf.Max(0f, snapshot.outputTorqueNm);
@@ -286,6 +288,13 @@ namespace TiltDrive.TransmissionSystem
             current.isReverse = snapshot.isReverse;
             current.shiftAllowed = snapshot.shiftAllowed;
             current.hasTransmissionWarning = snapshot.hasTransmissionWarning;
+            current.hasMisuseWarning = snapshot.hasMisuseWarning;
+            current.lastMisuseCode = snapshot.lastMisuseCode;
+            current.lastMisuseMessage = snapshot.lastMisuseMessage;
+            current.lastMisuseSeverity = Mathf.Max(0f, snapshot.lastMisuseSeverity);
+            current.lastRequiredEngineRPM = Mathf.Max(0f, snapshot.lastRequiredEngineRPM);
+            current.lastMisuseEngineRPM = Mathf.Max(0f, snapshot.lastMisuseEngineRPM);
+            current.lastMisuseThrottleInput = Mathf.Clamp01(snapshot.lastMisuseThrottleInput);
 
             current.simulationTick = Mathf.Max(0, snapshot.simulationTick);
             current.lastUpdateTime = Mathf.Max(0f, snapshot.lastUpdateTime);

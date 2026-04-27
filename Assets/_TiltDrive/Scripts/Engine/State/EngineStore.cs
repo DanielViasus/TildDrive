@@ -230,6 +230,8 @@ namespace TiltDrive.EngineSystem
             current.engineStarting = snapshot.engineStarting;
             current.engineShuttingDown = snapshot.engineShuttingDown;
             current.engineStalled = snapshot.engineStalled;
+            current.engineStartHoldSeconds = Mathf.Max(0f, snapshot.engineStartHoldSeconds);
+            current.requiredStartHoldSeconds = Mathf.Max(0f, snapshot.requiredStartHoldSeconds);
 
             current.currentRPM = Mathf.Max(0f, snapshot.currentRPM);
             current.targetRPM = Mathf.Max(0f, snapshot.targetRPM);
@@ -239,14 +241,55 @@ namespace TiltDrive.EngineSystem
             current.maxRPM = Mathf.Max(0f, snapshot.maxRPM);
             current.criticalRPM = Mathf.Max(0f, snapshot.criticalRPM);
 
+            current.componentHealthPercent = Mathf.Clamp(snapshot.componentHealthPercent, 0f, 100f);
+            current.accumulatedDamagePercent = Mathf.Max(0f, snapshot.accumulatedDamagePercent);
             current.engineLoad = Mathf.Max(0f, snapshot.engineLoad);
             current.engineTorqueNm = snapshot.engineTorqueNm;
             current.engineBrakeTorqueNm = Mathf.Max(0f, snapshot.engineBrakeTorqueNm);
+            current.engineTemperatureC = Mathf.Max(0f, snapshot.engineTemperatureC);
+            current.thermalEfficiency = Mathf.Clamp01(snapshot.thermalEfficiency);
+            current.engineTemperatureWarning = snapshot.engineTemperatureWarning;
+            current.engineOverheated = snapshot.engineOverheated;
+            current.engineThermalDerateActive = snapshot.engineThermalDerateActive;
+            current.lastTemperatureWarningCode = snapshot.lastTemperatureWarningCode;
+            current.lastTemperatureWarningMessage = snapshot.lastTemperatureWarningMessage;
+            current.lastTemperatureSeverity = Mathf.Max(0f, snapshot.lastTemperatureSeverity);
+            current.revLimiterActive = snapshot.revLimiterActive;
+            current.revLimiterTorqueFactor = Mathf.Clamp01(snapshot.revLimiterTorqueFactor);
+            current.starterOveruseWarning = snapshot.starterOveruseWarning;
+            current.hasLaunchWarning = snapshot.hasLaunchWarning;
+            current.hasLaunchMisuse = snapshot.hasLaunchMisuse;
+            current.launchStallRisk = snapshot.launchStallRisk;
+            current.clutchFrictionRPMDrop = Mathf.Max(0f, snapshot.clutchFrictionRPMDrop);
+            current.clutchFrictionLoad = Mathf.Clamp01(snapshot.clutchFrictionLoad);
+            current.idleLaunchAssistFactor = Mathf.Clamp01(snapshot.idleLaunchAssistFactor);
+            current.lastLaunchWarningCode = snapshot.lastLaunchWarningCode;
+            current.lastLaunchWarningMessage = snapshot.lastLaunchWarningMessage;
+            current.lastLaunchSeverity = Mathf.Max(0f, snapshot.lastLaunchSeverity);
+            current.lastStarterWarningCode = snapshot.lastStarterWarningCode;
+            current.lastStarterWarningMessage = snapshot.lastStarterWarningMessage;
+            current.lastStarterSeverity = Mathf.Max(0f, snapshot.lastStarterSeverity);
 
             current.simulationTick = Mathf.Max(0, snapshot.simulationTick);
             current.lastUpdateTime = Mathf.Max(0f, snapshot.lastUpdateTime);
 
             current.EvaluateFlags();
+            NotifyStateChanged();
+        }
+
+        public void ApplyDamagePercent(float damagePercent, string reason)
+        {
+            float clampedDamage = Mathf.Max(0f, damagePercent);
+            if (clampedDamage <= 0f) return;
+
+            current.componentHealthPercent = Mathf.Clamp(current.componentHealthPercent - clampedDamage, 0f, 100f);
+            current.accumulatedDamagePercent += clampedDamage;
+            ApplyThermalSpikeFromDamage(clampedDamage);
+            current.EvaluateFlags();
+
+            Debug.LogWarning(
+                $"[TiltDrive][EngineDamage] Damage={clampedDamage:F2}% | Health={current.componentHealthPercent:F1}% | Reason={reason}");
+
             NotifyStateChanged();
         }
 
@@ -269,6 +312,64 @@ namespace TiltDrive.EngineSystem
         private void NotifyConfigChanged()
         {
             OnConfigChanged?.Invoke(config);
+        }
+
+        private void ApplyThermalSpikeFromDamage(float damagePercent)
+        {
+            if (config == null || current == null) return;
+
+            config.ClampValues();
+            float startTemperature = current.engineTemperatureC > 0f
+                ? current.engineTemperatureC
+                : config.engineInitialTemperatureC;
+            current.engineTemperatureC = Mathf.Clamp(
+                startTemperature + damagePercent * 1.8f,
+                config.engineAmbientTemperatureC,
+                config.engineMaxTemperatureC);
+
+            float severity = Mathf.InverseLerp(
+                config.engineEfficiencyDropStartTemperatureC,
+                config.engineCriticalTemperatureC,
+                current.engineTemperatureC);
+            current.thermalEfficiency = Mathf.Lerp(
+                1f,
+                config.engineMinThermalEfficiency,
+                Mathf.Clamp01(severity));
+            current.engineThermalDerateActive = current.engineTemperatureC >= config.engineEfficiencyDropStartTemperatureC;
+            current.engineOverheated = current.engineTemperatureC >= config.engineCriticalTemperatureC;
+            current.engineTemperatureWarning = current.engineTemperatureC >= config.engineWarningTemperatureC;
+
+            if (!current.engineTemperatureWarning)
+            {
+                current.lastTemperatureWarningCode = string.Empty;
+                current.lastTemperatureWarningMessage = string.Empty;
+                current.lastTemperatureSeverity = 0f;
+                return;
+            }
+
+            current.lastTemperatureSeverity = Mathf.Clamp01(Mathf.InverseLerp(
+                config.engineWarningTemperatureC,
+                config.engineCriticalTemperatureC,
+                current.engineTemperatureC));
+
+            if (current.engineOverheated)
+            {
+                current.lastTemperatureWarningCode = "ENGINE_OVERHEAT_CRITICAL";
+                current.lastTemperatureWarningMessage = "Engine temperature is critical; torque output is severely reduced.";
+                current.lastTemperatureSeverity = 1f;
+            }
+            else if (current.engineThermalDerateActive)
+            {
+                current.lastTemperatureWarningCode = "ENGINE_THERMAL_DERATE";
+                current.lastTemperatureWarningMessage = "Engine is losing efficiency due to high temperature.";
+                current.lastTemperatureSeverity = Mathf.Max(current.lastTemperatureSeverity, 0.65f);
+            }
+            else
+            {
+                current.lastTemperatureWarningCode = "ENGINE_TEMPERATURE_HIGH";
+                current.lastTemperatureWarningMessage = "Engine temperature is high; sustained abuse can reduce performance.";
+                current.lastTemperatureSeverity = Mathf.Max(current.lastTemperatureSeverity, 0.35f);
+            }
         }
     }
 }

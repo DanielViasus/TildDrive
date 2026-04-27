@@ -370,6 +370,43 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &133185863
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 133185864}
+  m_Layer: 0
+  m_Name: Machine
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &133185864
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133185863}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 457277235}
+  - {fileID: 258935268}
+  - {fileID: 1505181473}
+  - {fileID: 2021287520}
+  - {fileID: 1407332704}
+  - {fileID: 344297735}
+  m_Father: {fileID: 1966908632}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &258935267
 GameObject:
   m_ObjectHideFlags: 0
@@ -397,12 +434,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 258935267}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1966908632}
+  m_Father: {fileID: 133185864}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &258935269
 MonoBehaviour:
@@ -447,18 +484,26 @@ MonoBehaviour:
     architectureType: 3
     displacementLiters: 2
     cylinderCount: 4
-    idleRPM: 850
+    idleRPM: 1200
     stallRPM: 500
-    maxRPM: 5200
-    criticalRPM: 5600
-    rpmRiseSpeed: 1600
+    maxRPM: 10000
+    criticalRPM: 10500
+    enableRevLimiter: 1
+    revLimiterDropRPM: 650
+    revLimiterPulseFrequency: 8
+    revLimiterTorqueMultiplier: 0.2
+    rpmRiseSpeed: 4000
     rpmFallSpeed: 1400
     engineInertia: 1
     throttleResponsiveness: 1
     engineStartRPMSpeed: 1400
     engineShutdownRPMSpeed: 2200
+    minimumStartHoldSeconds: 0.65
+    damagedEngineStartExtraSeconds: 2.5
+    starterOveruseWarningSeconds: 4
+    starterOveruseCriticalSeconds: 7
     baseTorqueNm: 120
-    peakTorqueRPM: 3200
+    peakTorqueRPM: 6500
     engineBrakeStrength: 20
     loadSensitivity: 1
     slopeSensitivity: 1
@@ -468,19 +513,38 @@ MonoBehaviour:
     engineStarting: 0
     engineShuttingDown: 0
     engineStalled: 0
+    engineStartHoldSeconds: 0
+    requiredStartHoldSeconds: 0
     currentRPM: 0
     targetRPM: 0
-    idleRPM: 850
+    idleRPM: 1200
     stallRPM: 500
-    maxRPM: 5200
-    criticalRPM: 5600
+    maxRPM: 10000
+    criticalRPM: 10500
+    componentHealthPercent: 100
+    accumulatedDamagePercent: 0
     engineLoad: 0
     engineTorqueNm: 0
     engineBrakeTorqueNm: 0
     isBelowIdle: 0
     isInCriticalZone: 0
     isOverRevving: 0
+    revLimiterActive: 0
+    revLimiterTorqueFactor: 1
     hasEngineWarning: 0
+    starterOveruseWarning: 0
+    hasLaunchWarning: 0
+    hasLaunchMisuse: 0
+    launchStallRisk: 0
+    clutchFrictionRPMDrop: 0
+    clutchFrictionLoad: 0
+    idleLaunchAssistFactor: 0
+    lastLaunchWarningCode: 
+    lastLaunchWarningMessage: 
+    lastLaunchSeverity: 0
+    lastStarterWarningCode: 
+    lastStarterWarningMessage: 
+    lastStarterSeverity: 0
     simulationTick: 0
     lastUpdateTime: 0
 --- !u!114 &258935271
@@ -497,6 +561,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputStore: {fileID: 457277236}
   engineStore: {fileID: 258935270}
+  transmissionStore: {fileID: 1505181476}
+  vehicleOutputStore: {fileID: 344297737}
+  electricalStore: {fileID: 0}
   runSimulation: 1
   autoFindReferences: 1
   transmissionLoad: 0
@@ -506,7 +573,27 @@ MonoBehaviour:
   ignitionAllowed: 1
   canStall: 1
   useExternalLoad: 1
+  useDrivetrainRPMCoupling: 1
+  launchDiagnosticsConfig:
+    launchSpeedThresholdMS: 2
+    maxRecommendedLaunchGear: 1
+    biteEngagementMin: 0.18
+    biteEngagementMax: 0.55
+    clutchDumpEngagement: 0.85
+    allowIdleOnlyLaunch: 1
+    idleOnlyThrottleThreshold: 0.04
+    idleOnlyRPMReserve: 180
+    minThrottleAtBite: 0.16
+    minThrottleForClutchDump: 0.35
+    brakeConflictThreshold: 0.25
+    stallRiskThreshold: 0.65
+    maxLaunchRPMPenalty: 1600
+    stallRPMMargin: 250
+    maxClutchFrictionRPMDrop: 520
+    idleLaunchTorqueFactor: 0.18
+    idleLockupEngagementStart: 0.6
   simulationTick: 0
+  logLaunchDiagnostics: 1
 --- !u!1 &281176425
 GameObject:
   m_ObjectHideFlags: 0
@@ -624,12 +711,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 344297734}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1966908632}
+  m_Father: {fileID: 133185864}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &344297736
 MonoBehaviour:
@@ -650,6 +737,7 @@ MonoBehaviour:
   runSimulation: 1
   autoFindReferences: 1
   simulationTick: 0
+  logBrakeDiagnostics: 1
 --- !u!114 &344297737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -671,9 +759,42 @@ MonoBehaviour:
     aerodynamicDragCoefficient: 0.45
     rollingResistanceCoefficient: 0.025
     brakeForceN: 6000
+    brakeAmbientTemperatureC: 28
+    brakeInitialTemperatureC: 32
+    brakeHeatGainPerSecond: 34
+    brakeBaseCoolingPerSecond: 5
+    brakeSpeedCoolingPerSecond: 0.22
+    brakeWarningTemperatureC: 280
+    brakeFadeStartTemperatureC: 360
+    brakeCriticalTemperatureC: 520
+    brakeMaxTemperatureC: 650
+    brakeMinThermalEfficiency: 0.42
+    enableABS: 1
+    aggressiveBrakeInputThreshold: 0.5
+    aggressiveBrakeDecelerationMS2: 5.5
+    wheelLockBrakeInputThreshold: 0.6
+    wheelLockMinSpeedMS: 2
+    lockedWheelBrakeMultiplier: 0.58
+    lockedWheelSteeringMultiplier: 0.15
+    forceSteeringLossOnWheelLock: 1
+    lockedWheelMaxSteeringAngleDegrees: 2
+    absPulseFrequency: 12
+    absMinBrakeMultiplier: 0.68
+    fullStopSpeedThresholdMS: 0.08
+    fullStopBrakeInputThreshold: 0.05
+    fullStopTractionForceThresholdN: 20
+    wheelBaseMeters: 2.6
+    maxSteeringAngleDegrees: 32
+    steeringSpeedSensitivity: 0.18
+    minSpeedForSteeringMS: 0.05
+    aggressiveSteeringMinSpeedMS: 18
+    aggressiveSteeringInputThreshold: 0.75
+    aggressiveSteeringDeltaThreshold: 0.35
     engineBrakeMultiplier: 1
+    overRevSpeedCorrectionDecelerationMS2: 35
     theoreticalMaxSpeedKmh: 120
     clampSpeedToTheoreticalMax: 1
+    clampSpeedToActiveGearRPM: 1
   current:
     simulationSpeed: 0
     simulationSpeedUnit: 0
@@ -691,15 +812,42 @@ MonoBehaviour:
     finalSpeedMPH: 0
     absoluteSpeedKMH: 0
     driveSpeedPercent: 0
+    activeGearSpeedLimitKMH: 0
+    gearSpeedLimited: 0
     outputPowerKW: 0
     outputPowerHP: 0
     tractionForceN: 0
     accelerationMS2: 0
     brakeInput: 0
+    requestedBrakeForceN: 0
     aerodynamicDragForceN: 0
     rollingResistanceForceN: 0
     brakeForceN: 0
     engineBrakeForceN: 0
+    handbrakeActive: 0
+    absActive: 0
+    wheelsLocked: 0
+    hasBrakeWarning: 0
+    brakeSeverity: 0
+    brakeDemandDecelerationMS2: 0
+    brakeTemperatureC: 0
+    brakeThermalEfficiency: 1
+    brakeOverheated: 0
+    brakeFadeActive: 0
+    lastBrakeWarningCode: 
+    lastBrakeWarningMessage: 
+    steerInput: 0
+    effectiveSteerInput: 0
+    steeringAngleDegrees: 0
+    yawRateDegreesPerSecond: 0
+    headingDegrees: 0
+    turnRadiusMeters: 0
+    steeringControlLost: 0
+    hasSteeringWarning: 0
+    steeringSeverity: 0
+    steeringInputDelta: 0
+    lastSteeringWarningCode: 
+    lastSteeringWarningMessage: 
     driveDirection: 0
     isMoving: 0
     simulationTick: 0
@@ -718,7 +866,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TiltDrive.DebugSystem.VehicleOutputDebugView
   store: {fileID: 344297737}
   logStateChanges: 1
-  logConfigChanges: 1
+  logConfigChanges: 0
 --- !u!1 &375230723
 GameObject:
   m_ObjectHideFlags: 0
@@ -989,6 +1137,38 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 444049349}
   m_Mesh: {fileID: 687688289713994627, guid: f8126ef0c4f8442fa80ec3885c5f8270, type: 3}
+--- !u!1 &447143953
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 447143954}
+  m_Layer: 0
+  m_Name: UI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &447143954
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 447143953}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 938133407}
+  m_Father: {fileID: 1966908632}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &457277231
 GameObject:
   m_ObjectHideFlags: 0
@@ -1038,6 +1218,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableWheel: 1
   enableGamepad: 1
+  throttleAxisMode: 0
+  brakeAxisMode: 2
+  clutchAxisMode: 2
 --- !u!4 &457277235
 Transform:
   m_ObjectHideFlags: 0
@@ -1046,12 +1229,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 457277231}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1966908632}
+  m_Father: {fileID: 133185864}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &457277236
 MonoBehaviour:
@@ -1075,6 +1258,7 @@ MonoBehaviour:
     gearDownPressed: 0
     directGearRequest: 0
     engineStartPressed: 0
+    engineStartHeld: 0
     lightsLowPressed: 0
     lightsHighPressed: 0
     hazardPressed: 0
@@ -1508,6 +1692,84 @@ Transform:
   - {fileID: 1187143755}
   m_Father: {fileID: 790698256}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &938133406
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 938133407}
+  - component: {fileID: 938133408}
+  m_Layer: 0
+  m_Name: Menu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &938133407
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938133406}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 447143954}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &938133408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938133406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bb34f02f99241a2958f495042a545e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TiltDrive.UISystem.RuntimeVehicleConfigMenu
+  engineStore: {fileID: 258935270}
+  engineRunner: {fileID: 258935271}
+  transmissionStore: {fileID: 1505181476}
+  transmissionRunner: {fileID: 1505181474}
+  vehicleOutputStore: {fileID: 344297737}
+  lightsStore: {fileID: 1407332706}
+  electricalStore: {fileID: 2021287523}
+  autoFindReferences: 1
+  showMenu: 0
+  toggleKey: 27
+  windowRect:
+    serializedVersion: 2
+    x: 24
+    y: 24
+    width: 560
+    height: 650
+  language: 0
+  fitWindowToScreen: 1
+  windowWidthPercent: 0.7
+  windowHeightPercent: 0.92
+  screenMargin: 18
+  minimumWindowWidth: 720
+  minimumWindowHeight: 620
+  titleFontSize: 22
+  bodyFontSize: 15
+  fieldHeight: 30
+  windowColor: {r: 0.035, g: 0.045, b: 0.055, a: 0.96}
+  panelColor: {r: 0.08, g: 0.095, b: 0.11, a: 0.96}
+  accentColor: {r: 0.18, g: 0.72, b: 1, a: 1}
+  buttonColor: {r: 0.13, g: 0.18, b: 0.23, a: 1}
+  fieldColor: {r: 0.02, g: 0.025, b: 0.03, a: 1}
+  textColor: {r: 0.9, g: 0.95, b: 1, a: 1}
+  headerSprite: {fileID: 0}
+  headerTexture: {fileID: 0}
 --- !u!1001 &1105495760
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1950,6 +2212,105 @@ Transform:
   - {fileID: 29763854}
   m_Father: {fileID: 790698256}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1407332703
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1407332704}
+  - component: {fileID: 1407332706}
+  - component: {fileID: 1407332705}
+  m_Layer: 0
+  m_Name: LigthSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1407332704
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1407332703}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 133185864}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1407332705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1407332703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 440bd43e2a2a42ad9686a684f985ff39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TiltDrive.LightingSystem.VehicleLightsSimulationRunner
+  inputStore: {fileID: 0}
+  vehicleOutputStore: {fileID: 0}
+  transmissionStore: {fileID: 0}
+  electricalStore: {fileID: 0}
+  lightsStore: {fileID: 0}
+  runSimulation: 1
+  autoFindReferences: 1
+  simulationTick: 0
+--- !u!114 &1407332706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1407332703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f6af8b1932740b6a5119e5d813369bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TiltDrive.LightingSystem.VehicleLightsStore
+  config:
+    profileName: Vehicle Lights Base
+    turnSignalFrequencyHz: 1.5
+    autoBrakeLights: 1
+    brakeLightInputThreshold: 0.05
+    autoReverseLights: 1
+    highBeamsRequireLowBeams: 1
+    highBeamsTurnOffWithLowBeams: 1
+  current:
+    leftTurnSignalRequested: 0
+    rightTurnSignalRequested: 0
+    leftTurnSignalOn: 0
+    rightTurnSignalOn: 0
+    hazardLightsOn: 0
+    blinkPhaseOn: 0
+    lowBeamsOn: 0
+    highBeamsOn: 0
+    fogLightsOn: 0
+    brakeLightsOn: 0
+    reverseLightsOn: 0
+    otherLightsOn: 0
+    electricalPowerAvailable: 1
+    brightnessFactor: 1
+    lightingSystemHealthPercent: 100
+    leftTurnSignalFunctional: 1
+    rightTurnSignalFunctional: 1
+    lowBeamsFunctional: 1
+    highBeamsFunctional: 1
+    fogLightsFunctional: 1
+    brakeLightsFunctional: 1
+    reverseLightsFunctional: 1
+    otherLightsFunctional: 1
+    simulationTick: 0
+    lastUpdateTime: 0
 --- !u!1 &1411583917
 GameObject:
   m_ObjectHideFlags: 0
@@ -2067,12 +2428,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1505181472}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1966908632}
+  m_Father: {fileID: 133185864}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1505181474
 MonoBehaviour:
@@ -2089,12 +2450,39 @@ MonoBehaviour:
   inputStore: {fileID: 457277236}
   engineStore: {fileID: 258935270}
   transmissionStore: {fileID: 1505181476}
+  vehicleOutputStore: {fileID: 344297737}
   runSimulation: 1
   autoFindReferences: 1
   shiftingAllowed: 1
   useDirectGearSelection: 1
   bufferShiftRequests: 1
   shiftRequestBufferSeconds: 0.75
+  damagePenaltyConfig:
+    overRevSeverityRPMWindowFactor: 0.75
+    downshiftEngineDamageMinPercent: 1.5
+    downshiftEngineDamageMaxPercent: 18
+    downshiftTransmissionDamageMinPercent: 1
+    downshiftTransmissionDamageMaxPercent: 10
+    skippedGearDamageMultiplier: 0.35
+    fullSeverityDamageMultiplier: 1.5
+    reverseMisuseMinSpeedMS: 1
+    reverseWhileMovingEngineDamagePercent: 100
+    reverseWhileMovingTransmissionDamagePercent: 100
+    highGearEngineStrainEnabled: 1
+    highGearStrainMinGear: 3
+    highGearStrainThrottleThreshold: 0.65
+    highGearStrainRPMThreshold: 2200
+    highGearStrainCriticalRPM: 1500
+    highGearStrainMinSpeedMS: 3
+    highGearStrainMinClutchEngagement: 0.65
+    highGearStrainLogIntervalSeconds: 0.75
+    highGearLaunchStrainEnabled: 1
+    highGearLaunchStrainMinGear: 3
+    highGearLaunchStrainMaxSpeedMS: 2
+    highGearLaunchStrainThrottleThreshold: 0.2
+    highGearLaunchStrainMinClutchEngagement: 0.18
+    maxSingleEventEngineDamagePercent: 100
+    maxSingleEventTransmissionDamagePercent: 100
   simulationTick: 0
   logShiftDiagnostics: 1
 --- !u!114 &1505181475
@@ -2140,7 +2528,7 @@ MonoBehaviour:
     forwardGearCount: 6
     hasNeutral: 1
     hasReverse: 1
-    finalDriveRatio: 7.5
+    finalDriveRatio: 14.5
     transmissionEfficiency: 0.9
     reverseGearRatio: 3.2
     forwardGearRatios:
@@ -2154,8 +2542,8 @@ MonoBehaviour:
     requiresClutch: 1
     allowDirectGearSelection: 1
     automaticEngageFirstFromNeutral: 1
-    automaticUpshiftRPM: 5200
-    automaticDownshiftRPM: 1800
+    automaticUpshiftRPM: 9500
+    automaticDownshiftRPM: 3000
   current:
     transmissionType: 1
     currentGear: 1
@@ -2168,6 +2556,8 @@ MonoBehaviour:
     currentGearRatio: 0
     finalDriveRatio: 0
     totalDriveRatio: 0
+    componentHealthPercent: 100
+    accumulatedDamagePercent: 0
     inputTorqueNm: 0
     inputRPM: 0
     outputTorqueNm: 0
@@ -2178,6 +2568,13 @@ MonoBehaviour:
     isReverse: 0
     shiftAllowed: 1
     hasTransmissionWarning: 0
+    hasMisuseWarning: 0
+    lastMisuseCode: 
+    lastMisuseMessage: 
+    lastMisuseSeverity: 0
+    lastRequiredEngineRPM: 0
+    lastMisuseEngineRPM: 0
+    lastMisuseThrottleInput: 0
     simulationTick: 0
     lastUpdateTime: 0
 --- !u!1 &1638709813
@@ -2440,7 +2837,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1966908632}
   m_Layer: 0
-  m_Name: Test
+  m_Name: System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2459,10 +2856,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 457277235}
-  - {fileID: 258935268}
-  - {fileID: 1505181473}
-  - {fileID: 344297735}
+  - {fileID: 133185864}
+  - {fileID: 447143954}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2010749924
@@ -2555,6 +2950,140 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2010749924}
   m_Mesh: {fileID: 5188344231145885829, guid: f8126ef0c4f8442fa80ec3885c5f8270, type: 3}
+--- !u!1 &2021287519
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2021287520}
+  - component: {fileID: 2021287523}
+  - component: {fileID: 2021287522}
+  - component: {fileID: 2021287521}
+  m_Layer: 0
+  m_Name: ElectricalSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2021287520
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2021287519}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 133185864}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2021287521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2021287519}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8222aeac441b424ab1d2e04e23aaa2d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TiltDrive.DebugSystem.VehicleElectricalDebugView
+  store: {fileID: 0}
+  logStateChanges: 1
+  logConfigChanges: 0
+  logWarnings: 1
+--- !u!114 &2021287522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2021287519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 997471d3776b40f3b22370084f2f7899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TiltDrive.ElectricalSystem.VehicleElectricalSimulationRunner
+  inputStore: {fileID: 457277236}
+  engineStore: {fileID: 258935270}
+  lightsStore: {fileID: 1407332706}
+  electricalStore: {fileID: 2021287523}
+  runSimulation: 1
+  autoFindReferences: 1
+  simulationTick: 0
+--- !u!114 &2021287523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2021287519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d3aa32882aa444caf5253c1f55edcae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TiltDrive.ElectricalSystem.VehicleElectricalStore
+  config:
+    profileName: Vehicle Electrical Base
+    batteryCapacityAh: 7
+    initialChargePercent: 100
+    nominalBatteryVoltage: 12.6
+    fullChargeVoltage: 12.8
+    lowChargeVoltage: 11.8
+    criticalVoltage: 10.5
+    noPowerVoltage: 9.5
+    chargeSimulationScale: 12
+    voltageDropPerAmp: 0.012
+    starterVoltageSagPer100A: 1.8
+    minimumIgnitionVoltage: 11.2
+    minimumIgnitionChargePercent: 8
+    starterCurrentAmps: 95
+    alternatorVoltage: 14.2
+    alternatorMaxChargeAmps: 35
+    alternatorActiveMinRPM: 900
+    alternatorFullChargeRPM: 3500
+    engineElectronicsAmps: 2.5
+    ignitionStandbyAmps: 0.25
+    lowBeamsAmps: 4
+    highBeamsAmps: 5
+    fogLightsAmps: 3
+    brakeLightsAmps: 1.5
+    reverseLightsAmps: 1.2
+    singleTurnSignalAmps: 0.8
+    otherLightsAmps: 1
+    minimumLightsVoltage: 10.2
+    fullBrightnessVoltage: 12
+  current:
+    batteryChargeAh: 0
+    batteryChargePercent: 100
+    batteryVoltage: 12.6
+    systemVoltage: 12.6
+    voltageSag: 0
+    loadCurrentAmps: 0
+    alternatorChargeAmps: 0
+    netCurrentAmps: 0
+    alternatorActive: 0
+    starterActive: 0
+    starterHoldSeconds: 0
+    electricalAvailable: 1
+    ignitionAvailable: 1
+    lightsPowerAvailable: 1
+    lightsBrightnessFactor: 1
+    hasElectricalWarning: 0
+    lowVoltageWarning: 0
+    criticalVoltageWarning: 0
+    lastWarningCode: 
+    lastWarningMessage: 
+    simulationTick: 0
+    lastUpdateTime: 0
 --- !u!1 &2075667591
 GameObject:
   m_ObjectHideFlags: 0
