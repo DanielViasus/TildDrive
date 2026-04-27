@@ -1,0 +1,306 @@
+# TILTDRIVE - ESTRUCTURA DE CARPETAS Y ARQUITECTURA BASE
+
+## OBJETIVO
+
+Definir una estructura modular y escalable para el desarrollo del sistema dinámico de simulación de motor en el proyecto TiltDrive.
+
+Esta organización permite separar responsabilidades y facilitar el crecimiento del proyecto sin generar acoplamientos innecesarios.
+
+---
+
+## ESTRUCTURA GENERAL
+
+Assets/
+└── _TiltDrive/
+├── Scripts/
+│   ├── Core/
+│   ├── Input/
+│   ├── State/
+│   ├── Engine/
+│   ├── Transmission/
+│   ├── Vehicle/
+│   ├── Simulation/
+│   ├── Config/
+│   ├── Debug/
+│   └── UI/
+│
+├── ScriptableObjects/
+│   ├── Engine/
+│   ├── Transmission/
+│   ├── Vehicle/
+│   └── Input/
+│
+├── Prefabs/
+│   ├── Systems/
+│   ├── Vehicle/
+│   └── UI/
+│
+├── Scenes/
+└── Gizmos/
+
+---
+
+## DESCRIPCIÓN POR MÓDULO
+
+1. CORE
+
+---
+
+Responsabilidad:
+Inicialización del sistema y conexión de todos los módulos.
+
+Contiene:
+
+* Bootstraps
+* Inicializadores globales
+* Controladores principales del runtime
+
+Ejemplos:
+
+* GameBootstrap
+* SimulationInstaller
+
+2. INPUT
+
+---
+
+Responsabilidad:
+Capturar, normalizar y distribuir la entrada del usuario.
+
+NO debe contener lógica de simulación.
+
+Contiene:
+
+* Lectura de InputActions
+* Adaptadores de dispositivos (Wheel / Gamepad)
+* Store de input
+* Estado de entrada
+
+Ejemplos:
+
+* TiltDriveInputReader
+* TiltDriveInputStore
+* TiltDriveInputState
+
+3. STATE
+
+---
+
+Responsabilidad:
+Almacenar el estado actual de la simulación.
+
+NO ejecuta lógica, solo mantiene datos.
+
+Estructura recomendada:
+
+TiltDriveState
+├── InputState
+├── EngineState
+├── TransmissionState
+├── VehicleState
+└── TelemetryState
+
+Ventajas:
+
+* Separación clara por dominio
+* Fácil debugging
+* Escalabilidad
+
+4. ENGINE
+
+---
+
+Responsabilidad:
+Simulación del motor.
+
+Contiene:
+
+* RPM
+* Torque
+* Encendido / apagado
+* Ralentí
+* Respuesta al acelerador
+
+Ejemplos:
+
+* EngineSimulator
+* EngineRpmCalculator
+* EngineIdleController
+
+5. TRANSMISSION
+
+---
+
+Responsabilidad:
+Gestión de la caja de cambios y el embrague.
+
+Contiene:
+
+* Marcha actual
+* Neutro
+* Reversa
+* Cambios secuenciales
+* Cambios directos
+* Relación de transmisión
+
+Ejemplos:
+
+* GearboxController
+* ClutchController
+* GearShiftResolver
+
+6. VEHICLE
+
+---
+
+Responsabilidad:
+Comportamiento del vehículo como entidad física.
+
+Contiene:
+
+* Velocidad final
+* Movimiento
+* Aplicación de fuerza
+* Interacción con ruedas o salida física
+
+Ejemplos:
+
+* VehicleController
+* VehicleSpeedModel
+
+7. SIMULATION
+
+---
+
+Responsabilidad:
+Coordinar la interacción entre módulos.
+
+Flujo principal:
+
+Input → Engine → Transmission → Vehicle
+
+Ejemplos:
+
+* PowertrainSimulation
+* SimulationTick
+* DrivetrainCoordinator
+
+8. CONFIG
+
+---
+
+Responsabilidad:
+Definiciones globales y estructuras auxiliares.
+
+Contiene:
+
+* Enums
+* Constantes
+* Configuraciones base
+
+Ejemplos:
+
+* GearType
+* TransmissionMode
+* InputSourceType
+
+9. DEBUG
+
+---
+
+Responsabilidad:
+Herramientas de inspección y pruebas.
+
+Contiene:
+
+* Logs
+* Visualizadores
+* Debug UI
+
+Ejemplos:
+
+* TiltDriveInputDebugView
+* EngineDebugPanel
+
+10. UI
+
+---
+
+Responsabilidad:
+Visualización para el usuario.
+
+Contiene:
+
+* Velocímetro
+* Tacómetro (RPM)
+* Indicador de marcha
+* Luces del vehículo
+
+---
+
+## FLUJO GENERAL DEL SISTEMA
+
+1. INPUT captura datos del usuario
+2. INPUT actualiza InputState
+3. STATE centraliza todos los estados
+4. ENGINE procesa RPM y torque
+5. TRANSMISSION define la marcha y transmisión
+6. VEHICLE calcula velocidad y movimiento
+7. SIMULATION coordina todo el flujo
+8. UI muestra el resultado
+9. DEBUG permite validar el comportamiento
+
+---
+
+## PRINCIPIOS DE DISEÑO
+
+* Separación de responsabilidades
+* Bajo acoplamiento
+* Alta cohesión
+* Escalabilidad modular
+* Debugging sencillo
+* Reutilización de componentes
+
+---
+
+## FASES DE IMPLEMENTACIÓN
+
+FASE 1:
+
+* Input funcionando (COMPLETADO)
+
+FASE 2:
+
+* Definición de State
+
+FASE 3:
+
+* Sistema de transmisión base
+
+FASE 4:
+
+* Simulación de motor
+
+FASE 5:
+
+* Integración completa del sistema
+
+FASE 6:
+
+* Visualización y UI
+
+---
+
+## NOTA FINAL
+
+Esta estructura está diseñada para soportar:
+
+* Simulación realista
+* Integración con hardware (RC, Arduino)
+* Expansión a VR
+* Multiplayer futuro
+* Telemetría avanzada
+
+---
+
+## FIN DEL DOCUMENTO

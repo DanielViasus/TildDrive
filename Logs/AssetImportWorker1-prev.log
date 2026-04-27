@@ -1,0 +1,1268 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.3/staging' branch; Version is '6000.3.13f1 (8c4f11e4fb20) revision 9195281'; Using compiler version '194234433'; Build Type 'Release'
+OS: 'Windows 10  (10.0.19045) 64bit Professional' Language: 'es' Physical Memory: 16330 MB
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-Daniel Viasus" at "2026-04-22T18:33:39.0380513Z"
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+System  architecture: x64
+Process architecture: x64
+Date: 2026-04-22T18:33:39Z
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.3.13f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker1
+-projectPath
+C:/Users/Daniel Viasus/Documents/GitHub/TildDrive
+-logFile
+Logs/AssetImportWorker1.log
+-srvPort
+51243
+-licensingIpc
+LicenseClient-Daniel Viasus
+-job-worker-count
+3
+-background-job-worker-count
+8
+-gc-helper-count
+1
+-name
+AssetImport
+Successfully changed project path to: C:/Users/Daniel Viasus/Documents/GitHub/TildDrive
+C:/Users/Daniel Viasus/Documents/GitHub/TildDrive
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+Player connection [19852]  Target information:
+
+Player connection [19852]  * "[IP] 192.168.1.13 [Port] 0 [Flags] 2 [Guid] 875803433 [EditorId] 875803433 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-LG7MQ4T) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [19852] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [19852] Host joined alternative multi-casting on [225.0.0.222:34997]...
+JobSystem: Creating JobQueue using job-worker-count value 3
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Refreshing native plugins compatible for Editor in 45.41 ms, found 12 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 6000.3.13f1 (8c4f11e4fb20)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.3.13f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/Daniel Viasus/Documents/GitHub/TildDrive/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce GTX 1660 (ID=0x2184)
+    Vendor:   NVIDIA
+    VRAM:     5966 MB
+    Driver:   32.0.15.6094
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.3.13f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.3.13f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.3.13f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56240
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.13f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.13f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+[Licensing::Module] Licensing is not yet initialized.
+[Licensing::Client] Error: HandshakeResponse reported an error:
+	ResponseCode: 505
+	ResponseStatus: Unsupported protocol version '1.18.1'.
+[Licensing::Module] Error: Failed to handshake to channel: "LicenseClient-Daniel Viasus"
+[Licensing::IpcConnector] LicenseClient-Daniel Viasus channel disconnected successfully.
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-Daniel Viasus-6000.3.13" at "2026-04-22T18:33:40.5498034Z"
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.1+9fbee8e
+  Session Id:              2c96d2d0634e48d89e72981fcc3c9aa9
+  Correlation Id:          68c1aea6f7bba810e48175640ce09da1
+  External correlation Id: 6052036852846348638
+  Machine Id:              uAJDOwCc/1Ep/KgA/rhcVTuJtH8=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-Daniel Viasus-6000.3.13" (connect: 0.00s, validation: 0.25s, handshake: 1.17s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-Daniel Viasus-6000.3.13-notifications" at "2026-04-22T18:33:41.9723766Z"
+[Licensing::Module] Licensing Background thread has ended after 2.93s
+[Licensing::Module] Licensing is initialized (took 1.66s).
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 4673944332589-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.13f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
+Registered in 1.674552 seconds.
+- Loaded All Assemblies, in  2.435 seconds
+Native extension for Android target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Package Manager log level set to [2]
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.685 seconds
+Domain Reload Profiling: 3116ms
+	BeginReloadAssembly (261ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (1ms)
+	RebuildCommonClasses (82ms)
+	RebuildNativeTypeToScriptingClass (25ms)
+	initialDomainReloadingComplete (1757ms)
+	LoadAllAssembliesAndSetupDomain (305ms)
+		LoadAssemblies (257ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (297ms)
+			TypeCache.Refresh (295ms)
+				TypeCache.ScanAssembly (277ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (1ms)
+	FinalizeReload (685ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (605ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (101ms)
+			SetLoadedEditorAssemblies (7ms)
+			BeforeProcessingInitializeOnLoad (149ms)
+			ProcessInitializeOnLoadAttributes (237ms)
+			ProcessInitializeOnLoadMethodAttributes (111ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+========================================================================
+Worker process is ready to serve import requests
+Import Worker Mode flag is 0x00
+Begin MonoManager ReloadAssembly
+[Licensing::Client] Successfully resolved entitlement details
+- Loaded All Assemblies, in  1.409 seconds
+Refreshing native plugins compatible for Editor in 19.43 ms, found 12 plugins.
+Native extension for Android target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Refreshing native plugins compatible for Editor in 15.47 ms, found 12 plugins.
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
+Mono: successfully reloaded assembly
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+- Finished resetting the current domain, in  1.895 seconds
+Domain Reload Profiling: 3294ms
+	BeginReloadAssembly (317ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (13ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (50ms)
+	RebuildCommonClasses (68ms)
+	RebuildNativeTypeToScriptingClass (17ms)
+	initialDomainReloadingComplete (67ms)
+	LoadAllAssembliesAndSetupDomain (929ms)
+		LoadAssemblies (657ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (443ms)
+			TypeCache.Refresh (308ms)
+				TypeCache.ScanAssembly (283ms)
+			BuildScriptInfoCaches (109ms)
+			ResolveRequiredComponents (20ms)
+	FinalizeReload (1895ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (1653ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (14ms)
+			SetLoadedEditorAssemblies (7ms)
+			BeforeProcessingInitializeOnLoad (249ms)
+			ProcessInitializeOnLoadAttributes (1192ms)
+			ProcessInitializeOnLoadMethodAttributes (179ms)
+			AfterProcessingInitializeOnLoad (12ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (8ms)
+WARNING: Shader Unsupported: 'Hidden/Simulation/URP/Synthetic' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Hidden/Simulation/URP/Synthetic' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Hidden/Simulation/Synthetic Lit' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Hidden/Simulation/Synthetic Lit' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/URP/Room X-Ray' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/URP/Room X-Ray' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/Standard Lit' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/Standard Lit' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/URP/Lit' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/URP/Lit' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/Room X-Ray' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/Room X-Ray' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.02 seconds
+Refreshing native plugins compatible for Editor in 28.44 ms, found 12 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6236 unused Assets / (4.5 MB). Loaded Objects now: 6900.
+Memory consumption went from 196.9 MB to 192.4 MB.
+Total: 35.811000 ms (FindLiveObjects: 1.293500 ms CreateObjectMapping: 2.009500 ms MarkObjects: 26.655100 ms  DeleteObjects: 5.850100 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 22555.617853 seconds.
+  path: Assets/_TiltDrive/Scripts/State/Input/InputState.cs
+  artifactKey: Guid(14ad876ed593b924ca1cf0b4ee811ce1) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/_TiltDrive/Scripts/State/Input/InputState.cs using Guid(14ad876ed593b924ca1cf0b4ee811ce1) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '82e2afffeb3b1b9162f297eedf16609f') in 0.1309707 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000028 seconds.
+  path: Assets/BK2/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF.asset
+  artifactKey: Guid(8f586378b4e144a9851e7b34d9b748ee) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF.asset using Guid(8f586378b4e144a9851e7b34d9b748ee) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '5e060579bbe3229339d288449a29525b') in 0.1398794 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 8
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/BK2/_TiltDrive/Models/LandCruiser/Land Cruiser.fbx
+  artifactKey: Guid(6eba0adb2b40e904b9ee590329cf875e) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/Models/LandCruiser/Land Cruiser.fbx using Guid(6eba0adb2b40e904b9ee590329cf875e) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'fd8ebdb91b7a52bf1446db01877b83fc') in 0.2022552 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 43
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000037 seconds.
+  path: Assets/BK2/TextMesh Pro/Fonts/LiberationSans - OFL.txt
+  artifactKey: Guid(6e59c59b81ab47f9b6ec5781fa725d2c) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/TextMesh Pro/Fonts/LiberationSans - OFL.txt using Guid(6e59c59b81ab47f9b6ec5781fa725d2c) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '319097fd22ad2d08fe7f26a7fa6b212d') in 0.0283069 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/BK2/XR/Loaders/OpenXRLoader.asset
+  artifactKey: Guid(7cc3e510f7eae134c85b08707ba24839) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/XR/Loaders/OpenXRLoader.asset using Guid(7cc3e510f7eae134c85b08707ba24839) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '34a8d8fc06e830f0a1f971e52e631a9b') in 0.0135325 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/BK2/TextMesh Pro/Sprites/EmojiOne Attribution.txt
+  artifactKey: Guid(381dcb09d5029d14897e55f98031fca5) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/TextMesh Pro/Sprites/EmojiOne Attribution.txt using Guid(381dcb09d5029d14897e55f98031fca5) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'd31d07e29eb4aac85c33b33f8c78e62c') in 0.0311305 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Audio/TiltDriveMixer.mixer
+  artifactKey: Guid(6cbe319096d841c4787ef5b0b1f2207e) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Audio/TiltDriveMixer.mixer using Guid(6cbe319096d841c4787ef5b0b1f2207e) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter)Refreshing native plugins compatible for Editor in 17.30 ms, found 12 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+ -> (artifact id: 'd2b1bd9542161baa5fdd8aca62733406') in 0.0647457 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 10
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000036 seconds.
+  path: Assets/BK2/XR/UserSimulationSettings/Resources/XRSimulationPreferences.asset
+  artifactKey: Guid(00d224f95c279f246bc0938a015c7923) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/XR/UserSimulationSettings/Resources/XRSimulationPreferences.asset using Guid(00d224f95c279f246bc0938a015c7923) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '9d3c4d39b399636726f0cf70a8a20b7d') in 0.2840455 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 67
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000030 seconds.
+  path: Assets/BK2/XR/Settings/XRSimulationSettings.asset
+  artifactKey: Guid(cac5051a9fac90c49bfbd873f7dceb1f) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/XR/Settings/XRSimulationSettings.asset using Guid(cac5051a9fac90c49bfbd873f7dceb1f) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '926fb89597360d406cb4a8672ce3bbac') in 0.0215179 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000036 seconds.
+  path: Assets/BK2/TextMesh Pro/Shaders/TMP_SDF-Surface-Mobile.shader
+  artifactKey: Guid(85187c2149c549c5b33f0cdb02836b17) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/TextMesh Pro/Shaders/TMP_SDF-Surface-Mobile.shader using Guid(85187c2149c549c5b33f0cdb02836b17) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'a7ff6edd77c63300f0e82807696d2398') in 0.0210369 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/BK2/TextMesh Pro/Shaders/TMPro_Properties.cginc
+  artifactKey: Guid(3997e2241185407d80309a82f9148466) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/TextMesh Pro/Shaders/TMPro_Properties.cginc using Guid(3997e2241185407d80309a82f9148466) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '1bd22be8efc4a55ce05c3224a1bd563f') in 0.0233042 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/_TiltDrive/Scenes/TestDrive.unity
+  artifactKey: Guid(1747795474729c54db0638c24de14290) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/_TiltDrive/Scenes/TestDrive.unity using Guid(1747795474729c54db0638c24de14290) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '393e0be559bd0f3606663e836834869d') in 0.0194782 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000034 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Materials/credenciales Edge.png
+  artifactKey: Guid(995d5d35ebc291142a9b15095628cd80) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Materials/credenciales Edge.png using Guid(995d5d35ebc291142a9b15095628cd80) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '9d6b367a51e50ffe3240be932da41542') in 0.0829521 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000028 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Scripts/Session/GestorSesion.cs
+  artifactKey: Guid(dfe3167c3a0083e4abec8b06a12ec370) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Scripts/Session/GestorSesion.cs using Guid(dfe3167c3a0083e4abec8b06a12ec370) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '940c2785da8595fa3a226c881f3155a4') in 0.0179095 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000037 seconds.
+  path: Assets/BK2/_TiltDrive/Features/Auth/Infrastructure/MockUserRepository.cs
+  artifactKey: Guid(05670e5e1c494db4ab4cedbb406cb06a) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/Features/Auth/Infrastructure/MockUserRepository.cs using Guid(05670e5e1c494db4ab4cedbb406cb06a) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'ba092697d3a05eb8f7e03e452a9a3e77') in 0.0187781 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000032 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Scripts/Video/IriunVideoToMaterial.cs
+  artifactKey: Guid(e7c59bdac72f2d9488212b5caf4b97fb) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Scripts/Video/IriunVideoToMaterial.cs using Guid(e7c59bdac72f2d9488212b5caf4b97fb) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '9ac0ab06b261d400d83200c804c90ff7') in 0.0194623 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000036 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/ORBITRON/Orbitron-SemiBold.ttf
+  artifactKey: Guid(76faf234f835e904d921c9a4c2adb3f2) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/ORBITRON/Orbitron-SemiBold.ttf using Guid(76faf234f835e904d921c9a4c2adb3f2) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'e0f40179e2925ce22286dabab7e51021') in 0.0278898 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000034 seconds.
+  path: Assets/_TiltDrive/Scripts/Input/Core/TiltDriveInputStore.cs
+  artifactKey: Guid(e303100fc927a18428e195b5e26ac3c0) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/_TiltDrive/Scripts/Input/Core/TiltDriveInputStore.cs using Guid(e303100fc927a18428e195b5e26ac3c0) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '003491a348213b6a0e85be09fdb53fe3') in 0.0191905 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000043 seconds.
+  path: Assets/BK2/_TiltDrive/Features/Auth/Presentation/SessionGatekeeper.cs
+  artifactKey: Guid(7bfbabcf90befd6418883270edb9374f) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/Features/Auth/Presentation/SessionGatekeeper.cs using Guid(7bfbabcf90befd6418883270edb9374f) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '4f4f796ccdc5631e40aaa33207198916') in 0.0178563 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000220 seconds.
+  path: Assets/BK2/TextMesh Pro/Sprites/EmojiOne.json
+  artifactKey: Guid(8f05276190cf498a8153f6cbe761d4e6) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/TextMesh Pro/Sprites/EmojiOne.json using Guid(8f05276190cf498a8153f6cbe761d4e6) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'f52b97c5451ee22c32a712c544d19aaf') in 0.0276199 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/BK2/TextMesh Pro/Shaders/TMP_Bitmap.shader
+  artifactKey: Guid(128e987d567d4e2c824d754223b3f3b0) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/TextMesh Pro/Shaders/TMP_Bitmap.shader using Guid(128e987d567d4e2c824d754223b3f3b0) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'dce240cab40654220a9091a4de5ef51d') in 0.0163226 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/CompositionLayers/UserSettings/CompositionLayersPreferences.asset
+  artifactKey: Guid(bc243331715252b4dabed9181ca701cb) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/CompositionLayers/UserSettings/CompositionLayersPreferences.asset using Guid(bc243331715252b4dabed9181ca701cb) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'e23523d629189acbaa89d6515f150ca0') in 0.0333215 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/BK2/TextMesh Pro/Resources/LineBreaking Following Characters.txt
+  artifactKey: Guid(fade42e8bc714b018fac513c043d323b) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/TextMesh Pro/Resources/LineBreaking Following Characters.txt using Guid(fade42e8bc714b018fac513c043d323b) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '9a002e19be65d1b4d374ed9e8d06a25a') in 0.0158907 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000073 seconds.
+  path: Assets/BK2/XR/UserSimulationSettings/SimulationEnvironmentAssetsManager.asset
+  artifactKey: Guid(4191a25f37866f74da46232b007d33b6) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/XR/UserSimulationSettings/SimulationEnvironmentAssetsManager.asset using Guid(4191a25f37866f74da46232b007d33b6) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '66adee9bfd63f9421cb1edc7cf477d5e') in 0.0192236 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/BK2/TextMesh Pro/Resources/Sprite Assets/EmojiOne.asset
+  artifactKey: Guid(c41005c129ba4d66911b75229fd70b45) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/TextMesh Pro/Resources/Sprite Assets/EmojiOne.asset using Guid(c41005c129ba4d66911b75229fd70b45) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'd4ad76497bfa6ff08c2690a220f3286e') in 0.0245406 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/BK2/_TiltDrive/Models/LandCruiser/Land Cruiser.obj
+  artifactKey: Guid(2b51560c0b4f6f6418ed000273553eee) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/Models/LandCruiser/Land Cruiser.obj using Guid(2b51560c0b4f6f6418ed000273553eee) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '4f13fd61b68ec219e41236ba32da3f17') in 0.0243322 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 10
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000039 seconds.
+  path: Assets/BK2/XRI/Settings/XRInteractionEditorSettings.asset
+  artifactKey: Guid(718a8e882284d604dba8373d31290d22) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/XRI/Settings/XRInteractionEditorSettings.asset using Guid(718a8e882284d604dba8373d31290d22) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '1139a135791d51c35e54b2949b4eb7fe') in 0.0235609 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000039 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Scenes/Boot_Login.unity
+  artifactKey: Guid(a7679be49cbe1e94ea4197a1ffb99861) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Scenes/Boot_Login.unity using Guid(a7679be49cbe1e94ea4197a1ffb99861) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'ac1da11a672397df046cb72f1442168e') in 0.0180956 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/BK2/XR/Settings/OpenXR Package Settings.asset
+  artifactKey: Guid(4ad36be3dd4118744bce58bc1b147a63) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/XR/Settings/OpenXR Package Settings.asset using Guid(4ad36be3dd4118744bce58bc1b147a63) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '779d78c03d182cec5981f650fe13951f') in 2.1901081 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3675
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000048 seconds.
+  path: Assets/BK2/_TiltDrive/Models/LandCruiser/Textures/Wheels/Wheels_BaseColor.mat
+  artifactKey: Guid(cc9d38a7ad5e3194e8f7940f42c4ad36) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/Models/LandCruiser/Textures/Wheels/Wheels_BaseColor.mat using Guid(cc9d38a7ad5e3194e8f7940f42c4ad36) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '0a3a677e1ec41f1be35d69c7d755ea9e') in 0.0213947 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 2
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000042 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_Condensed-ExtraBold.ttf
+  artifactKey: Guid(1c08208848694024789aef9f363a9688) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_Condensed-ExtraBold.ttf using Guid(1c08208848694024789aef9f363a9688) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '97d41a8b928ae09d2b5a02f705ad1983') in 0.0239208 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_Condensed-LightItalic.ttf
+  artifactKey: Guid(7efddc7b48efabb44a5ee8c502396c5e) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_Condensed-LightItalic.ttf using Guid(7efddc7b48efabb44a5ee8c502396c5e) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'f2e4c040d25137ccc373531527d1b1b0') in 0.0189499 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_Condensed-Medium.ttf
+  artifactKey: Guid(b4dcf694b00a3f3428db7924c2c71f7f) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_Condensed-Medium.ttf using Guid(b4dcf694b00a3f3428db7924c2c71f7f) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'e3bb7027bc16dd538ecc0fb1fb88ed50') in 0.0236041 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_SemiCondensed-ExtraBoldItalic.ttf
+  artifactKey: Guid(ff9eeb2c562346141897153d1b646ecb) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_SemiCondensed-ExtraBoldItalic.ttf using Guid(ff9eeb2c562346141897153d1b646ecb) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'aea86e36bc4b166c8fd4d12a73d44204') in 0.0243072 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/UI/ICON/testigoBajas.png
+  artifactKey: Guid(e941029698264fa45aee53913a2f3132) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/UI/ICON/testigoBajas.png using Guid(e941029698264fa45aee53913a2f3132) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '8b14ed2e292ae2e5f0b3deaecc84e5a0') in 0.0323807 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Materials/Materials/MAT_IriunVideo.mat
+  artifactKey: Guid(3de4c2359629f474bb1df64ad9e87722) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Materials/Materials/MAT_IriunVideo.mat using Guid(3de4c2359629f474bb1df64ad9e87722) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '864696d506ba632bc4cdd65eeeae48b1') in 0.0179811 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_SemiCondensed-Bold.ttf
+  artifactKey: Guid(514e16ebe42cbdf4e95acc5f49297f27) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_SemiCondensed-Bold.ttf using Guid(514e16ebe42cbdf4e95acc5f49297f27) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'a51ff3e1e509f0bb2f6563e943c4f8b6') in 0.0202808 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/BK2/_TiltDrive/Models/LandCruiser/Textures/Tray/Tray_Metallic.png
+  artifactKey: Guid(795bb879473553f4bbcbdc48873077e6) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/Models/LandCruiser/Textures/Tray/Tray_Metallic.png using Guid(795bb879473553f4bbcbdc48873077e6) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '16b40ca16a24a0c792d428677cda24d9') in 0.0264024 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_Condensed-Light.ttf
+  artifactKey: Guid(802359a4ec4b1864d9cf2c3d20752e37) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_Condensed-Light.ttf using Guid(802359a4ec4b1864d9cf2c3d20752e37) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '322a008d0e9d4c6ee1fc05f7c78bd5ff') in 0.0176015 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/BK2/XR/Loaders/SimulationLoader.asset
+  artifactKey: Guid(93edf53089885f14c9d674d7af912e8a) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/XR/Loaders/SimulationLoader.asset using Guid(93edf53089885f14c9d674d7af912e8a) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'c357e56155a0ea2d40778a3a1f182e37') in 0.01814 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000038 seconds.
+  path: Assets/_TiltDrive/Input/TiltDriveControls.inputactions
+  artifactKey: Guid(2d1e564f10d935048a1c80ebbd3286a4) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/_TiltDrive/Input/TiltDriveControls.inputactions using Guid(2d1e564f10d935048a1c80ebbd3286a4) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '29a5af814e59b60f62eab570f0a4ccbc') in 0.0575088 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 34
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/BK2/_TiltDrive/Models/LandCruiser/Textures/Interior 2/Interior 2_BaseColor.mat
+  artifactKey: Guid(86d26c493df6ba24c8ef29963ffb7bd7) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/Models/LandCruiser/Textures/Interior 2/Interior 2_BaseColor.mat using Guid(86d26c493df6ba24c8ef29963ffb7bd7) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '3dc1e24807a5245bf672f061ffc6391a') in 0.0789927 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 5
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_Condensed-Bold.ttf
+  artifactKey: Guid(13e5a606c70a0ff40983dea2ca30aabb) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_Condensed-Bold.ttf using Guid(13e5a606c70a0ff40983dea2ca30aabb) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '16fffdeb81932e619fd8d34865bcad1e') in 0.0214463 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_Condensed-Regular.ttf
+  artifactKey: Guid(580730d3fa1ba97489ce5be070e5e95d) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_Condensed-Regular.ttf using Guid(580730d3fa1ba97489ce5be070e5e95d) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'c9a524dd02597166e3be8e4588c4b5a0') in 0.0201282 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000048 seconds.
+  path: Assets/BK2/_TiltDrive/Models/LandCruiser/Textures/Interior 1/Interior 1_BaseColor.mat
+  artifactKey: Guid(e61396f2fd99e6c43a7c484e0969358e) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/Models/LandCruiser/Textures/Interior 1/Interior 1_BaseColor.mat using Guid(e61396f2fd99e6c43a7c484e0969358e) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'afb816c3b94c46120bf3b66cefc8f1e8') in 0.0269541 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 4
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/BK2/_TiltDrive/Models/LandCruiser/Textures/Exterior/Exterior_Roughness.png
+  artifactKey: Guid(fa4040ed87daa1d4a87619ffb1a4c1fb) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/Models/LandCruiser/Textures/Exterior/Exterior_Roughness.png using Guid(fa4040ed87daa1d4a87619ffb1a4c1fb) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '9052fa6a5aebd3d90fa0bb415bb9efcd') in 0.0253135 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000044 seconds.
+  path: Assets/BK2/_TiltDrive/Models/LandCruiser/Textures/Chassis/Chassis_Roughness.png
+  artifactKey: Guid(a88529bf323fc424b8eabb871cf49248) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/Models/LandCruiser/Textures/Chassis/Chassis_Roughness.png using Guid(a88529bf323fc424b8eabb871cf49248) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '1d5569c9dc1f89e18ce5c7bf985dac12') in 0.0283835 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_SemiCondensed-Medium.ttf
+  artifactKey: Guid(25f873c842057a44a995c03d3fd55dac) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_SemiCondensed-Medium.ttf using Guid(25f873c842057a44a995c03d3fd55dac) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'c389cb7c420d99106212392fd1a5dd08') in 0.0219792 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_SemiCondensed-LightItalic.ttf
+  artifactKey: Guid(aee13682752b7c64291e0371a2156930) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_SemiCondensed-LightItalic.ttf using Guid(aee13682752b7c64291e0371a2156930) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '98dba13a9ad12f0e5d21eb337e36513e') in 0.0218394 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000061 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Orbitron/static/Orbitron-Regular.ttf
+  artifactKey: Guid(0bafc6e92f48bb34091fa3d51f2ba97d) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Orbitron/static/Orbitron-Regular.ttf using Guid(0bafc6e92f48bb34091fa3d51f2ba97d) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '8259ee74932c96845eaa942177374e8d') in 0.0215515 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Orbitron/static/Orbitron-Black.ttf
+  artifactKey: Guid(1eec8a2de79709d46b8da494f8d80dab) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Orbitron/static/Orbitron-Black.ttf using Guid(1eec8a2de79709d46b8da494f8d80dab) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '9a70fcd1f12b10d85a56847ce22039ec') in 0.0220465 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Scripts/State/Systems/Lights/Headlights/HeadlightsSystem.cs
+  artifactKey: Guid(d71c4af887bac3d4fbd75a68f6d678e2) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Scripts/State/Systems/Lights/Headlights/HeadlightsSystem.cs using Guid(d71c4af887bac3d4fbd75a68f6d678e2) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'e2ea4ea1600c9f78afe0817a77231f53') in 0.0164866 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000034 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_SemiCondensed-SemiBoldItalic.ttf
+  artifactKey: Guid(616b4b5ec460715499c6530bf71e02ba) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_SemiCondensed-SemiBoldItalic.ttf using Guid(616b4b5ec460715499c6530bf71e02ba) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'e6d8257aa5b481bc04d3fcdbb8858713') in 0.0253709 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000035 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_SemiCondensed-MediumItalic.ttf
+  artifactKey: Guid(6f2c6940b348b174bb480b07cc107300) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_SemiCondensed-MediumItalic.ttf using Guid(6f2c6940b348b174bb480b07cc107300) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '57ef34ed1a25f25aab42d7a32f55363d') in 0.0223152 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Orbitron/static/Orbitron-SemiBold.ttf
+  artifactKey: Guid(0360a07a37c99a845b99e39f1042ee5a) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Orbitron/static/Orbitron-SemiBold.ttf using Guid(0360a07a37c99a845b99e39f1042ee5a) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '0bb09fbd6deb59a3640d00945f06e442') in 0.0203858 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000033 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_SemiCondensed-BoldItalic.ttf
+  artifactKey: Guid(1df3297c1adeaf748bcd852e5a40e81d) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_SemiCondensed-BoldItalic.ttf using Guid(1df3297c1adeaf748bcd852e5a40e81d) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'dbe51379c900056836c6fa30b68c85dc') in 0.0227706 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000041 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Scripts/State/Systems/Powertrain/IgnitionSystem.cs
+  artifactKey: Guid(8616e3143642fd14d85c26cd4db33ac6) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Scripts/State/Systems/Powertrain/IgnitionSystem.cs using Guid(8616e3143642fd14d85c26cd4db33ac6) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '3c43b0048b90277a98f173257aceb39a') in 0.0184841 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000051 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_Condensed-Italic.ttf
+  artifactKey: Guid(2da14b877d6d5574cb9afcb2d6b4b423) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_Condensed-Italic.ttf using Guid(2da14b877d6d5574cb9afcb2d6b4b423) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '04c86d9375bc20a0214606f6f1e6ee0b') in 0.0286897 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000047 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Orbitron/Orbitron-VariableFont_wght.ttf
+  artifactKey: Guid(614519d1222c493438e2928111490168) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Orbitron/Orbitron-VariableFont_wght.ttf using Guid(614519d1222c493438e2928111490168) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'e2f2bdc82aed5dcde521ff34af4e13ff') in 0.0246153 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000038 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/UI/HUD/RPM/BASE RPM.png
+  artifactKey: Guid(b635fb336b2dd494bb5e19013956ac37) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/UI/HUD/RPM/BASE RPM.png using Guid(b635fb336b2dd494bb5e19013956ac37) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '30bd1ba2ad183aed9c0f90e472bd8bd2') in 0.0269804 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000028 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Scripts/UI/Cluster/TiltDriveIconClusterUI.cs
+  artifactKey: Guid(594ea5060bbd81349b198f8ca4aef336) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Scripts/UI/Cluster/TiltDriveIconClusterUI.cs using Guid(594ea5060bbd81349b198f8ca4aef336) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '4f5a2a031e94eabc03c21dd576d86b50') in 0.0187075 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000043 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans-SemiBoldItalic.ttf
+  artifactKey: Guid(85f31f30017fa8145bd78e6154bf6d69) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans-SemiBoldItalic.ttf using Guid(85f31f30017fa8145bd78e6154bf6d69) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '0637e077ebfa3deb400709a46db1b238') in 0.0428968 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans-Italic.ttf
+  artifactKey: Guid(971ee7d584715b44b9d525bb6e8861e0) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans-Italic.ttf using Guid(971ee7d584715b44b9d525bb6e8861e0) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'ddd8ce68c1e306f0b1b971eccc6c3a29') in 0.0211068 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Damage/DamagePenaltyConfig.asset
+  artifactKey: Guid(6158a19725ae77643aa2c2f10718130b) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Damage/DamagePenaltyConfig.asset using Guid(6158a19725ae77643aa2c2f10718130b) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'f0143e9d1a4c4c54a32818f20c9798cb') in 0.0181681 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/BK2/_TiltDrive/Models/LandCruiser/Textures/Interior 2/Interior 2_Roughness.png
+  artifactKey: Guid(70813d500a9136f4686fa00eb28f45a5) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/Models/LandCruiser/Textures/Interior 2/Interior 2_Roughness.png using Guid(70813d500a9136f4686fa00eb28f45a5) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '3ab593487b960b89a2b7bb0d93ee7497') in 0.0243046 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000048 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_SemiCondensed-ExtraBold.ttf
+  artifactKey: Guid(7c7da0c090ca87840aca60b62b61a4d8) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/static/OpenSans_SemiCondensed-ExtraBold.ttf using Guid(7c7da0c090ca87840aca60b62b61a4d8) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '70350b473e6ad1b5c4e0eeb6a3925c34') in 0.0215471 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/BK2/_TiltDrive/Models/LandCruiser/Textures/Bumper/Bumper_BaseColor.png
+  artifactKey: Guid(6e43d7fd8b90fe343b6a07c27c50aa6a) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/Models/LandCruiser/Textures/Bumper/Bumper_BaseColor.png using Guid(6e43d7fd8b90fe343b6a07c27c50aa6a) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'e2e9bf8d8eb9e67fb48d076b4d0e38c1') in 0.0259766 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/_TiltDrive/Scenes/SampleScene.unity
+  artifactKey: Guid(9fc0d4010bbf28b4594072e72b8655ab) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/_TiltDrive/Scenes/SampleScene.unity using Guid(9fc0d4010bbf28b4594072e72b8655ab) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '590f448f256f25d16a57d840e1f0d0f2') in 0.0176686 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/_TiltDrive/Configs/State/TiltDriveState.asset
+  artifactKey: Guid(dfe601fafc3d49840bf0ab9c4643757c) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/_TiltDrive/Configs/State/TiltDriveState.asset using Guid(dfe601fafc3d49840bf0ab9c4643757c) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '4b2f1b1dd2b921093959631c0acd5bcd') in 0.0253988 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/InputSystem_Actions.inputactions
+  artifactKey: Guid(a911fa2eaf4ed9e4a8c8c0172cead8a9) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/InputSystem_Actions.inputactions using Guid(a911fa2eaf4ed9e4a8c8c0172cead8a9) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'ad775e713c384289593c947f62e41c60') in 0.0368326 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 22
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000085 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Orbitron/static/Orbitron-Medium.ttf
+  artifactKey: Guid(10a4c15f9867c90489403c1324a51f5b) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Orbitron/static/Orbitron-Medium.ttf using Guid(10a4c15f9867c90489403c1324a51f5b) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '2a16a8a2e65162dcaf0c605938f76c32') in 0.0196915 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/OFL.txt
+  artifactKey: Guid(87ee6083c5c0d0046be12a10b83d9998) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Open_Sans/OFL.txt using Guid(87ee6083c5c0d0046be12a10b83d9998) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '5bf7bd2503f1da0d83ab132517b5dea8') in 0.0281022 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/UI/ICON/testigoMotor.png
+  artifactKey: Guid(2ce16346f5ccb4441a9ff27f9dcd4581) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/UI/ICON/testigoMotor.png using Guid(2ce16346f5ccb4441a9ff27f9dcd4581) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'dd6d99302f5e03f09ea687b7f0935f51') in 0.0266339 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Scripts/Audio/Motor/EngineHybridLoops.cs
+  artifactKey: Guid(161cd39b3e74ccd45a90fd0a0a9cccfa) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Scripts/Audio/Motor/EngineHybridLoops.cs using Guid(161cd39b3e74ccd45a90fd0a0a9cccfa) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'fad1234c5fa4f8c1b6c8f57b5bd55c55') in 0.0164571 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000035 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Orbitron/OFL.txt
+  artifactKey: Guid(0fab7e4aadd94bc48bf265306f472c80) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/OPEN SANS/Orbitron/OFL.txt using Guid(0fab7e4aadd94bc48bf265306f472c80) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'd066c2c4fbf4bb337fe02c2bd4796bd9') in 0.026747 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/BK2/TextMesh Pro/Resources/LineBreaking Leading Characters.txt
+  artifactKey: Guid(d82c1b31c7e74239bff1220585707d2b) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/TextMesh Pro/Resources/LineBreaking Leading Characters.txt using Guid(d82c1b31c7e74239bff1220585707d2b) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'a15bbf9d561c8ea7f754d31835f9f269') in 0.0170608 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Configs/VehicleConfig.asset
+  artifactKey: Guid(dd15f19f44aea6741bba8e93679dc828) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Configs/VehicleConfig.asset using Guid(dd15f19f44aea6741bba8e93679dc828) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'abae778e978d2a06aed05d5883224e05') in 0.0261771 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000047 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/UI/ICON/testigoDireccion.png
+  artifactKey: Guid(b1a0178bc2cce994ca074bfe9183f0d6) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/UI/ICON/testigoDireccion.png using Guid(b1a0178bc2cce994ca074bfe9183f0d6) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '0531e839a3787fed7fa2918a2168db02') in 0.0267808 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000030 seconds.
+  path: Assets/BK2/_TiltDrive/Models/LandCruiser/Textures/Chassis/Chassis_Normal.png
+  artifactKey: Guid(e6d73623f9440b846ba996c6f6ef8295) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/Models/LandCruiser/Textures/Chassis/Chassis_Normal.png using Guid(e6d73623f9440b846ba996c6f6ef8295) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '54c85d9ef89442a0d594ea16c6a16ab3') in 0.024465 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Models/Screens/planoParaTiltDrive.fbx
+  artifactKey: Guid(7a881377cdf67534d8596c17d2abfd11) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Models/Screens/planoParaTiltDrive.fbx using Guid(7a881377cdf67534d8596c17d2abfd11) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '6feefd6c21e3cfbf7cf07eaebbcbcbbf') in 0.0544184 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 7
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/BK2/_TiltDrive/Models/LandCruiser/Textures.rar
+  artifactKey: Guid(93a7bd2f1e84cfd4d9479232f1871e29) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/Models/LandCruiser/Textures.rar using Guid(93a7bd2f1e84cfd4d9479232f1871e29) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'a8e5791bbcffe631ef6952a8fef793a3') in 0.0192361 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/_TiltDrive/Scripts/Debug/Input/TiltDriveInputDebugView.cs
+  artifactKey: Guid(d613dd5b49df1f540b49cdb24ac3a305) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/_TiltDrive/Scripts/Debug/Input/TiltDriveInputDebugView.cs using Guid(d613dd5b49df1f540b49cdb24ac3a305) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '609b0ffc841d466600c06faf59aeb44d') in 0.0153733 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Scripts/UI/RPM/TiltDriveGearTextUI.cs
+  artifactKey: Guid(c01578fac103ac44daf2a18ed6d463de) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Scripts/UI/RPM/TiltDriveGearTextUI.cs using Guid(c01578fac103ac44daf2a18ed6d463de) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '372fdf3d812999cccb31a9f4015301e5') in 0.0155135 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000061 seconds.
+  path: Assets/BK2/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Drop Shadow.mat
+  artifactKey: Guid(e73a58f6e2794ae7b1b7e50b7fb811b0) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Drop Shadow.mat using Guid(e73a58f6e2794ae7b1b7e50b7fb811b0) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'f76738e435fb3ffcdf00a7e31d2ec53e') in 0.0316472 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 2
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/UI/HUD/ESTADO/BASE ESTADO.png
+  artifactKey: Guid(e161793b81104754eac470d4611911ca) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/UI/HUD/ESTADO/BASE ESTADO.png using Guid(e161793b81104754eac470d4611911ca) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: 'c8623138efb98400ae4ea1ed3156300a') in 0.1022119 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000039 seconds.
+  path: Assets/BK2/_TiltDrive/BK/Art/FONT/ORBITRON/Orbitron-Regular SDF.asset
+  artifactKey: Guid(10363d0d9d869754f863fdf4f57c6b4a) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e)
+Start importing Assets/BK2/_TiltDrive/BK/Art/FONT/ORBITRON/Orbitron-Regular SDF.asset using Guid(10363d0d9d869754f863fdf4f57c6b4a) Importer(2089858483,d624ce77472d68a35037170ec1d2d27e) (ScriptedImporter) -> (artifact id: '5e635957e8130f33f1539bf2ba24ca3f') in 0.0370058 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+ADTM: Control thread waiting for realtime thread timed out, have to lock...
+- Loaded All Assemblies, in  2.674 seconds
+Refreshing native plugins compatible for Editor in 14.12 ms, found 12 plugins.
+Native extension for Android target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
+Mono: successfully reloaded assembly
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+- Finished resetting the current domain, in  1.966 seconds
+Domain Reload Profiling: 4633ms
+	BeginReloadAssembly (1519ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (16ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (1171ms)
+	RebuildCommonClasses (113ms)
+	RebuildNativeTypeToScriptingClass (31ms)
+	initialDomainReloadingComplete (55ms)
+	LoadAllAssembliesAndSetupDomain (949ms)
+		LoadAssemblies (830ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (351ms)
+			TypeCache.Refresh (12ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (315ms)
+			ResolveRequiredComponents (18ms)
+	FinalizeReload (1967ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (1699ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (14ms)
+			SetLoadedEditorAssemblies (10ms)
+			BeforeProcessingInitializeOnLoad (269ms)
+			ProcessInitializeOnLoadAttributes (1256ms)
+			ProcessInitializeOnLoadMethodAttributes (137ms)
+			AfterProcessingInitializeOnLoad (13ms)
+			EditorAssembliesLoaded (1ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (12ms)
+WARNING: Shader Unsupported: 'Hidden/Simulation/URP/Synthetic' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Hidden/Simulation/URP/Synthetic' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Hidden/Simulation/Synthetic Lit' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Hidden/Simulation/Synthetic Lit' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/URP/Room X-Ray' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/URP/Room X-Ray' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/Standard Lit' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/Standard Lit' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/URP/Lit' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/URP/Lit' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/Room X-Ray' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/Room X-Ray' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+Refreshing native plugins compatible for Editor in 19.94 ms, found 12 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6236 unused Assets / (3.3 MB). Loaded Objects now: 6905.
+Memory consumption went from 197.5 MB to 194.2 MB.
+Total: 36.076100 ms (FindLiveObjects: 2.036700 ms CreateObjectMapping: 3.456600 ms MarkObjects: 25.192800 ms  DeleteObjects: 5.387500 ms)
+
+Prepare: number of updated asset objects reloaded= 68
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+[Licensing::Client] Successfully resolved entitlement details
+ADTM: Control thread waiting for realtime thread timed out, have to lock...
+- Loaded All Assemblies, in  2.247 seconds
+Refreshing native plugins compatible for Editor in 14.21 ms, found 12 plugins.
+Native extension for Android target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
+Mono: successfully reloaded assembly
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+- Finished resetting the current domain, in  1.934 seconds
+Domain Reload Profiling: 4176ms
+	BeginReloadAssembly (1358ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (17ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (1093ms)
+	RebuildCommonClasses (55ms)
+	RebuildNativeTypeToScriptingClass (22ms)
+	initialDomainReloadingComplete (44ms)
+	LoadAllAssembliesAndSetupDomain (763ms)
+		LoadAssemblies (571ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (351ms)
+			TypeCache.Refresh (13ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (318ms)
+			ResolveRequiredComponents (15ms)
+	FinalizeReload (1934ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (1684ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (14ms)
+			SetLoadedEditorAssemblies (8ms)
+			BeforeProcessingInitializeOnLoad (237ms)
+			ProcessInitializeOnLoadAttributes (1271ms)
+			ProcessInitializeOnLoadMethodAttributes (140ms)
+			AfterProcessingInitializeOnLoad (14ms)
+			EditorAssembliesLoaded (1ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (16ms)
+WARNING: Shader Unsupported: 'Hidden/Simulation/URP/Synthetic' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Hidden/Simulation/URP/Synthetic' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Hidden/Simulation/Synthetic Lit' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Hidden/Simulation/Synthetic Lit' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/URP/Room X-Ray' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/URP/Room X-Ray' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/Standard Lit' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/Standard Lit' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/URP/Lit' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/URP/Lit' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/Room X-Ray' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/Room X-Ray' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+Refreshing native plugins compatible for Editor in 21.59 ms, found 12 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6235 unused Assets / (3.3 MB). Loaded Objects now: 6906.
+Memory consumption went from 197.5 MB to 194.2 MB.
+Total: 27.672100 ms (FindLiveObjects: 0.976900 ms CreateObjectMapping: 0.995300 ms MarkObjects: 21.289300 ms  DeleteObjects: 4.408000 ms)
+
+Prepare: number of updated asset objects reloaded= 68
+========================================================================
+Received Import Request.
+  Time since last request: 160.059617 seconds.
+  path: Assets/InputSystem_Actions.inputactions
+  artifactKey: Guid(a911fa2eaf4ed9e4a8c8c0172cead8a9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/InputSystem_Actions.inputactions using Guid(a911fa2eaf4ed9e4a8c8c0172cead8a9) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'f81d6f1f4f8ce98f41394ee82db96955') in 0.0387672 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 20
+
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+[Licensing::Client] Successfully resolved entitlement details
+ADTM: Control thread waiting for realtime thread timed out, have to lock...
+- Loaded All Assemblies, in  2.331 seconds
+Refreshing native plugins compatible for Editor in 15.13 ms, found 12 plugins.
+Native extension for Android target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
+Mono: successfully reloaded assembly
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+- Finished resetting the current domain, in  2.156 seconds
+Domain Reload Profiling: 4480ms
+	BeginReloadAssembly (1362ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (11ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (1100ms)
+	RebuildCommonClasses (60ms)
+	RebuildNativeTypeToScriptingClass (22ms)
+	initialDomainReloadingComplete (48ms)
+	LoadAllAssembliesAndSetupDomain (831ms)
+		LoadAssemblies (628ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (366ms)
+			TypeCache.Refresh (11ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (325ms)
+			ResolveRequiredComponents (24ms)
+	FinalizeReload (2157ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (1907ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (15ms)
+			SetLoadedEditorAssemblies (10ms)
+			BeforeProcessingInitializeOnLoad (227ms)
+			ProcessInitializeOnLoadAttributes (1495ms)
+			ProcessInitializeOnLoadMethodAttributes (144ms)
+			AfterProcessingInitializeOnLoad (15ms)
+			EditorAssembliesLoaded (1ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (15ms)
+WARNING: Shader Unsupported: 'Hidden/Simulation/URP/Synthetic' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Hidden/Simulation/URP/Synthetic' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Hidden/Simulation/Synthetic Lit' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Hidden/Simulation/Synthetic Lit' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/URP/Room X-Ray' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/URP/Room X-Ray' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/Standard Lit' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/Standard Lit' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/URP/Lit' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/URP/Lit' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/Room X-Ray' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'Simulation/Room X-Ray' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+Refreshing native plugins compatible for Editor in 16.76 ms, found 12 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6235 unused Assets / (3.0 MB). Loaded Objects now: 6908.
+Memory consumption went from 197.5 MB to 194.5 MB.
+Total: 31.401600 ms (FindLiveObjects: 0.904000 ms CreateObjectMapping: 0.764900 ms MarkObjects: 25.820100 ms  DeleteObjects: 3.910500 ms)
+
+Prepare: number of updated asset objects reloaded= 0

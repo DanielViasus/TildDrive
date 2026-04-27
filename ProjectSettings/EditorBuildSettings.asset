@@ -5,12 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/_TildDrive/Scenes/Test/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/_TildDrive/Scenes/Bootstrap/BootstrapScene.unity
-    guid: 4ba8aeb8efa5046fba5d24fe31749e21
+    path: Assets/_TiltDrive/Scenes/TestDrive.unity
+    guid: 1747795474729c54db0638c24de14290
   m_configObjects:
-    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+    com.unity.input.settings: {fileID: 11400000, guid: 3792b04c1e03ef241be29b2c02552940, type: 2}
+    com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: b2a15c82d7b4e294d9db8cf5877783c5, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 86f925020b5a40a48811a9d921b9ce20, type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: dcb1c955896cc2542a87f691b380ae0c, type: 2}
   m_UseUCBPForAssetBundles: 0

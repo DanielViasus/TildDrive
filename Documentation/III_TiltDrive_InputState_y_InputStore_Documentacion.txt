@@ -1,0 +1,424 @@
+TILTDRIVE - DOCUMENTACION DEL SISTEMA DE INPUT STATE Y INPUT STORE
+================================================================
+
+OBJETIVO
+--------
+Documentar la estructura actual del sistema de input en TiltDrive, incluyendo:
+- InputState
+- InputStore
+- TiltDriveInputReader
+- InputDebugView
+
+Esta documentación representa el estado actual funcional de la capa de entrada del proyecto.
+
+------------------------------------------------------------
+1. PROPOSITO DEL SISTEMA DE INPUT
+------------------------------------------------------------
+
+La capa de input de TiltDrive tiene como objetivo capturar la intención del usuario desde dispositivos físicos
+como volante o gamepad, normalizar esa información y almacenarla en un estado centralizado para que otros módulos
+de la simulación puedan consumirla.
+
+La lógica actual sigue este flujo:
+
+InputActions -> TiltDriveInputReader -> InputStore -> InputState -> Debug / futuros módulos
+
+Esto permite separar:
+- lectura de hardware
+- administración del estado
+- visualización/debug
+- futura simulación de motor y transmisión
+
+------------------------------------------------------------
+2. ESTRUCTURA ACTUAL DE CARPETAS
+------------------------------------------------------------
+
+Assets/_TiltDrive/Scripts/
+    Input/
+        TiltDriveInputReader.cs
+
+    State/
+        Input/
+            InputSourceType.cs
+            InputState.cs
+            InputStore.cs
+
+    Debug/
+        Input/
+            InputDebugView.cs
+
+------------------------------------------------------------
+3. RESPONSABILIDAD DE CADA ARCHIVO
+------------------------------------------------------------
+
+3.1. InputSourceType.cs
+-----------------------
+Tipo:
+Enum
+
+Responsabilidad:
+Definir el origen actual de la entrada.
+
+Valores actuales:
+- None
+- Wheel
+- Gamepad
+- Keyboard
+- External
+
+Uso:
+Permite saber qué dispositivo está alimentando actualmente el InputState.
+
+
+3.2. InputState.cs
+------------------
+Tipo:
+Clase serializable
+
+Responsabilidad:
+Representar la intención actual del usuario.
+
+IMPORTANTE:
+InputState no simula comportamiento del vehículo.
+No calcula RPM, torque, marcha real ni velocidad.
+Solo describe qué está intentando hacer el usuario.
+
+Datos principales actuales:
+- sourceType
+- steer
+- throttle
+- brake
+- clutch
+- gearUpPressed
+- gearDownPressed
+- directGearRequest
+- engineStartPressed
+- lightsLowPressed
+- lightsHighPressed
+- hazardPressed
+- leftBlinkerPressed
+- rightBlinkerPressed
+
+Tipos de datos contenidos:
+A. Ejes continuos
+- steer
+- throttle
+- brake
+- clutch
+
+B. Eventos transientes
+- gearUpPressed
+- gearDownPressed
+- directGearRequest
+- engineStartPressed
+- luces e intermitentes
+
+Métodos clave:
+- SetSource(...)
+- SetSteer(...)
+- SetThrottle(...)
+- SetBrake(...)
+- SetClutch(...)
+- RequestGearUp()
+- RequestGearDown()
+- RequestDirectGear(int gear)
+- RequestEngineStart()
+- RequestLightsLow()
+- RequestLightsHigh()
+- RequestHazard()
+- RequestLeftBlinker()
+- RequestRightBlinker()
+- ClearTransient()
+- ResetAll()
+
+
+3.3. InputStore.cs
+------------------
+Tipo:
+MonoBehaviour + singleton simple
+
+Responsabilidad:
+Administrar y centralizar el acceso a InputState.
+
+Funciones principales:
+- contener una instancia viva de InputState
+- exponer métodos de escritura controlada
+- evitar modificaciones desordenadas desde otros sistemas
+- emitir eventos cuando el estado cambia
+
+Propiedades principales:
+- Instance
+- Current
+- OnStateChanged
+
+Métodos principales:
+- SetSource(...)
+- SetSteer(...)
+- SetThrottle(...)
+- SetBrake(...)
+- SetClutch(...)
+- SetAxes(...)
+- RequestGearUp()
+- RequestGearDown()
+- RequestDirectGear(int gear)
+- RequestEngineStart()
+- RequestLightsLow()
+- RequestLightsHigh()
+- RequestHazard()
+- RequestLeftBlinker()
+- RequestRightBlinker()
+- ClearTransient()
+- ResetAll()
+
+Regla de arquitectura:
+Ningún sistema debería modificar InputState directamente si puede hacerlo a través de InputStore.
+
+Ejemplo correcto:
+store.SetThrottle(1f);
+
+Ejemplo no recomendado:
+store.Current.throttle = 1f;
+
+
+3.4. TiltDriveInputReader.cs
+----------------------------
+Tipo:
+MonoBehaviour + adaptador de Input System
+
+Ubicación:
+Scripts/Input/
+
+Responsabilidad:
+Leer los callbacks de TiltDriveControls y traducirlos a operaciones sobre InputStore.
+
+Funciones principales:
+- crear y habilitar TiltDriveControls
+- registrar callbacks de Wheel y Gamepad
+- convertir input crudo a formato interno del proyecto
+- actualizar InputStore
+- limpiar transientes al final del frame
+
+No debe:
+- almacenar estado complejo del vehículo
+- calcular RPM
+- calcular torque
+- decidir la marcha real del vehículo
+
+El Reader solo adapta hardware a estado interno.
+
+
+3.5. InputDebugView.cs
+----------------------
+Tipo:
+MonoBehaviour observador
+
+Ubicación:
+Scripts/Debug/Input/
+
+Responsabilidad:
+Escuchar cambios del InputStore y mostrar el estado en consola para pruebas.
+
+Funciones actuales:
+- mostrar fuente activa
+- mostrar ejes normalizados
+- mostrar botones transientes
+- ayudar a validar funcionamiento del volante y gamepad
+
+No modifica InputState.
+Solo observa.
+
+
+------------------------------------------------------------
+4. ESTRUCTURA LOGICA DEL INPUTSTATE
+------------------------------------------------------------
+
+InputState
+├── Fuente
+│   └── sourceType
+│
+├── Ejes Analógicos
+│   ├── steer
+│   ├── throttle
+│   ├── brake
+│   └── clutch
+│
+├── Solicitudes de Cambio
+│   ├── gearUpPressed
+│   ├── gearDownPressed
+│   └── directGearRequest
+│
+├── Motor
+│   └── engineStartPressed
+│
+└── Luces y Señalización
+    ├── lightsLowPressed
+    ├── lightsHighPressed
+    ├── hazardPressed
+    ├── leftBlinkerPressed
+    └── rightBlinkerPressed
+
+------------------------------------------------------------
+5. COMPORTAMIENTO DE LOS DATOS
+------------------------------------------------------------
+
+5.1. DATOS CONTINUOS
+--------------------
+Los siguientes valores permanecen activos y se actualizan constantemente:
+
+- steer
+- throttle
+- brake
+- clutch
+
+Estos representan ejes analógicos.
+
+5.2. DATOS TRANSIENTES
+----------------------
+Los siguientes valores son eventos momentáneos:
+
+- gearUpPressed
+- gearDownPressed
+- directGearRequest
+- engineStartPressed
+- lightsLowPressed
+- lightsHighPressed
+- hazardPressed
+- leftBlinkerPressed
+- rightBlinkerPressed
+
+Estos deben activarse en el frame del evento y luego limpiarse con:
+- InputStore.ClearTransient()
+- InputState.ClearTransient()
+
+------------------------------------------------------------
+6. NORMALIZACION ACTUAL DE LOS EJES
+------------------------------------------------------------
+
+El sistema actual usa normalización en TiltDriveInputReader para garantizar un contrato interno uniforme.
+
+Contrato interno del proyecto:
+- steer    = rango [-1, 1]
+- throttle = rango [0, 1]
+- brake    = rango [0, 1]
+- clutch   = rango [0, 1]
+
+Normalizaciones implementadas:
+
+6.1. Dirección
+--------------
+Se conserva en rango bipolar:
+- izquierda total = -1
+- centro = 0
+- derecha total = 1
+
+6.2. Acelerador
+---------------
+Se normaliza desde [-1, 1] a [0, 1]
+
+Resultado esperado:
+- pedal suelto = 0
+- medio pedal = 0.5
+- pedal al fondo = 1
+
+6.3. Freno
+----------
+Se normaliza desde un eje invertido [1, -1] a [0, 1]
+
+Resultado esperado:
+- pedal suelto = 0
+- medio pedal = 0.5
+- pedal al fondo = 1
+
+6.4. Clutch
+-----------
+Se normaliza igual que el freno, desde un eje invertido a [0, 1]
+
+Resultado esperado:
+- pedal suelto = 0
+- medio pedal = 0.5
+- pedal al fondo = 1
+
+Resultado de pruebas:
+La calibración actual fue validada como correcta en la primera etapa del sistema de estados.
+
+------------------------------------------------------------
+7. ORDEN DE RESPONSABILIDADES
+------------------------------------------------------------
+
+La responsabilidad actual del sistema queda dividida así:
+
+A. TiltDriveControls
+- define bindings y actions
+
+B. TiltDriveInputReader
+- captura input crudo
+- normaliza
+- traduce a operaciones del Store
+
+C. InputStore
+- administra el InputState
+- centraliza escritura
+- notifica cambios
+
+D. InputState
+- representa la intención actual del usuario
+
+E. InputDebugView
+- observa el estado y lo imprime para pruebas
+
+------------------------------------------------------------
+8. REGLAS ARQUITECTONICAS ACTUALES
+------------------------------------------------------------
+
+1. InputState no calcula lógica de simulación.
+2. InputStore es el punto principal de escritura del estado.
+3. TiltDriveInputReader no debe almacenar lógica de motor o transmisión.
+4. InputDebugView solo observa; no modifica estado.
+5. Los pedales deben entrar al Store ya normalizados.
+6. Los eventos transientes deben limpiarse al final del frame.
+7. La simulación futura debe consumir InputState, no InputActions directamente.
+
+------------------------------------------------------------
+9. ESTADO ACTUAL DEL SISTEMA
+------------------------------------------------------------
+
+Estado actual:
+FUNCIONAL Y VALIDADO PARA PRIMERA ETAPA
+
+Pruebas realizadas:
+- lectura de volante
+- lectura de gamepad
+- lectura de dirección
+- lectura de acelerador
+- lectura de freno
+- lectura de clutch
+- lectura de botones de cambio
+- lectura de botones auxiliares
+- validación de InputStore
+- validación de InputState
+- validación de InputDebugView
+- calibración de pedales
+
+Resultado:
+La capa de input quedó estable y lista para alimentar los siguientes módulos del proyecto.
+
+------------------------------------------------------------
+10. SIGUIENTE ETAPA RECOMENDADA
+------------------------------------------------------------
+
+Con la capa de input ya funcional, los siguientes estados lógicos a construir son:
+
+1. EngineState
+   Se encargará del comportamiento simulado del motor.
+
+2. TransmissionState
+   Se encargará de la marcha actual, clutch efectivo y transferencia de potencia.
+
+3. LightsState
+   Se encargará del estado lógico de luces.
+
+En esta arquitectura, InputState será la base de entrada para todos esos módulos.
+
+------------------------------------------------------------
+FIN DEL DOCUMENTO
+------------------------------------------------------------

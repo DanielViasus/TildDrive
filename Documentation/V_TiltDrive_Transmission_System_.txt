@@ -1,0 +1,393 @@
+TILTDRIVE – DOCUMENTACIÓN SISTEMA DE TRANSMISIÓN (Transmission System V1.1)
+=======================================================================
+
+OBJETIVO
+--------
+El sistema de transmisión en TiltDrive tiene como objetivo:
+
+Gestionar el cambio de marchas
+Controlar el acople del clutch
+Aplicar relaciones de transmisión
+Transformar el torque del motor en torque útil hacia las ruedas
+Determinar la dirección del movimiento (forward / reverse / neutral)
+
+Este sistema es independiente del motor, pero se alimenta de él.
+
+----------------------------------------------------------------------
+1. ARQUITECTURA GENERAL
+----------------------------------------------------------------------
+
+InputState
+    ↓
+TransmissionSimulationInput
+    ↓
+DynamicTransmission
+    ↓
+TransmissionSimulationOutput
+    ↓
+TransmissionStore
+    ↓
+TransmissionState
+
+----------------------------------------------------------------------
+3. ESTRUCTURA DE CARPETAS
+----------------------------------------------------------------------
+
+Assets/_TiltDrive/Scripts/
+
+Transmission/
+    Config/
+        TransmissionType.cs
+        TransmissionConfig.cs
+
+    State/
+        TransmissionState.cs
+        TransmissionStore.cs
+
+    Simulation/
+        TransmissionSimulationInput.cs
+        TransmissionSimulationOutput.cs
+        DynamicTransmission.cs
+        TransmissionSimulationRunner.cs
+
+Debug/
+    Transmission/
+        TransmissionDebugView.cs
+
+
+
+----------------------------------------------------------------------
+4. COMPONENTES PRINCIPALES
+----------------------------------------------------------------------
+
+4.1 TransmissionConfig
+-----------
+
+Define cómo es la caja de transmisión.
+
+Incluye:
+
+-Tipo de transmisión (Manual / Sequential / Automatic)
+-Número de marchas
+-Relación por cada marcha
+-Relación final (diferencial)
+-Eficiencia de transmisión
+-Relación de reversa
+-Duración del cambio (shiftDuration)
+-Si requiere clutch
+-Si permite selección directa de marcha
+
+No cambia en tiempo de ejecución.
+
+4.2 TransmissionState
+-----------
+
+Representa el estado actual de la transmisión.
+
+Contiene:
+
+    -Estado lógico
+    -currentGear
+    -requestedGear
+    -shiftInProgress
+    -shiftTimer
+    -Clutch
+    -clutchInput
+    -clutchEngagement
+    -clutchDisengaged
+    -Relaciones
+    -currentGearRatio
+    -finalDriveRatio
+    -totalDriveRatio
+    -Torque
+    -inputTorqueNm
+    -transmittedTorqueNm
+
+Dirección
+    -driveDirection
+        -1 = reversa
+        0 = neutro
+        1 = avance
+Flags
+    -isNeutral
+    -isReverse
+    -shiftAllowed
+    -hasTransmissionWarning
+
+4.3 TransmissionStore
+-----------
+
+Contenedor del estado de transmisión.
+
+Responsabilidades:
+
+    -Mantener TransmissionState
+    -Mantener TransmissionConfig
+    -Inicializar estado
+    -Aplicar snapshots
+    -Notificar cambios
+
+No realiza simulación.
+
+4.4 TransmissionSimulationInput
+-----------
+
+Entrada del sistema de simulación.
+
+Incluye:
+
+    -Input usuario
+    -throttleInput
+    -clutchInput
+    -gearUpPressed
+    -gearDownPressed
+    -directGearRequest
+    -Estado actual
+    -currentGear
+    -requestedGear
+    -shiftInProgress
+    -currentShiftTimer
+    -Estado del motor
+    -engineOn
+    -engineRPM
+    -engineTorqueNm
+    -Config
+    -TransmissionConfig
+
+4.5 TransmissionSimulationOutput
+-----------
+Resultado de la simulación.
+
+Contiene:
+
+    -Estado lógico actualizado
+    -clutch calculado
+    -relaciones activas
+    -torque transmitido
+    -flags
+    -diagnóstico
+
+Puede convertirse directamente en TransmissionState.
+
+4.6 DynamicTransmission
+-----------
+
+Núcleo de simulación de la transmisión.
+
+Responsabilidades:
+
+    -Resolver cambios de marcha
+    -Gestionar transición de cambios
+    -Calcular clutch engagement
+    -Aplicar relaciones
+    -Calcular torque transmitido
+    -Determinar dirección
+
+No guarda estado persistente.
+
+4.7 TransmissionSimulationRunner
+-----------
+
+Orquestador del sistema.
+
+Responsabilidades:
+
+    -Leer InputStore
+    -Leer EngineStore
+    -Leer TransmissionStore
+    -Construir TransmissionSimulationInput
+    -Ejecutar DynamicTransmission
+    -Aplicar resultado al TransmissionStore
+
+Se ejecuta en Update().
+
+4.8 TransmissionDebugView
+-----------
+
+Sistema de depuración.
+
+Permite visualizar:
+
+    -marcha actual
+    -clutch
+    -relaciones
+    -torque
+    -flags
+
+----------------------------------------------------------------------
+5. CONVENCIÓN DE MARCHAS
+----------------------------------------------------------------------
+
+    -1 = reversa
+     0 = neutro
+     1 = primera
+     2 = segunda
+    ...
+
+----------------------------------------------------------------------
+6. COMPORTAMIENTO DEL SISTEMA
+----------------------------------------------------------------------
+
+6.1 Cambio de marchas
+-----------
+
+El sistema soporta:
+
+    -GearUp
+    -GearDown
+    -Selección directa
+
+Proceso:
+
+Solicitud → requestedGear
+    ↓
+shiftInProgress = true
+    ↓
+shiftTimer avanza
+    ↓
+Cuando supera shiftDuration:
+    currentGear = requestedGear
+    shiftInProgress = false
+
+6.2 Clutch (mejorado)
+-----------
+
+El clutch no es lineal.
+
+Se usa una curva:
+
+engagement = (1 - clutchInput)^2
+
+Esto produce:
+
+    -acople progresivo
+    -mayor control en zona media
+    -menos comportamiento binario
+
+6.3 Torque transmitido
+-----------
+Se calcula como:
+
+transmittedTorque =
+engineTorque
+    * clutchEngagement
+    * throttleAssist
+    * efficiency
+    * shiftFactor
+
+Donde:
+
+throttleAssist
+
+0.25 + throttle * 0.75
+
+shiftFactor
+
+    -1 normal
+    -0.05 durante cambio
+    -6.4 Comportamiento por estado
+-----------
+
+Motor apagado
+    -torque transmitido = 0
+    -Neutro
+torque transmitido = 0
+    -En cambio
+torque transmitido muy reducido
+En marcha
+torque proporcional a:
+    -clutch
+    -throttle
+    -eficiencia
+
+6.5 Dirección de movimiento
+-----------
+Forward  -> driveDirection = 1
+Neutral  -> driveDirection = 0
+Reverse  -> driveDirection = -1
+
+
+
+----------------------------------------------------------------------
+7. FLAGS IMPORTANTES
+----------------------------------------------------------------------
+
+-isNeutral
+-isReverse
+-shiftInProgress
+-clutchDisengaged
+-hasTransmissionWarning
+
+----------------------------------------------------------------------
+8. PARÁMETROS CLAVE DE CALIBRACIÓN
+----------------------------------------------------------------------
+
+En TransmissionConfig:
+
+-shiftDuration
+-transmissionEfficiency
+-forwardGearRatios
+-reverseGearRatio
+-finalDriveRatio
+-requiresClutch
+
+En DynamicTransmission:
+
+-curva de clutch
+-throttleAssist
+-shiftTorqueFactor
+
+----------------------------------------------------------------------
+9. ESTADO ACTUAL DEL SISTEMA
+----------------------------------------------------------------------
+Estado: FUNCIONAL Y CALIBRADO (V1.1)
+
+Incluye:
+
+-cambio con transición
+-clutch progresivo
+-torque más natural
+-integración con motor
+-arquitectura desacoplada
+
+
+----------------------------------------------------------------------
+10. LIMITACIONES ACTUALES
+----------------------------------------------------------------------
+
+Aún no incluye:
+
+-sincronización real de RPM
+-desgaste de clutch
+-errores por mal cambio
+-rebote de marchas
+-simulación de caja automática
+-cálculo de velocidad del vehículo
+
+----------------------------------------------------------------------
+11. SIGUIENTE ETAPA
+----------------------------------------------------------------------
+
+Integrar
+
+VehicleSystem
+
+Y luego:
+
+-velocidad real
+-tracción
+-física de ruedas
+-fricción
+-masa
+
+----------------------------------------------------------------------
+12. RELACIÓN CON OTROS SISTEMAS
+----------------------------------------------------------------------
+
+InputSystem → TransmissionSystem → (futuro) VehicleSystem
+                    ↑
+                EngineSystem
+
+----------------------------------------------------------------------
+FIN DEL DOCUMENTO
+----------------------------------------------------------------------

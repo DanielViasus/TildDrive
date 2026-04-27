@@ -1,0 +1,663 @@
+TILTDRIVE - ARQUITECTURA BASE DE ESTADOS Y COMUNICACION ENTRE MODULOS
+=======================================================================
+
+OBJETIVO
+--------
+Definir una arquitectura modular de estados para TiltDrive, separando responsabilidades por sistemas fundamentales del vehículo y dejando una base clara para la creación futura de Stores, simuladores y paquetes de salida hacia hardware externo.
+
+PRINCIPIO GENERAL
+-----------------
+El sistema NO debe depender de un único estado gigante.
+
+La arquitectura se basa en múltiples estados especializados, cada uno responsable de una parte concreta del vehículo o de la simulación. Estos estados se relacionan entre sí mediante flujos de entrada y salida bien definidos.
+
+La idea central es:
+
+1. INPUT entrega datos crudos del usuario
+2. Cada State especializado procesa solo su dominio
+3. Algunos States consumen datos de otros States
+4. Los resultados consolidados alimentan:
+   - simulación interna
+   - UI
+   - telemetría
+   - paquete de salida WiFi / ESP32
+
+------------------------------------------------------------
+ARQUITECTURA PROPUESTA
+------------------------------------------------------------
+
+TiltDriveState (contenedor raíz)
+├── InputState
+├── EngineState
+├── TransmissionState
+├── LightsState
+├── TelemetryState
+└── OutputPacketState
+
+Cada subestado tiene una responsabilidad concreta y límites claros.
+
+------------------------------------------------------------
+1. INPUTSTATE
+------------------------------------------------------------
+
+RESPONSABILIDAD
+---------------
+Representar la entrada actual del usuario o del dispositivo de control.
+
+FUNCION
+-------
+Es la capa de entrada del sistema. No simula el vehículo; únicamente describe qué está haciendo el usuario.
+
+DATOS QUE DEBE CONTENER
+-----------------------
+- sourceType
+  Define desde dónde llega el input:
+  Wheel / Gamepad / Keyboard / External
+
+- steerInput
+  Valor normalizado de giro
+
+- throttleInput
+  Valor normalizado de aceleración
+
+- brakeInput
+  Valor normalizado de frenado
+
+- clutchInput
+  Valor normalizado de embrague
+
+- gearUpPressed
+- gearDownPressed
+
+- directGearRequest
+  Solicitud de marcha directa: R, N, 1, 2, 3, 4, 5, 6
+
+- engineStartPressed
+
+- lightsLowPressed
+- lightsHighPressed
+- hazardPressed
+- leftBlinkerPressed
+- rightBlinkerPressed
+
+TIPO DE SALIDA
+--------------
+Entrega intención del usuario.
+
+DEPENDENCIAS
+------------
+No depende de otros States.
+
+CONSUMIDO POR
+-------------
+- EngineState
+- TransmissionState
+- LightsState
+- TelemetryState
+- OutputPacketState
+
+
+------------------------------------------------------------
+2. ENGINESTATE
+------------------------------------------------------------
+
+RESPONSABILIDAD
+---------------
+Simular el comportamiento interno del motor.
+
+FUNCION
+-------
+Se encarga de representar el estado mecánico y lógico del motor en la simulación.
+
+NO debe calcular directamente la velocidad final del vehículo.
+
+DATOS QUE DEBE CONTENER
+-----------------------
+- engineOn
+  Indica si el motor está encendido
+
+- engineStarting
+  Indica si está en proceso de arranque
+
+- engineStalled
+  Indica si el motor se apagó por calado o fallo
+
+- currentRPM
+  RPM actuales del motor
+
+- idleRPM
+  RPM mínimas en ralentí
+
+- maxRPM
+  RPM máximas del motor
+
+- throttleResponse
+  Resultado interno de la aceleración aplicada al motor
+
+- engineLoad
+  Carga que percibe el motor
+
+- engineTorque
+  Torque calculado por el motor en este instante
+
+- engineBrakeTorque
+  Torque de retención o freno motor
+
+- ignitionAllowed
+  Determina si el sistema permite encendido
+
+ENTRADAS PRINCIPALES
+--------------------
+- InputState.throttleInput
+- InputState.engineStartPressed
+- InputState.clutchInput
+- condiciones del sistema
+- más adelante: carga desde TransmissionState
+
+TIPO DE SALIDA
+--------------
+Entrega el estado mecánico simulado del motor.
+
+DEPENDENCIAS
+------------
+Inicialmente depende de:
+- InputState
+
+Más adelante también puede recibir realimentación de:
+- TransmissionState
+- Vehicle / Drivetrain load
+
+CONSUMIDO POR
+-------------
+- TransmissionState
+- TelemetryState
+- OutputPacketState
+- UI
+
+
+------------------------------------------------------------
+3. TRANSMISSIONSTATE
+------------------------------------------------------------
+
+RESPONSABILIDAD
+---------------
+Gestionar caja de cambios, embrague y transferencia de potencia.
+
+FUNCION
+-------
+Es el puente entre el motor y el movimiento del vehículo.
+
+Este estado NO genera RPM del motor por sí mismo.
+Toma como base el resultado del motor y define cómo se transmite esa potencia según la marcha y el estado del embrague.
+
+DATOS QUE DEBE CONTENER
+-----------------------
+- currentGear
+  Marcha actual real
+
+- requestedGear
+  Marcha solicitada por input
+
+- gearMode
+  Tipo de caja: Manual / Sequential / Automatic
+
+- isNeutral
+- isReverse
+
+- clutchEngagement
+  Nivel real de acople del embrague
+
+- clutchPressed
+  Estado de entrada del embrague
+
+- gearRatio
+  Relación de la marcha actual
+
+- finalDriveRatio
+  Relación final del diferencial
+
+- transmissionEfficiency
+  Factor de eficiencia
+
+- wheelTorque
+  Torque resultante entregado a la salida
+
+- driveDirection
+  Dirección de avance / reversa
+
+- shiftAllowed
+  Indica si se puede ejecutar el cambio
+
+- shiftInProgress
+  Indica si el cambio está ocurriendo
+
+ENTRADAS PRINCIPALES
+--------------------
+- InputState.gearUpPressed
+- InputState.gearDownPressed
+- InputState.directGearRequest
+- InputState.clutchInput
+- EngineState.engineTorque
+- EngineState.currentRPM
+
+TIPO DE SALIDA
+--------------
+Entrega la potencia efectiva transmitida hacia el vehículo.
+
+DEPENDENCIAS
+------------
+Depende de:
+- InputState
+- EngineState
+
+CONSUMIDO POR
+-------------
+- Vehicle movement / drivetrain
+- TelemetryState
+- OutputPacketState
+- UI
+
+
+------------------------------------------------------------
+4. LIGHTSSTATE
+------------------------------------------------------------
+
+RESPONSABILIDAD
+---------------
+Gestionar el estado lógico de luces e indicadores del vehículo.
+
+FUNCION
+-------
+Representa el estado de iluminación y señalización del vehículo, independiente del motor y de la transmisión.
+
+DATOS QUE DEBE CONTENER
+-----------------------
+- lowBeamsOn
+- highBeamsOn
+- hazardOn
+- leftBlinkerOn
+- rightBlinkerOn
+- brakeLightsOn
+- reverseLightsOn
+
+- blinkTimer
+  Temporizador interno para parpadeo
+
+- blinkPhaseOn
+  Fase actual de encendido/apagado del parpadeo
+
+ENTRADAS PRINCIPALES
+--------------------
+- InputState.lightsLowPressed
+- InputState.lightsHighPressed
+- InputState.hazardPressed
+- InputState.leftBlinkerPressed
+- InputState.rightBlinkerPressed
+- InputState.brakeInput
+- TransmissionState.currentGear
+
+TIPO DE SALIDA
+--------------
+Entrega el estado visual/lógico de las luces.
+
+DEPENDENCIAS
+------------
+Depende de:
+- InputState
+- TransmissionState (para reversa)
+- eventualmente VehicleState o BrakeState si se separa
+
+CONSUMIDO POR
+-------------
+- UI
+- Vehicle visual controller
+- TelemetryState
+- OutputPacketState
+
+
+------------------------------------------------------------
+5. TELEMETRYSTATE
+------------------------------------------------------------
+
+RESPONSABILIDAD
+---------------
+Consolidar datos relevantes del sistema para monitoreo, visualización y análisis.
+
+FUNCION
+-------
+No controla sistemas. Solo reúne información útil ya procesada por otros estados.
+
+Es un estado de observación y resumen.
+
+DATOS QUE DEBE CONTENER
+-----------------------
+- displayedRPM
+- displayedGear
+- displayedThrottle
+- displayedBrake
+- displayedClutch
+- engineOn
+- currentTorque
+- wheelTorque
+- lightsSummary
+- inputSource
+- warnings
+- faults
+- timestamps
+- packetSequencePreview (opcional)
+
+ENTRADAS PRINCIPALES
+--------------------
+- InputState
+- EngineState
+- TransmissionState
+- LightsState
+- más adelante VehicleState
+
+TIPO DE SALIDA
+--------------
+Entrega una visión consolidada del sistema.
+
+DEPENDENCIAS
+------------
+Depende de:
+- InputState
+- EngineState
+- TransmissionState
+- LightsState
+
+CONSUMIDO POR
+-------------
+- UI
+- Debug
+- OutputPacketState
+- Logs
+- gráficos o paneles futuros
+
+
+------------------------------------------------------------
+6. OUTPUTPACKETSTATE
+------------------------------------------------------------
+
+RESPONSABILIDAD
+---------------
+Construir el paquete de datos que será enviado por WiFi al ESP32 u otros dispositivos externos.
+
+FUNCION
+-------
+Traducir el estado interno de la simulación a un formato compacto, consistente y serializable.
+
+Este estado NO debe recalcular lógica de motor ni transmisión.
+Solo empaqueta.
+
+DATOS QUE DEBE CONTENER
+-----------------------
+- packetId
+- packetTimestamp
+- protocolVersion
+
+- steerOut
+- throttleOut
+- brakeOut
+- clutchOut
+
+- currentGearOut
+- rpmOut
+- engineOnOut
+- wheelTorqueOut
+
+- lowBeamsOut
+- highBeamsOut
+- hazardOut
+- leftBlinkerOut
+- rightBlinkerOut
+- brakeLightsOut
+- reverseLightsOut
+
+- checksum
+  Si más adelante se requiere integridad de paquete
+
+- rawPayload
+  Representación final serializable
+  Ejemplo: JSON / CSV / binario / struct custom
+
+ENTRADAS PRINCIPALES
+--------------------
+- InputState
+- EngineState
+- TransmissionState
+- LightsState
+- TelemetryState
+
+TIPO DE SALIDA
+--------------
+Entrega el paquete listo para transmisión externa.
+
+DEPENDENCIAS
+------------
+Depende de:
+- InputState
+- EngineState
+- TransmissionState
+- LightsState
+- TelemetryState
+
+CONSUMIDO POR
+-------------
+- WiFi sender
+- ESP32 communication layer
+- logger de paquetes
+
+
+------------------------------------------------------------
+ESTADO FUTURO RECOMENDADO
+------------------------------------------------------------
+
+A futuro conviene agregar un estado adicional:
+
+7. VEHICLESTATE
+---------------
+RESPONSABILIDAD
+---------------
+Representar el movimiento real o simulado del vehículo.
+
+DATOS POSIBLES
+--------------
+- speed
+- acceleration
+- wheelSpeed
+- direction
+- tractionState
+- slipState
+- surfaceType
+
+RAZÓN DE EXISTENCIA
+-------------------
+Actualmente TransmissionState puede calcular la potencia de salida, pero el movimiento real del vehículo merece un dominio propio.
+
+Esto evita sobrecargar TransmissionState con comportamiento que en realidad pertenece a la dinámica del vehículo.
+
+
+------------------------------------------------------------
+RELACIONES ENTRE ESTADOS
+------------------------------------------------------------
+
+Flujo principal simplificado:
+
+InputState
+   ├──> EngineState
+   ├──> TransmissionState
+   └──> LightsState
+
+EngineState
+   └──> TransmissionState
+
+TransmissionState
+   ├──> LightsState
+   ├──> TelemetryState
+   └──> OutputPacketState
+
+LightsState
+   ├──> TelemetryState
+   └──> OutputPacketState
+
+EngineState
+   ├──> TelemetryState
+   └──> OutputPacketState
+
+InputState
+   ├──> TelemetryState
+   └──> OutputPacketState
+
+TelemetryState
+   └──> OutputPacketState
+
+
+------------------------------------------------------------
+REGLAS DE COMUNICACION ENTRE ESTADOS
+------------------------------------------------------------
+
+1. Un State no debe asumir responsabilidades ajenas.
+   Ejemplo:
+   - EngineState no debe decidir luces
+   - LightsState no debe calcular torque
+   - OutputPacketState no debe simular motor
+
+2. La comunicación debe ser por lectura de datos ya procesados.
+   Un estado consume salidas del otro, no su lógica interna.
+
+3. Cada State debe tener entradas claras y salidas claras.
+
+4. Los Stores futuros deben respetar la separación por dominio.
+   Puede existir:
+   - InputStore
+   - EngineStore
+   - TransmissionStore
+   - LightsStore
+   - TelemetryStore
+   - OutputPacketStore
+   o bien un Store raíz que contenga subestados.
+
+5. La actualización ideal debe seguir un orden de tick.
+   Orden inicial recomendado:
+   a. Input
+   b. Engine
+   c. Transmission
+   d. Lights
+   e. Telemetry
+   f. OutputPacket
+
+6. TelemetryState y OutputPacketState son consumidores de información.
+   No deben gobernar el sistema.
+
+7. El paquete WiFi debe construirse desde estados ya validados.
+   Nunca desde lectura cruda del input, si existe un estado intermedio más preciso.
+
+
+------------------------------------------------------------
+MODELO DE STORES A FUTURO
+------------------------------------------------------------
+
+OPCION A - STORE RAIZ
+---------------------
+TiltDriveStore
+├── InputState
+├── EngineState
+├── TransmissionState
+├── LightsState
+├── TelemetryState
+└── OutputPacketState
+
+VENTAJAS
+--------
+- Todo centralizado
+- Fácil sincronización
+- Fácil snapshot general
+
+DESVENTAJAS
+-----------
+- Puede crecer demasiado si no se modulariza internamente
+
+
+OPCION B - STORES MODULARES
+---------------------------
+- InputStore
+- EngineStore
+- TransmissionStore
+- LightsStore
+- TelemetryStore
+- OutputPacketStore
+
+VENTAJAS
+--------
+- Mejor separación por responsabilidad
+- Más fácil testear por partes
+- Más flexible para simulación y debugging
+
+DESVENTAJAS
+-----------
+- Requiere mayor coordinación entre Stores
+
+
+RECOMENDACIÓN PARA TILTDRIVE
+----------------------------
+Comenzar con una estructura híbrida:
+
+- Un contenedor raíz: TiltDriveState
+- Varios subestados especializados
+- Más adelante, Stores especializados por módulo si el proyecto crece
+
+Esto permite avanzar rápido sin perder orden arquitectónico.
+
+
+------------------------------------------------------------
+ORDEN DE IMPLEMENTACION RECOMENDADO
+------------------------------------------------------------
+
+FASE 1
+------
+- InputState
+- EngineState básico
+- TransmissionState básico
+
+FASE 2
+------
+- LightsState
+- TelemetryState
+
+FASE 3
+------
+- OutputPacketState
+
+FASE 4
+------
+- Stores modulares
+- Tick de simulación
+- VehicleState
+
+
+------------------------------------------------------------
+CONCLUSION
+------------------------------------------------------------
+
+La arquitectura más lógica para TiltDrive no es tener un solo estado gigante, sino varios estados especializados conectados por un flujo claro de datos.
+
+La separación recomendada base es:
+
+- InputState
+- EngineState
+- TransmissionState
+- LightsState
+- TelemetryState
+- OutputPacketState
+
+Y más adelante:
+- VehicleState
+
+Con esta base:
+- el sistema se mantiene ordenado
+- los Stores futuros tienen una estructura clara
+- la simulación puede crecer sin romper responsabilidades
+- la comunicación hacia ESP32 queda desacoplada de la lógica interna del vehículo
+
+FIN DEL DOCUMENTO

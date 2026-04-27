@@ -1,0 +1,96 @@
+TILTDRIVE - DOCUMENTACION SISTEMA DE MOTOR (ENGINE SYSTEM V1.1)
+=======================================================================
+
+OBJETIVO
+--------
+Documentar la arquitectura, componentes y comportamiento actual del sistema de simulación de motor en TiltDrive.
+
+Esta versión incluye:
+- Estado del motor (EngineState)
+- Configuración del motor (EngineConfig)
+- Sistema de entrada/salida de simulación
+- Simulación dinámica básica (DynamicEngine)
+- Runner de simulación
+- Debug del motor
+- Transiciones de encendido y apagado
+
+----------------------------------------------------------------------
+1. ARQUITECTURA GENERAL
+----------------------------------------------------------------------
+
+InputState -> EngineSimulationInput -> DynamicEngine -> EngineSimulationOutput -> EngineStore -> EngineState
+
+----------------------------------------------------------------------
+2. COMPONENTES PRINCIPALES
+----------------------------------------------------------------------
+
+EngineConfig:
+Define parámetros del motor.
+
+EngineState:
+Estado actual del motor.
+
+EngineStore:
+Gestor del estado.
+
+EngineSimulationInput:
+Entrada del simulador.
+
+EngineSimulationOutput:
+Salida del simulador.
+
+DynamicEngine:
+Simulación del motor.
+
+EngineSimulationRunner:
+Orquestador.
+
+EngineDebugView:
+Visualización de debug.
+
+----------------------------------------------------------------------
+3. COMPORTAMIENTO DEL MOTOR
+----------------------------------------------------------------------
+
+Encendido:
+OFF -> STARTING -> IDLE
+
+Apagado:
+ON -> SHUTTING DOWN -> OFF
+
+Botón:
+Toggle (mismo botón para encender/apagar)
+
+----------------------------------------------------------------------
+4. DINAMICA
+----------------------------------------------------------------------
+
+- Inercia en RPM
+- Torque dependiente de RPM y throttle
+- Carga externa
+- Freno motor
+- Calado
+- Zona crítica
+
+----------------------------------------------------------------------
+5. PARAMETROS CLAVE
+----------------------------------------------------------------------
+
+- engineStartRPMSpeed
+- engineShutdownRPMSpeed
+- rpmRiseSpeed
+- rpmFallSpeed
+- engineInertia
+- throttleResponsiveness
+- baseTorqueNm
+- engineBrakeStrength
+
+----------------------------------------------------------------------
+6. ESTADO ACTUAL
+----------------------------------------------------------------------
+
+Sistema funcional, modular y listo para integración con transmisión.
+
+----------------------------------------------------------------------
+FIN DEL DOCUMENTO
+----------------------------------------------------------------------
