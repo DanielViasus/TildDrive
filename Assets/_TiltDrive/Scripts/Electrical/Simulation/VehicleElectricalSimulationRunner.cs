@@ -214,12 +214,14 @@ namespace TiltDrive.ElectricalSystem
 
         private bool IsStarterActive()
         {
-            bool engineStarting = engineStore != null &&
-                engineStore.Current != null &&
-                engineStore.Current.engineStarting;
-            bool engineOff = engineStore == null ||
-                engineStore.Current == null ||
-                (!engineStore.Current.engineOn && !engineStore.Current.engineShuttingDown);
+            EngineState engine = engineStore != null ? engineStore.Current : null;
+            bool engineSelfSustaining = engine != null &&
+                (engine.engineOn || engine.currentRPM >= Mathf.Max(100f, engine.idleRPM * 0.95f));
+            bool engineStarting = engine != null &&
+                engine.engineStarting &&
+                !engineSelfSustaining;
+            bool engineOff = engine == null ||
+                (!engine.engineOn && !engine.engineShuttingDown && !engineSelfSustaining);
             bool startPressed = inputStore != null &&
                 inputStore.Current != null &&
                 inputStore.Current.engineStartHeld;

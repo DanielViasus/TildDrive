@@ -108,6 +108,31 @@ namespace TiltDrive.UISystem
             }
         }
 
+        public void ShowEngineTab()
+        {
+            ShowTab("tab_engine");
+        }
+
+        public void ShowTab(string tabKey)
+        {
+            if (string.IsNullOrEmpty(tabKey)) return;
+
+            EnsureReferences();
+            RebuildTabs();
+
+            for (int i = 0; i < tabs.Count; i++)
+            {
+                if (tabs[i].key == tabKey)
+                {
+                    selectedTab = i;
+                    showMenu = true;
+                    return;
+                }
+            }
+
+            showMenu = true;
+        }
+
         private void OnGUI()
         {
             if (!showMenu) return;

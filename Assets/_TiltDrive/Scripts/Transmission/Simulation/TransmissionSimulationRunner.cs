@@ -26,6 +26,8 @@ namespace TiltDrive.TransmissionSystem
 
         [Header("Diagnostico y Danio")]
         [SerializeField] private DriveDamagePenaltyConfig damagePenaltyConfig = new DriveDamagePenaltyConfig();
+        [SerializeField] [Range(0f, 1f)] private float looseClutchShiftInputThreshold = 0.7f;
+        [SerializeField] [Range(0f, 5f)] private float looseClutchShiftTransmissionDamagePercent = 0.25f;
 
         [Header("Debug Interno")]
         [SerializeField] [Min(0)] private int simulationTick = 0;
@@ -41,6 +43,8 @@ namespace TiltDrive.TransmissionSystem
         private bool previousShiftInProgress = false;
         private string previousMisuseWarningCode = string.Empty;
         private float nextMisuseWarningLogTime = 0f;
+        private bool pendingLooseClutchShiftPenalty = false;
+        private string pendingLooseClutchShiftReason = string.Empty;
 
         public DriveDamagePenaltyConfig DamagePenaltyConfig => damagePenaltyConfig;
 
@@ -80,6 +84,7 @@ namespace TiltDrive.TransmissionSystem
             output.lastUpdateTime = Time.time;
 
             transmissionStore.ApplyStateSnapshot(output.ToTransmissionState());
+            ApplyPendingLooseClutchShiftPenalty();
             ApplyMisuseDamage(output);
             LogShiftOutput(output);
             LogMisuseDiagnostics(output);
@@ -241,7 +246,7 @@ namespace TiltDrive.TransmissionSystem
 
         private void LogShiftRequest(string requestLabel)
         {
-            if (!logShiftDiagnostics || inputStore == null || transmissionStore == null)
+            if (inputStore == null || transmissionStore == null)
             {
                 return;
             }
@@ -256,9 +261,31 @@ namespace TiltDrive.TransmissionSystem
             }
 
             bool clutchRequiredNow = config.requiresClutch && config.transmissionType == TransmissionType.Manual;
-            bool clutchReady = !clutchRequiredNow || input.clutch >= 0.7f;
+            bool clutchReady = !clutchRequiredNow || input.clutch >= looseClutchShiftInputThreshold;
             bool positiveDirectIgnoredByAutomatic = config.transmissionType == TransmissionType.Automatic &&
                 input.directGearRequest > 0;
+
+            if (clutchRequiredNow && !clutchReady)
+            {
+                string reason =
+                    $"Bad shift request with clutch too released. Request={requestLabel}, " +
+                    $"ClutchInput={input.clutch:F2}, Required={looseClutchShiftInputThreshold:F2}.";
+                pendingLooseClutchShiftPenalty = true;
+                pendingLooseClutchShiftReason = reason;
+                if (logShiftDiagnostics)
+                {
+                    Debug.LogWarning(
+                        $"[TiltDrive][DriveMisuse] | Code=SHIFT_WITH_CLUTCH_RELEASED | " +
+                        $"Severity={Mathf.Clamp01(1f - input.clutch):F2} | " +
+                        $"TransmissionDamage={looseClutchShiftTransmissionDamagePercent:F2}% | " +
+                        $"Gear={FormatGear(state.currentGear)} | Message={reason}");
+                }
+            }
+
+            if (!logShiftDiagnostics)
+            {
+                return;
+            }
 
             Debug.Log(
                 $"[TiltDrive][TransmissionShiftInput]" +
@@ -360,6 +387,18 @@ namespace TiltDrive.TransmissionSystem
             {
                 nextMisuseWarningLogTime = 0f;
             }
+        }
+
+        private void ApplyPendingLooseClutchShiftPenalty()
+        {
+            if (!pendingLooseClutchShiftPenalty || transmissionStore == null)
+            {
+                return;
+            }
+
+            transmissionStore.ApplyDamagePercent(looseClutchShiftTransmissionDamagePercent, pendingLooseClutchShiftReason);
+            pendingLooseClutchShiftPenalty = false;
+            pendingLooseClutchShiftReason = string.Empty;
         }
 
         private string GetBufferedRequestLabel()

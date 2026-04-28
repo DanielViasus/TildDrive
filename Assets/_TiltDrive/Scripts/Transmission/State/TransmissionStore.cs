@@ -303,6 +303,31 @@ namespace TiltDrive.TransmissionSystem
             NotifyStateChanged();
         }
 
+        public void ApplyDamagePercent(float damagePercent, string reason)
+        {
+            float clampedDamage = Mathf.Max(0f, damagePercent);
+            if (clampedDamage <= 0f || current == null)
+            {
+                return;
+            }
+
+            current.componentHealthPercent = Mathf.Clamp(current.componentHealthPercent - clampedDamage, 0f, 100f);
+            current.accumulatedDamagePercent += clampedDamage;
+            current.hasMisuseWarning = true;
+            current.hasTransmissionWarning = true;
+            current.lastMisuseCode = "SHIFT_WITH_CLUTCH_RELEASED";
+            current.lastMisuseMessage = reason;
+            current.lastMisuseSeverity = Mathf.Clamp01(clampedDamage);
+            current.simulationTick += 1;
+            current.lastUpdateTime = Time.time;
+
+            Debug.LogWarning(
+                $"[TiltDrive][TransmissionDamage] Damage={clampedDamage:F2}% | " +
+                $"Health={current.componentHealthPercent:F1}% | Reason={reason}");
+
+            NotifyStateChanged();
+        }
+
         // --------------------------------------------------
         // UTILS
         // --------------------------------------------------
