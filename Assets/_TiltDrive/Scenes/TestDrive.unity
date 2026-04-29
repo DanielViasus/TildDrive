@@ -505,6 +505,20 @@ MonoBehaviour:
     baseTorqueNm: 120
     peakTorqueRPM: 6500
     engineBrakeStrength: 20
+    engineAmbientTemperatureC: 28
+    engineInitialTemperatureC: 45
+    engineNormalOperatingTemperatureC: 92
+    engineBaseHeatPerSecond: 1.6
+    engineRPMHeatPerSecond: 13
+    engineLoadHeatPerSecond: 10
+    engineOverRevHeatPerSecond: 34
+    engineBaseCoolingPerSecond: 2
+    engineSpeedCoolingPerSecond: 0.14
+    engineWarningTemperatureC: 108
+    engineEfficiencyDropStartTemperatureC: 122
+    engineCriticalTemperatureC: 138
+    engineMaxTemperatureC: 150
+    engineMinThermalEfficiency: 0.45
     loadSensitivity: 1
     slopeSensitivity: 1
     massInfluence: 1
@@ -526,6 +540,14 @@ MonoBehaviour:
     engineLoad: 0
     engineTorqueNm: 0
     engineBrakeTorqueNm: 0
+    engineTemperatureC: 0
+    thermalEfficiency: 1
+    engineTemperatureWarning: 0
+    engineOverheated: 0
+    engineThermalDerateActive: 0
+    lastTemperatureWarningCode: 
+    lastTemperatureWarningMessage: 
+    lastTemperatureSeverity: 0
     isBelowIdle: 0
     isInCriticalZone: 0
     isOverRevving: 0
@@ -564,6 +586,7 @@ MonoBehaviour:
   transmissionStore: {fileID: 1505181476}
   vehicleOutputStore: {fileID: 344297737}
   electricalStore: {fileID: 0}
+  radiatorStore: {fileID: 0}
   runSimulation: 1
   autoFindReferences: 1
   transmissionLoad: 0
@@ -1161,13 +1184,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 447143953}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 572.68066, y: 447.9696, z: -122.17163}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 938133407}
-  m_Father: {fileID: 1966908632}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &457277231
 GameObject:
@@ -1221,6 +1244,7 @@ MonoBehaviour:
   throttleAxisMode: 0
   brakeAxisMode: 2
   clutchAxisMode: 2
+  autoDetectSignedPedalRanges: 1
 --- !u!4 &457277235
 Transform:
   m_ObjectHideFlags: 0
@@ -1743,6 +1767,7 @@ MonoBehaviour:
   vehicleOutputStore: {fileID: 344297737}
   lightsStore: {fileID: 1407332706}
   electricalStore: {fileID: 2021287523}
+  radiatorStore: {fileID: 0}
   autoFindReferences: 1
   showMenu: 0
   toggleKey: 27
@@ -2465,6 +2490,7 @@ MonoBehaviour:
     downshiftTransmissionDamageMaxPercent: 10
     skippedGearDamageMultiplier: 0.35
     fullSeverityDamageMultiplier: 1.5
+    gearConnectionMisuseMinClutchEngagement: 0.35
     reverseMisuseMinSpeedMS: 1
     reverseWhileMovingEngineDamagePercent: 100
     reverseWhileMovingTransmissionDamagePercent: 100
@@ -2483,6 +2509,8 @@ MonoBehaviour:
     highGearLaunchStrainMinClutchEngagement: 0.18
     maxSingleEventEngineDamagePercent: 100
     maxSingleEventTransmissionDamagePercent: 100
+  looseClutchShiftInputThreshold: 0.7
+  looseClutchShiftTransmissionDamagePercent: 0.25
   simulationTick: 0
   logShiftDiagnostics: 1
 --- !u!114 &1505181475
@@ -2857,7 +2885,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 133185864}
-  - {fileID: 447143954}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2010749924
@@ -3188,5 +3215,6 @@ SceneRoots:
   - {fileID: 117328973}
   - {fileID: 2075667593}
   - {fileID: 1966908632}
+  - {fileID: 447143954}
   - {fileID: 1105495760}
   - {fileID: 790698256}

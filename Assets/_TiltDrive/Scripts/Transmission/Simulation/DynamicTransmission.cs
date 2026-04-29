@@ -115,17 +115,21 @@ namespace TiltDrive.TransmissionSystem
                 {
                     int previousGear = output.currentGear;
                     int targetGear = SanitizeRequestedGear(output.requestedGear, config);
-                    DriveMisuseDiagnostics.MisuseReport misuseReport =
-                        DriveMisuseDiagnostics.AnalyzeGearChange(
-                            previousGear,
-                            targetGear,
-                            input.vehicleSpeedMS,
-                            input.wheelCircumferenceMeters,
-                            input.engineMaxRPM,
-                            config,
-                            input.damagePenaltyConfig);
 
-                    ApplyMisuseReport(output, misuseReport);
+                    if (!requiresClutchForShift)
+                    {
+                        DriveMisuseDiagnostics.MisuseReport misuseReport =
+                            DriveMisuseDiagnostics.AnalyzeGearChange(
+                                previousGear,
+                                targetGear,
+                                input.vehicleSpeedMS,
+                                input.wheelCircumferenceMeters,
+                                input.engineMaxRPM,
+                                config,
+                                input.damagePenaltyConfig);
+
+                        ApplyMisuseReport(output, misuseReport);
+                    }
 
                     output.currentGear = targetGear;
                     output.shiftInProgress = false;
@@ -150,6 +154,31 @@ namespace TiltDrive.TransmissionSystem
             // 5. FLAGS Y DIRECCION
             // --------------------------------------------------
             output.EvaluateFlags(config);
+
+            float gearConnectionMisuseThreshold = input.damagePenaltyConfig != null
+                ? Mathf.Clamp01(input.damagePenaltyConfig.gearConnectionMisuseMinClutchEngagement)
+                : 0.35f;
+            bool clutchJustConnected =
+                requiresClutchForShift &&
+                input.currentClutchEngagement < gearConnectionMisuseThreshold &&
+                output.clutchEngagement >= gearConnectionMisuseThreshold;
+
+            if (clutchJustConnected)
+            {
+                DriveMisuseDiagnostics.MisuseReport gearConnectionReport =
+                    DriveMisuseDiagnostics.AnalyzeActiveGearConnection(
+                        output.currentGear,
+                        input.vehicleSpeedMS,
+                        input.wheelCircumferenceMeters,
+                        input.engineMaxRPM,
+                        config,
+                        input.damagePenaltyConfig);
+
+                if (gearConnectionReport.hasFault)
+                {
+                    ApplyMisuseReport(output, gearConnectionReport);
+                }
+            }
 
             DriveMisuseDiagnostics.MisuseReport highGearStrainReport =
                 DriveMisuseDiagnostics.AnalyzeHighGearEngineStrain(

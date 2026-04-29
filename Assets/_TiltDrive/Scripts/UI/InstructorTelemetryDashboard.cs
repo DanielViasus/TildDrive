@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using TiltDrive.ElectricalSystem;
 using TiltDrive.EngineSystem;
@@ -28,11 +29,18 @@ namespace TiltDrive.UISystem
             English = 1
         }
 
+        private enum InstructorReportSeverity
+        {
+            Practice = 0,
+            Error = 1
+        }
+
         private const float BaseWidth = 1280f;
         private const float BaseHeight = 800f;
         private const string DefaultBackgroundAssetPath = "Assets/_TiltDrive/Art/Sprites/UI/UI_Teacher_BK.png";
         private const string DefaultSteeringBackgroundAssetPath = "Assets/_TiltDrive/Art/Sprites/UI/UI_Sistem_De_Direccion_Bk.png";
         private const string DefaultSteeringSelectorAssetPath = "Assets/_TiltDrive/Art/Sprites/UI/UI_Sistem_De_Direccion_Selector.png";
+        private const string DefaultAccelerometerBackgroundAssetPath = "Assets/_TiltDrive/Art/Sprites/UI/UI_Sistem_De_Aceletometro_Bk.png";
         private const string DefaultSpeedLimitDeselectedAssetPath = "Assets/_TiltDrive/Art/Sprites/UI/Se\u00f1a_Deseleccionada.png";
         private const string DefaultSpeedLimitSelectedAssetPath = "Assets/_TiltDrive/Art/Sprites/UI/Se\u00f1a_Seleccionada.png";
         private const string DefaultEngineConnectorsAssetPath = "Assets/_TiltDrive/Art/Sprites/UI/UI_Conectores.png";
@@ -75,11 +83,46 @@ namespace TiltDrive.UISystem
         [SerializeField] private bool showSteeringSystem = true;
         [SerializeField] private Texture2D steeringBackgroundTexture;
         [SerializeField] private Texture2D steeringSelectorTexture;
-        [SerializeField] private Rect steeringRect = new Rect(98f, 165f, 180f, 180f);
+        [SerializeField] private Rect steeringRect = new Rect(68f, 165f, 180f, 180f);
         [SerializeField] [Min(0.1f)] private float steeringVisualScale = 1f;
         [SerializeField] private Color textColor = Color.black;
         [SerializeField] [Range(-450f, 450f)] private float fallbackSteeringWheelDegrees = 0f;
         [SerializeField] [Min(1f)] private float totalSteeringWheelDegrees = 900f;
+
+        [Header("Sistema de acelerometro")]
+        [SerializeField] private bool showAccelerometerSystem = true;
+        [SerializeField] private Texture2D accelerometerBackgroundTexture;
+        [SerializeField] private Rect accelerometerRect = new Rect(1032f, 165f, 180f, 180f);
+        [SerializeField] [Min(0.1f)] private float accelerometerVisualScale = 1f;
+        [SerializeField] [Min(1f)] private float accelerometerPlotRadius = 58f;
+        [SerializeField] [Min(0.1f)] private float accelerometerMaxLongitudinalG = 1.2f;
+        [SerializeField] [Min(0.1f)] private float accelerometerMaxLateralG = 1.2f;
+        [SerializeField] [Min(0f)] private float accelerometerHighSensitivitySpeedKmh = 30f;
+        [SerializeField] [Min(1f)] private float accelerometerHighSensitivityMaxSpeedKmh = 100f;
+        [SerializeField] [Range(1f, 3f)] private float accelerometerHighSpeedSensitivityMultiplier = 1.75f;
+        [SerializeField] [Min(0.1f)] private float accelerometerTrailLifetime = 4f;
+        [SerializeField] [Range(0.01f, 0.5f)] private float accelerometerTrailSampleInterval = 0.05f;
+        [SerializeField] [Range(0.001f, 0.2f)] private float accelerometerMinSampleDistance = 0.012f;
+        [SerializeField] [Range(1, 300)] private int accelerometerMaxTrailSamples = 120;
+        [SerializeField] [Min(1f)] private float accelerometerTrailWidth = 2f;
+        [SerializeField] [Min(1f)] private float accelerometerPointSize = 6f;
+        [SerializeField] private Color accelerometerTrailOldColor = new Color(0.18f, 0.85f, 0.45f, 0.12f);
+        [SerializeField] private Color accelerometerTrailMidColor = new Color(1f, 0.72f, 0.12f, 0.55f);
+        [SerializeField] private Color accelerometerTrailNewColor = new Color(0.95f, 0.12f, 0.10f, 0.95f);
+        [SerializeField] private bool preferExternalAccelerometerInput = true;
+
+        [Header("Camara estudiante")]
+        [SerializeField] private bool showStudentCameraFeed = true;
+        [SerializeField] private Rect studentCameraRect = new Rect(350f, 165f, 630f, 335f);
+        [SerializeField] private string preferredStudentCameraName = "Iriun";
+        [SerializeField] [Min(1)] private int studentCameraRequestedWidth = 1280;
+        [SerializeField] [Min(1)] private int studentCameraRequestedHeight = 720;
+        [SerializeField] [Range(1, 60)] private int studentCameraRequestedFPS = 30;
+        [SerializeField] [Range(0f, 24f)] private float studentCameraBorderRadius = 8f;
+        [SerializeField] [Min(1f)] private float studentCameraBorderWidth = 2f;
+        [SerializeField] private Color studentCameraBorderColor = Color.black;
+        [SerializeField] private Color studentCameraBackgroundColor = new Color(0f, 0f, 0f, 0.28f);
+        [SerializeField] private Color studentCameraStatusTextColor = Color.black;
 
         [Header("Sistema de pedales")]
         [SerializeField] private bool showPedalSystem = true;
@@ -137,6 +180,32 @@ namespace TiltDrive.UISystem
         [SerializeField] private Color telemetryDividerColor = new Color(0f, 0f, 0f, 0.22f);
         [SerializeField] [Min(1f)] private float telemetryDividerWidth = 1f;
 
+        [Header("Reportes del instructor")]
+        [SerializeField] private bool showInstructorReportPanel = true;
+        [SerializeField] private Rect instructorReportRect = new Rect(1001f, 355f, 255f, 421f);
+        [SerializeField] [Range(1, 80)] private int instructorReportMaxEntries = 40;
+        [SerializeField] private Color instructorReportBackgroundColor = new Color(0.58f, 0.64f, 0.67f, 0.20f);
+        [SerializeField] private Color instructorReportBorderColor = new Color(1f, 1f, 1f, 0.78f);
+        [SerializeField] private Color instructorReportTimeColor = Color.black;
+        [SerializeField] private Color instructorReportPracticeColor = new Color(1f, 0.42f, 0.05f, 1f);
+        [SerializeField] private Color instructorReportErrorColor = new Color(0.85f, 0f, 0f, 1f);
+        [SerializeField] [Range(8, 20)] private int instructorReportFontSize = 11;
+        [SerializeField] [Min(0f)] private float instructorReportEntryGap = 8f;
+        [SerializeField] [Range(0f, 24f)] private float instructorReportBorderRadius = 8f;
+        [SerializeField] [Min(1f)] private float instructorReportBorderWidth = 2f;
+
+        [Header("Reportes de mala manipulacion")]
+        [SerializeField] [Range(0f, 100f)] private float batteryReportDischargedThreshold = 8f;
+        [SerializeField] [Range(0f, 1f)] private float rapidThrottleInputThreshold = 0.9f;
+        [SerializeField] [Range(0f, 1f)] private float rapidThrottleDeltaThreshold = 0.45f;
+        [SerializeField] [Range(0f, 1f)] private float harshBrakeInputThreshold = 0.85f;
+        [SerializeField] [Min(0f)] private float harshBrakeDecelThresholdMS2 = 6f;
+        [SerializeField] [Min(0f)] private float fastTurnMinSpeedKMH = 50f;
+        [SerializeField] [Range(0f, 1f)] private float fastTurnSteerThreshold = 0.65f;
+        [SerializeField] [Min(0f)] private float fastTurnYawThresholdDegS = 28f;
+        [SerializeField] [Min(0.1f)] private float overRevHoldSeconds = 1.5f;
+        [SerializeField] [Min(0.1f)] private float instructorPracticeReportCooldownSeconds = 2f;
+
         private GUIStyle dateStyle;
         private GUIStyle steeringDegreesStyle;
         private GUIStyle steeringLabelStyle;
@@ -161,6 +230,9 @@ namespace TiltDrive.UISystem
         private GUIStyle batteryValueStyle;
         private GUIStyle batteryUnitStyle;
         private GUIStyle handbrakeStateStyle;
+        private GUIStyle instructorReportTimeStyle;
+        private GUIStyle instructorReportMessageStyle;
+        private GUIStyle studentCameraStatusStyle;
         private GUIStyle invisibleButtonStyle;
         private Texture2D whiteTexture;
         private Texture2D engineButtonTexture;
@@ -168,11 +240,74 @@ namespace TiltDrive.UISystem
         private Texture2D speedLimitDefaultFallbackTexture;
         private Texture2D speedLimitSelectedFallbackTexture;
         private Texture2D transparentTexture;
+        private Texture2D accelerometerPointTexture;
+        private Texture2D instructorReportBackgroundTexture;
+        private Texture2D instructorReportBorderTexture;
+        private Texture2D studentCameraBackgroundTexture;
+        private Texture2D studentCameraBorderTexture;
+        private WebCamTexture studentCameraWebCamTexture;
+        private string activeStudentCameraName = string.Empty;
+        private int cachedInstructorReportTextureWidth = -1;
+        private int cachedInstructorReportTextureHeight = -1;
+        private float cachedInstructorReportBorderRadius = -1f;
+        private float cachedInstructorReportBorderWidth = -1f;
+        private Color cachedInstructorReportBackgroundColor = Color.clear;
+        private Color cachedInstructorReportBorderColor = Color.clear;
+        private int cachedStudentCameraTextureWidth = -1;
+        private int cachedStudentCameraTextureHeight = -1;
+        private float cachedStudentCameraBorderRadius = -1f;
+        private float cachedStudentCameraBorderWidth = -1f;
+        private Color cachedStudentCameraBackgroundColor = Color.clear;
+        private Color cachedStudentCameraBorderColor = Color.clear;
         private bool wasSpeedLimitExceeded = false;
         private float looseClutchWarningUntil = 0f;
         private string lastTransmissionMisuseSignature = string.Empty;
+        private string lastReportSpeedSignature = string.Empty;
+        private string lastReportTransmissionSignature = string.Empty;
+        private string lastReportElectricalSignature = string.Empty;
+        private string lastReportBrakeSignature = string.Empty;
+        private string lastReportSteeringSignature = string.Empty;
+        private string lastReportEngineSignature = string.Empty;
+        private bool hasExternalAccelerometerSample = false;
+        private Vector2 externalAccelerometerSample = Vector2.zero;
+        private bool hasPreviousThrottleInput = false;
+        private float previousThrottleInput = 0f;
+        private float overRevStartedAt = -1f;
+        private float lastRapidThrottleReportTime = -999f;
+        private float lastHarshBrakeReportTime = -999f;
+        private float lastFastTurnReportTime = -999f;
+        private float lastHeldOverRevReportTime = -999f;
+        private float lastAccelerometerTrailSampleTime = -1f;
+        private readonly List<AccelerometerTrailPoint> accelerometerTrail = new List<AccelerometerTrailPoint>(120);
+        private readonly List<InstructorReportEntry> instructorReports = new List<InstructorReportEntry>(40);
         private readonly int[] kilometerSpeedLimits = { 0, 30, 50, 90, 120 };
         private readonly int[] mileSpeedLimits = { 0, 25, 35, 55, 70 };
+
+        private struct AccelerometerTrailPoint
+        {
+            public Vector2 normalizedPosition;
+            public float time;
+
+            public AccelerometerTrailPoint(Vector2 normalizedPosition, float time)
+            {
+                this.normalizedPosition = normalizedPosition;
+                this.time = time;
+            }
+        }
+
+        private struct InstructorReportEntry
+        {
+            public string timestamp;
+            public string message;
+            public InstructorReportSeverity severity;
+
+            public InstructorReportEntry(string timestamp, string message, InstructorReportSeverity severity)
+            {
+                this.timestamp = timestamp;
+                this.message = message;
+                this.severity = severity;
+            }
+        }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void EnsureDashboard()
@@ -206,6 +341,11 @@ namespace TiltDrive.UISystem
         private void OnValidate()
         {
             EnsureAssetReferences();
+        }
+
+        private void OnDisable()
+        {
+            StopStudentCameraFeed();
         }
 
         private void OnGUI()
@@ -244,14 +384,25 @@ namespace TiltDrive.UISystem
                 Vector3.one * scale);
 
             EnsureStyles();
+            UpdateInstructorReports();
             if (showDateTime)
             {
                 DrawDateTime();
             }
 
+            if (showStudentCameraFeed)
+            {
+                DrawStudentCameraFeed();
+            }
+
             if (showSteeringSystem)
             {
                 DrawSteeringSystem();
+            }
+
+            if (showAccelerometerSystem)
+            {
+                DrawAccelerometerSystem();
             }
 
             if (showPedalSystem)
@@ -276,6 +427,11 @@ namespace TiltDrive.UISystem
                 DrawGearBatterySystem();
             }
 
+            if (showInstructorReportPanel)
+            {
+                DrawInstructorReportPanel();
+            }
+
             GUI.matrix = previousMatrix;
         }
 
@@ -284,6 +440,412 @@ namespace TiltDrive.UISystem
             DateTime now = DateTime.Now;
             GUI.Label(new Rect(51f, 70f, 180f, 24f), now.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture), dateStyle);
             GUI.Label(new Rect(51f, 97f, 180f, 24f), now.ToString("HH:mm:ss", CultureInfo.InvariantCulture), dateStyle);
+        }
+
+        private void DrawStudentCameraFeed()
+        {
+            EnsureStudentCameraFeed();
+            EnsureStudentCameraFrameTextures();
+
+            GUI.DrawTexture(studentCameraRect, studentCameraBackgroundTexture);
+
+            bool hasCameraSignal =
+                studentCameraWebCamTexture != null &&
+                studentCameraWebCamTexture.isPlaying &&
+                studentCameraWebCamTexture.width > 16 &&
+                studentCameraWebCamTexture.height > 16;
+
+            if (hasCameraSignal)
+            {
+                GUI.DrawTexture(studentCameraRect, studentCameraWebCamTexture, ScaleMode.ScaleAndCrop, false);
+            }
+            else
+            {
+                string message = WebCamTexture.devices.Length == 0
+                    ? "Sin camara detectada"
+                    : "Esperando senal de camara";
+                GUI.Label(studentCameraRect, message, studentCameraStatusStyle);
+            }
+
+            GUI.DrawTexture(studentCameraRect, studentCameraBorderTexture);
+        }
+
+        private void EnsureStudentCameraFeed()
+        {
+            if (studentCameraWebCamTexture != null && studentCameraWebCamTexture.isPlaying)
+            {
+                return;
+            }
+
+            WebCamDevice[] devices = WebCamTexture.devices;
+            if (devices == null || devices.Length == 0)
+            {
+                return;
+            }
+
+            WebCamDevice selectedDevice = devices[0];
+            if (!string.IsNullOrWhiteSpace(preferredStudentCameraName))
+            {
+                for (int i = 0; i < devices.Length; i++)
+                {
+                    if (devices[i].name.IndexOf(preferredStudentCameraName, StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        selectedDevice = devices[i];
+                        break;
+                    }
+                }
+            }
+
+            if (studentCameraWebCamTexture != null &&
+                activeStudentCameraName == selectedDevice.name)
+            {
+                studentCameraWebCamTexture.Play();
+                return;
+            }
+
+            StopStudentCameraFeed();
+            activeStudentCameraName = selectedDevice.name;
+            studentCameraWebCamTexture = new WebCamTexture(
+                selectedDevice.name,
+                Mathf.Max(1, studentCameraRequestedWidth),
+                Mathf.Max(1, studentCameraRequestedHeight),
+                Mathf.Max(1, studentCameraRequestedFPS));
+            studentCameraWebCamTexture.Play();
+        }
+
+        private void StopStudentCameraFeed()
+        {
+            if (studentCameraWebCamTexture == null)
+            {
+                return;
+            }
+
+            if (studentCameraWebCamTexture.isPlaying)
+            {
+                studentCameraWebCamTexture.Stop();
+            }
+
+            studentCameraWebCamTexture = null;
+            activeStudentCameraName = string.Empty;
+        }
+
+        private void UpdateInstructorReports()
+        {
+            UpdateSpeedReports();
+            UpdateTransmissionReports();
+            UpdateElectricalReports();
+            UpdateVehicleOutputReports();
+            UpdateEngineReports();
+            UpdateDrivingManipulationReports();
+        }
+
+        private void UpdateSpeedReports()
+        {
+            VehicleOutputState vehicle = vehicleOutputStore != null ? vehicleOutputStore.Current : null;
+            if (vehicle == null || selectedSpeedLimit <= 0)
+            {
+                lastReportSpeedSignature = string.Empty;
+                return;
+            }
+
+            float speed = GetCurrentDisplaySpeed(vehicle, speedDisplayUnit);
+            if (speed <= selectedSpeedLimit)
+            {
+                lastReportSpeedSignature = string.Empty;
+                return;
+            }
+
+            bool critical = speed > selectedSpeedLimit * (1f + speedLimitTolerance);
+            string signature = $"SPEED:{selectedSpeedLimit}:{critical}";
+            if (signature == lastReportSpeedSignature)
+            {
+                return;
+            }
+
+            string unit = GetSpeedUnitLabel(speedDisplayUnit);
+            string message = critical
+                ? $"Excede limite de velocidad +10% ({Mathf.RoundToInt(speed)} {unit})"
+                : $"Excede limite de velocidad ({Mathf.RoundToInt(speed)} {unit})";
+            AddInstructorReport(signature, InstructorReportSeverity.Practice, message);
+            lastReportSpeedSignature = signature;
+        }
+
+        private void UpdateTransmissionReports()
+        {
+            TransmissionState transmission = transmissionStore != null ? transmissionStore.Current : null;
+            if (transmission == null || !transmission.hasMisuseWarning || string.IsNullOrEmpty(transmission.lastMisuseCode))
+            {
+                lastReportTransmissionSignature = string.Empty;
+                return;
+            }
+
+            string signature = $"TRANS:{transmission.lastMisuseCode}:{transmission.simulationTick}:{transmission.accumulatedDamagePercent:0.000}";
+            if (signature == lastReportTransmissionSignature)
+            {
+                return;
+            }
+
+            AddInstructorReport(signature, InstructorReportSeverity.Practice, ResolveTransmissionReportMessage(transmission.lastMisuseCode));
+            lastReportTransmissionSignature = signature;
+        }
+
+        private void UpdateElectricalReports()
+        {
+            VehicleElectricalState electrical = electricalStore != null ? electricalStore.Current : null;
+            if (electrical == null || !electrical.hasElectricalWarning || string.IsNullOrEmpty(electrical.lastWarningCode))
+            {
+                lastReportElectricalSignature = string.Empty;
+                return;
+            }
+
+            bool starterLoadWithUsableBattery =
+                electrical.starterActive &&
+                electrical.batteryChargePercent > batteryReportDischargedThreshold;
+
+            if (starterLoadWithUsableBattery)
+            {
+                lastReportElectricalSignature = string.Empty;
+                return;
+            }
+
+            string signature = $"ELEC:{electrical.lastWarningCode}";
+            if (signature == lastReportElectricalSignature)
+            {
+                return;
+            }
+
+            bool critical =
+                electrical.batteryChargePercent <= batteryReportDischargedThreshold ||
+                electrical.criticalVoltageWarning ||
+                electrical.lastWarningCode.Contains("CRITICAL");
+            string message = critical ? "Voltaje critico de bateria" : "Voltaje bajo en bateria";
+            AddInstructorReport(signature, critical ? InstructorReportSeverity.Error : InstructorReportSeverity.Practice, message);
+            lastReportElectricalSignature = signature;
+        }
+
+        private void UpdateVehicleOutputReports()
+        {
+            VehicleOutputState vehicle = vehicleOutputStore != null ? vehicleOutputStore.Current : null;
+            if (vehicle == null)
+            {
+                lastReportBrakeSignature = string.Empty;
+                lastReportSteeringSignature = string.Empty;
+                return;
+            }
+
+            if (vehicle.hasBrakeWarning || vehicle.absActive || vehicle.wheelsLocked || vehicle.brakeFadeActive || vehicle.brakeOverheated)
+            {
+                string brakeCode = !string.IsNullOrEmpty(vehicle.lastBrakeWarningCode)
+                    ? vehicle.lastBrakeWarningCode
+                    : vehicle.wheelsLocked ? "WHEELS_LOCKED" : vehicle.absActive ? "ABS_ACTIVE" : "BRAKE_WARNING";
+                string signature = $"BRAKE:{brakeCode}:{vehicle.absActive}:{vehicle.wheelsLocked}:{vehicle.brakeOverheated}";
+                if (signature != lastReportBrakeSignature)
+                {
+                    bool error = vehicle.wheelsLocked || vehicle.brakeOverheated || vehicle.brakeFadeActive || brakeCode.Contains("CRITICAL");
+                    AddInstructorReport(signature, error ? InstructorReportSeverity.Error : InstructorReportSeverity.Practice, ResolveBrakeReportMessage(vehicle, brakeCode));
+                    lastReportBrakeSignature = signature;
+                }
+            }
+            else
+            {
+                lastReportBrakeSignature = string.Empty;
+            }
+
+            if (vehicle.hasSteeringWarning && !string.IsNullOrEmpty(vehicle.lastSteeringWarningCode))
+            {
+                string signature = $"STEER:{vehicle.lastSteeringWarningCode}";
+                if (signature != lastReportSteeringSignature)
+                {
+                    AddInstructorReport(signature, InstructorReportSeverity.Practice, ResolveSteeringReportMessage(vehicle.lastSteeringWarningCode));
+                    lastReportSteeringSignature = signature;
+                }
+            }
+            else
+            {
+                lastReportSteeringSignature = string.Empty;
+            }
+        }
+
+        private void UpdateEngineReports()
+        {
+            EngineState engine = engineStore != null ? engineStore.Current : null;
+            if (engine == null)
+            {
+                lastReportEngineSignature = string.Empty;
+                return;
+            }
+
+            string signature = string.Empty;
+            InstructorReportSeverity severity = InstructorReportSeverity.Practice;
+            string message = string.Empty;
+
+            if (engine.engineStalled)
+            {
+                signature = $"ENGINE:STALLED:{engine.simulationTick}";
+                severity = InstructorReportSeverity.Error;
+                message = "Se apago el motor por mala maniobra";
+            }
+            else if (engine.engineOverheated || engine.engineThermalDerateActive)
+            {
+                signature = $"ENGINE:TEMP:{engine.lastTemperatureWarningCode}";
+                severity = InstructorReportSeverity.Error;
+                message = "Temperatura critica del motor";
+            }
+            else if (engine.engineTemperatureWarning)
+            {
+                signature = $"ENGINE:TEMP_WARN:{engine.lastTemperatureWarningCode}";
+                message = "Temperatura alta del motor";
+            }
+            else if (engine.starterOveruseWarning)
+            {
+                signature = $"ENGINE:STARTER:{engine.lastStarterWarningCode}";
+                message = "Arranque sostenido demasiado tiempo";
+            }
+            else if (engine.launchStallRisk)
+            {
+                signature = $"ENGINE:STALL_RISK:{engine.lastLaunchWarningCode}";
+                message = "Riesgo de apagar el motor al arrancar";
+            }
+            else if (engine.hasLaunchMisuse || engine.hasLaunchWarning)
+            {
+                signature = $"ENGINE:LAUNCH:{engine.lastLaunchWarningCode}";
+                message = ResolveLaunchReportMessage(engine.lastLaunchWarningCode);
+            }
+
+            if (string.IsNullOrEmpty(signature))
+            {
+                lastReportEngineSignature = string.Empty;
+                return;
+            }
+
+            if (signature == lastReportEngineSignature)
+            {
+                return;
+            }
+
+            AddInstructorReport(signature, severity, message);
+            lastReportEngineSignature = signature;
+        }
+
+        private void UpdateDrivingManipulationReports()
+        {
+            InputState input = inputStore != null ? inputStore.Current : null;
+            VehicleOutputState vehicle = vehicleOutputStore != null ? vehicleOutputStore.Current : null;
+            EngineState engine = engineStore != null ? engineStore.Current : null;
+
+            UpdateRapidThrottleReport(input);
+            UpdateHeldOverRevReport(engine);
+            UpdateHarshBrakeReport(input, vehicle);
+            UpdateFastTurnReport(input, vehicle);
+        }
+
+        private void UpdateRapidThrottleReport(InputState input)
+        {
+            if (input == null)
+            {
+                hasPreviousThrottleInput = false;
+                return;
+            }
+
+            if (!hasPreviousThrottleInput)
+            {
+                previousThrottleInput = input.throttle;
+                hasPreviousThrottleInput = true;
+                return;
+            }
+
+            float throttleDelta = input.throttle - previousThrottleInput;
+            if (input.throttle >= rapidThrottleInputThreshold &&
+                throttleDelta >= rapidThrottleDeltaThreshold &&
+                Time.time - lastRapidThrottleReportTime >= instructorPracticeReportCooldownSeconds)
+            {
+                lastRapidThrottleReportTime = Time.time;
+                AddInstructorReportWithConsoleLog(
+                    InstructorReportSeverity.Practice,
+                    "Acelera a fondo demasiado rapido");
+            }
+
+            previousThrottleInput = input.throttle;
+        }
+
+        private void UpdateHeldOverRevReport(EngineState engine)
+        {
+            bool overRevving = engine != null && (engine.isOverRevving || engine.isInCriticalZone);
+            if (!overRevving)
+            {
+                overRevStartedAt = -1f;
+                return;
+            }
+
+            if (overRevStartedAt < 0f)
+            {
+                overRevStartedAt = Time.time;
+                return;
+            }
+
+            if (Time.time - overRevStartedAt < overRevHoldSeconds ||
+                Time.time - lastHeldOverRevReportTime < instructorPracticeReportCooldownSeconds)
+            {
+                return;
+            }
+
+            lastHeldOverRevReportTime = Time.time;
+            AddInstructorReportWithConsoleLog(
+                InstructorReportSeverity.Error,
+                "Mantiene el motor sobre revolucionado");
+        }
+
+        private void UpdateHarshBrakeReport(InputState input, VehicleOutputState vehicle)
+        {
+            if (input == null || vehicle == null)
+            {
+                return;
+            }
+
+            bool harshBrake =
+                input.brake >= harshBrakeInputThreshold &&
+                (vehicle.brakeDemandDecelerationMS2 >= harshBrakeDecelThresholdMS2 ||
+                 vehicle.accelerationMS2 <= -harshBrakeDecelThresholdMS2 ||
+                 vehicle.absActive ||
+                 vehicle.wheelsLocked);
+
+            if (!harshBrake ||
+                Time.time - lastHarshBrakeReportTime < instructorPracticeReportCooldownSeconds)
+            {
+                return;
+            }
+
+            lastHarshBrakeReportTime = Time.time;
+            AddInstructorReportWithConsoleLog(
+                vehicle.wheelsLocked ? InstructorReportSeverity.Error : InstructorReportSeverity.Practice,
+                vehicle.wheelsLocked ? "Frena brusco y bloquea ruedas" : "Frena de forma brusca");
+        }
+
+        private void UpdateFastTurnReport(InputState input, VehicleOutputState vehicle)
+        {
+            if (input == null || vehicle == null)
+            {
+                return;
+            }
+
+            bool highSpeed = vehicle.absoluteSpeedKMH >= fastTurnMinSpeedKMH;
+            bool fastTurn =
+                highSpeed &&
+                Mathf.Abs(input.steer) >= fastTurnSteerThreshold &&
+                (Mathf.Abs(vehicle.yawRateDegreesPerSecond) >= fastTurnYawThresholdDegS ||
+                 vehicle.steeringInputDelta >= 0.25f ||
+                 vehicle.steeringControlLost);
+
+            if (!fastTurn ||
+                Time.time - lastFastTurnReportTime < instructorPracticeReportCooldownSeconds)
+            {
+                return;
+            }
+
+            lastFastTurnReportTime = Time.time;
+            AddInstructorReportWithConsoleLog(
+                vehicle.steeringControlLost ? InstructorReportSeverity.Error : InstructorReportSeverity.Practice,
+                vehicle.steeringControlLost ? "Pierde control por giro a alta velocidad" : "Gira muy rapido a alta velocidad");
         }
 
         private void DrawSteeringSystem()
@@ -312,6 +874,160 @@ namespace TiltDrive.UISystem
             GUI.Label(degreesRect, steeringDegrees.ToString("+0;-0;0", CultureInfo.InvariantCulture) + "\u00B0", steeringDegreesStyle);
             GUI.Label(labelRect, T("direction"), steeringLabelStyle);
             GUI.Label(subLabelRect, T("steering_wheel"), steeringSubLabelStyle);
+        }
+
+        private void DrawInstructorReportPanel()
+        {
+            EnsureInstructorReportPanelTextures();
+            GUI.DrawTexture(instructorReportRect, instructorReportBackgroundTexture);
+            GUI.DrawTexture(instructorReportRect, instructorReportBorderTexture);
+
+            Rect contentRect = new Rect(
+                instructorReportRect.x + 14f,
+                instructorReportRect.y + 22f,
+                instructorReportRect.width - 28f,
+                instructorReportRect.height - 34f);
+
+            float y = contentRect.y;
+            for (int i = instructorReports.Count - 1; i >= 0; i--)
+            {
+                InstructorReportEntry entry = instructorReports[i];
+                instructorReportTimeStyle.fontSize = instructorReportFontSize;
+                instructorReportMessageStyle.fontSize = instructorReportFontSize;
+
+                Rect timeRect = new Rect(contentRect.x, y, contentRect.width, instructorReportFontSize + 4f);
+                GUI.Label(timeRect, entry.timestamp, instructorReportTimeStyle);
+                y += timeRect.height;
+
+                instructorReportMessageStyle.normal.textColor = entry.severity == InstructorReportSeverity.Error
+                    ? instructorReportErrorColor
+                    : instructorReportPracticeColor;
+                float messageHeight = instructorReportMessageStyle.CalcHeight(new GUIContent("-" + entry.message), contentRect.width);
+                Rect messageRect = new Rect(contentRect.x, y, contentRect.width, messageHeight);
+                GUI.Label(messageRect, "-" + entry.message, instructorReportMessageStyle);
+                y += messageHeight + instructorReportEntryGap;
+
+                if (y > contentRect.yMax - instructorReportFontSize)
+                {
+                    break;
+                }
+            }
+        }
+
+        private void AddInstructorReport(string signature, InstructorReportSeverity severity, string message)
+        {
+            if (string.IsNullOrWhiteSpace(message))
+            {
+                return;
+            }
+
+            instructorReports.Add(new InstructorReportEntry(
+                DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture),
+                message,
+                severity));
+
+            int maxEntries = Mathf.Max(1, instructorReportMaxEntries);
+            while (instructorReports.Count > maxEntries)
+            {
+                instructorReports.RemoveAt(0);
+            }
+        }
+
+        private void AddInstructorReportWithConsoleLog(InstructorReportSeverity severity, string message)
+        {
+            string signature = $"DASH:{severity}:{message}:{Time.time:0.000}";
+            AddInstructorReport(signature, severity, message);
+
+            string tag = severity == InstructorReportSeverity.Error
+                ? "InstructorError"
+                : "InstructorPractice";
+            Debug.LogWarning($"[TiltDrive][{tag}] {message}");
+        }
+
+        public void AddInstructorPracticeReport(string message)
+        {
+            AddInstructorReport($"EXTERNAL_PRACTICE:{Time.time:0.000}", InstructorReportSeverity.Practice, message);
+        }
+
+        public void AddInstructorErrorReport(string message)
+        {
+            AddInstructorReport($"EXTERNAL_ERROR:{Time.time:0.000}", InstructorReportSeverity.Error, message);
+        }
+
+        private static string ResolveTransmissionReportMessage(string code)
+        {
+            if (code == "SHIFT_WITH_CLUTCH_RELEASED")
+            {
+                return "Cambio con embrague insuficiente";
+            }
+
+            if (code.StartsWith("HIGH_GEAR_ENGINE_STRAIN", StringComparison.OrdinalIgnoreCase))
+            {
+                return "Marcha alta fuerza el motor";
+            }
+
+            if (CodeContains(code, "CLUTCH"))
+            {
+                return "Uso incorrecto del embrague";
+            }
+
+            return "Uso incorrecto de transmision";
+        }
+
+        private static string ResolveBrakeReportMessage(VehicleOutputState vehicle, string code)
+        {
+            if (vehicle.wheelsLocked)
+            {
+                return "Bloqueo de ruedas por frenado";
+            }
+
+            if (vehicle.brakeOverheated || vehicle.brakeFadeActive || CodeContains(code, "OVERHEAT"))
+            {
+                return "Frenos sobrecalentados";
+            }
+
+            if (vehicle.absActive)
+            {
+                return "ABS activo por frenado fuerte";
+            }
+
+            return "Frenado agresivo detectado";
+        }
+
+        private static string ResolveSteeringReportMessage(string code)
+        {
+            if (CodeContains(code, "LOSS") || CodeContains(code, "LOCK"))
+            {
+                return "Perdida de control en direccion";
+            }
+
+            return "Giro brusco a velocidad alta";
+        }
+
+        private static string ResolveLaunchReportMessage(string code)
+        {
+            if (CodeContains(code, "STALL"))
+            {
+                return "Arranque con riesgo de apagar motor";
+            }
+
+            if (CodeContains(code, "THROTTLE"))
+            {
+                return "Aceleracion inadecuada al arrancar";
+            }
+
+            if (CodeContains(code, "BRAKE"))
+            {
+                return "Arranque con freno aplicado";
+            }
+
+            return "Mala coordinacion en el arranque";
+        }
+
+        private static bool CodeContains(string source, string value)
+        {
+            return !string.IsNullOrEmpty(source) &&
+                source.IndexOf(value, StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         private float GetSteeringDegrees()
@@ -347,6 +1063,188 @@ namespace TiltDrive.UISystem
             GUIUtility.RotateAroundPivot(angleDegrees, pivot);
             GUI.DrawTexture(rect, texture, ScaleMode.StretchToFill, true);
             GUI.matrix = previousMatrix;
+        }
+
+        private void DrawAccelerometerSystem()
+        {
+            float visualSize = SteeringBaseSize * accelerometerVisualScale;
+            Rect textureRect = CenterRect(accelerometerRect, visualSize, visualSize);
+
+            if (accelerometerBackgroundTexture != null)
+            {
+                GUI.DrawTexture(textureRect, accelerometerBackgroundTexture, ScaleMode.StretchToFill, true);
+            }
+
+            Vector2 sample = ResolveAccelerometerSample();
+            Vector2 normalizedPosition = NormalizeAccelerometerSample(sample);
+            UpdateAccelerometerTrail(normalizedPosition);
+            DrawAccelerometerTrail(textureRect);
+        }
+
+        private Vector2 ResolveAccelerometerSample()
+        {
+            if (preferExternalAccelerometerInput && hasExternalAccelerometerSample)
+            {
+                return externalAccelerometerSample;
+            }
+
+            VehicleOutputState vehicle = vehicleOutputStore != null ? vehicleOutputStore.Current : null;
+            if (vehicle != null)
+            {
+                float speedKmh = Mathf.Abs(vehicle.finalSpeedKMH);
+                float speedFactor = Mathf.Clamp01(speedKmh / 70f);
+                float highSpeed01 = Mathf.InverseLerp(
+                    accelerometerHighSensitivitySpeedKmh,
+                    Mathf.Max(accelerometerHighSensitivitySpeedKmh + 1f, accelerometerHighSensitivityMaxSpeedKmh),
+                    speedKmh);
+                float sensitivity = Mathf.Lerp(1f, accelerometerHighSpeedSensitivityMultiplier, highSpeed01);
+                float lateralG = Mathf.Clamp(
+                    vehicle.effectiveSteerInput * speedFactor * sensitivity * accelerometerMaxLateralG,
+                    -accelerometerMaxLateralG,
+                    accelerometerMaxLateralG);
+                float longitudinalG = Mathf.Clamp(
+                    (vehicle.accelerationMS2 / 9.80665f) * sensitivity,
+                    -accelerometerMaxLongitudinalG,
+                    accelerometerMaxLongitudinalG);
+                return new Vector2(lateralG, longitudinalG);
+            }
+
+            InputState input = inputStore != null ? inputStore.Current : null;
+            if (input != null)
+            {
+                float fallbackLongitudinalG = (input.throttle - input.brake) * accelerometerMaxLongitudinalG * 0.45f;
+                float fallbackLateralG = input.steer * Mathf.Abs(fallbackLongitudinalG) * 0.65f;
+                return new Vector2(fallbackLateralG, fallbackLongitudinalG);
+            }
+
+            return Vector2.zero;
+        }
+
+        private Vector2 NormalizeAccelerometerSample(Vector2 sample)
+        {
+            Vector2 normalized = new Vector2(
+                Mathf.Clamp(sample.x / Mathf.Max(0.01f, accelerometerMaxLateralG), -1f, 1f),
+                Mathf.Clamp(sample.y / Mathf.Max(0.01f, accelerometerMaxLongitudinalG), -1f, 1f));
+
+            return Vector2.ClampMagnitude(normalized, 1f);
+        }
+
+        private void UpdateAccelerometerTrail(Vector2 normalizedPosition)
+        {
+            float now = Time.time;
+            float lifetime = Mathf.Max(0.1f, accelerometerTrailLifetime);
+            for (int i = accelerometerTrail.Count - 1; i >= 0; i--)
+            {
+                if (now - accelerometerTrail[i].time > lifetime)
+                {
+                    accelerometerTrail.RemoveAt(i);
+                }
+            }
+
+            bool shouldSample = accelerometerTrail.Count == 0 ||
+                now - lastAccelerometerTrailSampleTime >= accelerometerTrailSampleInterval;
+            if (!shouldSample)
+            {
+                return;
+            }
+
+            if (accelerometerTrail.Count > 0)
+            {
+                Vector2 lastPosition = accelerometerTrail[accelerometerTrail.Count - 1].normalizedPosition;
+                if (Vector2.Distance(lastPosition, normalizedPosition) < accelerometerMinSampleDistance)
+                {
+                    return;
+                }
+            }
+
+            accelerometerTrail.Add(new AccelerometerTrailPoint(normalizedPosition, now));
+            lastAccelerometerTrailSampleTime = now;
+
+            while (accelerometerTrail.Count > accelerometerMaxTrailSamples)
+            {
+                accelerometerTrail.RemoveAt(0);
+            }
+        }
+
+        private void DrawAccelerometerTrail(Rect textureRect)
+        {
+            if (accelerometerTrail.Count == 0)
+            {
+                return;
+            }
+
+            float now = Time.time;
+            float lifetime = Mathf.Max(0.1f, accelerometerTrailLifetime);
+            Vector2 previous = GetAccelerometerScreenPosition(textureRect, accelerometerTrail[0].normalizedPosition);
+            for (int i = 1; i < accelerometerTrail.Count; i++)
+            {
+                AccelerometerTrailPoint point = accelerometerTrail[i];
+                float age01 = Mathf.Clamp01((now - point.time) / lifetime);
+                Color color = ResolveAccelerometerTrailColor(age01);
+                Vector2 current = GetAccelerometerScreenPosition(textureRect, point.normalizedPosition);
+                DrawLine(previous, current, color, accelerometerTrailWidth);
+                previous = current;
+            }
+
+            AccelerometerTrailPoint latest = accelerometerTrail[accelerometerTrail.Count - 1];
+            Vector2 latestPosition = GetAccelerometerScreenPosition(textureRect, latest.normalizedPosition);
+            DrawCircle(latestPosition, accelerometerPointSize, accelerometerTrailNewColor);
+        }
+
+        private Vector2 GetAccelerometerScreenPosition(Rect textureRect, Vector2 normalizedPosition)
+        {
+            float radius = accelerometerPlotRadius * accelerometerVisualScale;
+            return textureRect.center + new Vector2(-normalizedPosition.x * radius, normalizedPosition.y * radius);
+        }
+
+        private Color ResolveAccelerometerTrailColor(float age01)
+        {
+            float freshness = 1f - age01;
+            Color color = freshness < 0.5f
+                ? Color.Lerp(accelerometerTrailOldColor, accelerometerTrailMidColor, freshness * 2f)
+                : Color.Lerp(accelerometerTrailMidColor, accelerometerTrailNewColor, (freshness - 0.5f) * 2f);
+            color.a *= Mathf.Clamp01(freshness);
+            return color;
+        }
+
+        private void DrawLine(Vector2 start, Vector2 end, Color color, float width)
+        {
+            Vector2 delta = end - start;
+            float length = delta.magnitude;
+            if (length <= 0.01f)
+            {
+                return;
+            }
+
+            Matrix4x4 previousMatrix = GUI.matrix;
+            Color previousColor = GUI.color;
+            GUI.color = color;
+            float angle = Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg;
+            Vector2 pivot = GUI.matrix.MultiplyPoint(start);
+            GUIUtility.RotateAroundPivot(angle, pivot);
+            GUI.DrawTexture(new Rect(start.x, start.y - width * 0.5f, length, width), whiteTexture);
+            GUI.color = previousColor;
+            GUI.matrix = previousMatrix;
+        }
+
+        private void DrawCircle(Vector2 center, float size, Color color)
+        {
+            Color previousColor = GUI.color;
+            GUI.color = color;
+            GUI.DrawTexture(new Rect(center.x - size * 0.5f, center.y - size * 0.5f, size, size), accelerometerPointTexture);
+            GUI.color = previousColor;
+        }
+
+        public void SetExternalAccelerometerSample(float lateralG, float longitudinalG)
+        {
+            externalAccelerometerSample = new Vector2(lateralG, longitudinalG);
+            hasExternalAccelerometerSample = true;
+        }
+
+        public void ClearExternalAccelerometerSample()
+        {
+            hasExternalAccelerometerSample = false;
+            externalAccelerometerSample = Vector2.zero;
         }
 
         private static Rect CenterRect(Rect container, float width, float height)
@@ -823,6 +1721,91 @@ namespace TiltDrive.UISystem
             GUI.color = previous;
         }
 
+        private static void DrawRectBorder(Rect rect, Color color, float width)
+        {
+            float clampedWidth = Mathf.Max(1f, width);
+            DrawColor(new Rect(rect.x, rect.y, rect.width, clampedWidth), color);
+            DrawColor(new Rect(rect.x, rect.yMax - clampedWidth, rect.width, clampedWidth), color);
+            DrawColor(new Rect(rect.x, rect.y, clampedWidth, rect.height), color);
+            DrawColor(new Rect(rect.xMax - clampedWidth, rect.y, clampedWidth, rect.height), color);
+        }
+
+        private void EnsureInstructorReportPanelTextures()
+        {
+            int width = Mathf.Max(1, Mathf.RoundToInt(instructorReportRect.width));
+            int height = Mathf.Max(1, Mathf.RoundToInt(instructorReportRect.height));
+            float radius = Mathf.Clamp(instructorReportBorderRadius, 0f, Mathf.Min(width, height) * 0.5f);
+            float borderWidth = Mathf.Max(1f, instructorReportBorderWidth);
+
+            bool shouldRebuild =
+                instructorReportBackgroundTexture == null ||
+                instructorReportBorderTexture == null ||
+                cachedInstructorReportTextureWidth != width ||
+                cachedInstructorReportTextureHeight != height ||
+                !Mathf.Approximately(cachedInstructorReportBorderRadius, radius) ||
+                !Mathf.Approximately(cachedInstructorReportBorderWidth, borderWidth) ||
+                cachedInstructorReportBackgroundColor != instructorReportBackgroundColor ||
+                cachedInstructorReportBorderColor != instructorReportBorderColor;
+
+            if (!shouldRebuild)
+            {
+                return;
+            }
+
+            instructorReportBackgroundTexture = MakeRoundedTexture(instructorReportBackgroundColor, width, height, radius);
+            instructorReportBorderTexture = MakeRoundedBorderTexture(
+                width,
+                height,
+                radius,
+                borderWidth,
+                instructorReportBorderColor);
+
+            cachedInstructorReportTextureWidth = width;
+            cachedInstructorReportTextureHeight = height;
+            cachedInstructorReportBorderRadius = radius;
+            cachedInstructorReportBorderWidth = borderWidth;
+            cachedInstructorReportBackgroundColor = instructorReportBackgroundColor;
+            cachedInstructorReportBorderColor = instructorReportBorderColor;
+        }
+
+        private void EnsureStudentCameraFrameTextures()
+        {
+            int width = Mathf.Max(1, Mathf.RoundToInt(studentCameraRect.width));
+            int height = Mathf.Max(1, Mathf.RoundToInt(studentCameraRect.height));
+            float radius = Mathf.Clamp(studentCameraBorderRadius, 0f, Mathf.Min(width, height) * 0.5f);
+            float borderWidth = Mathf.Max(1f, studentCameraBorderWidth);
+
+            bool shouldRebuild =
+                studentCameraBackgroundTexture == null ||
+                studentCameraBorderTexture == null ||
+                cachedStudentCameraTextureWidth != width ||
+                cachedStudentCameraTextureHeight != height ||
+                !Mathf.Approximately(cachedStudentCameraBorderRadius, radius) ||
+                !Mathf.Approximately(cachedStudentCameraBorderWidth, borderWidth) ||
+                cachedStudentCameraBackgroundColor != studentCameraBackgroundColor ||
+                cachedStudentCameraBorderColor != studentCameraBorderColor;
+
+            if (!shouldRebuild)
+            {
+                return;
+            }
+
+            studentCameraBackgroundTexture = MakeRoundedTexture(studentCameraBackgroundColor, width, height, radius);
+            studentCameraBorderTexture = MakeRoundedBorderTexture(
+                width,
+                height,
+                radius,
+                borderWidth,
+                studentCameraBorderColor);
+
+            cachedStudentCameraTextureWidth = width;
+            cachedStudentCameraTextureHeight = height;
+            cachedStudentCameraBorderRadius = radius;
+            cachedStudentCameraBorderWidth = borderWidth;
+            cachedStudentCameraBackgroundColor = studentCameraBackgroundColor;
+            cachedStudentCameraBorderColor = studentCameraBorderColor;
+        }
+
         private void EnsureAssetReferences()
         {
 #if UNITY_EDITOR
@@ -849,6 +1832,11 @@ namespace TiltDrive.UISystem
             if (steeringSelectorTexture == null)
             {
                 steeringSelectorTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(DefaultSteeringSelectorAssetPath);
+            }
+
+            if (accelerometerBackgroundTexture == null)
+            {
+                accelerometerBackgroundTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(DefaultAccelerometerBackgroundAssetPath);
             }
 
             if (speedLimitDeselectedTexture == null)
@@ -910,6 +1898,7 @@ namespace TiltDrive.UISystem
                 speedLimitSelectedBorderColor,
                 speedLimitSelectedFillColor);
             transparentTexture ??= MakeTexture(new Color(0f, 0f, 0f, 0f));
+            accelerometerPointTexture ??= MakeCircleTexture(32);
 
             dateStyle ??= new GUIStyle(GUI.skin.label)
             {
@@ -1148,6 +2137,36 @@ namespace TiltDrive.UISystem
                 normal = { textColor = pedalTextColor }
             };
 
+            instructorReportTimeStyle ??= new GUIStyle(GUI.skin.label)
+            {
+                alignment = TextAnchor.MiddleLeft,
+                font = primaryFont,
+                fontSize = instructorReportFontSize,
+                clipping = TextClipping.Clip,
+                wordWrap = false,
+                normal = { textColor = instructorReportTimeColor }
+            };
+
+            instructorReportMessageStyle ??= new GUIStyle(GUI.skin.label)
+            {
+                alignment = TextAnchor.UpperLeft,
+                font = primaryFont,
+                fontSize = instructorReportFontSize,
+                clipping = TextClipping.Clip,
+                wordWrap = true,
+                normal = { textColor = instructorReportPracticeColor }
+            };
+
+            studentCameraStatusStyle ??= new GUIStyle(GUI.skin.label)
+            {
+                alignment = TextAnchor.MiddleCenter,
+                font = primaryFont,
+                fontSize = 22,
+                clipping = TextClipping.Clip,
+                wordWrap = true,
+                normal = { textColor = studentCameraStatusTextColor }
+            };
+
             invisibleButtonStyle ??= new GUIStyle(GUI.skin.button)
             {
                 normal = { background = transparentTexture, textColor = Color.clear },
@@ -1240,6 +2259,11 @@ namespace TiltDrive.UISystem
             {
                 handbrakeStateStyle.fontSize = Mathf.Max(8, telemetrySupplementFontSize - 8);
             }
+
+            if (studentCameraStatusStyle != null)
+            {
+                studentCameraStatusStyle.normal.textColor = studentCameraStatusTextColor;
+            }
         }
 
         private void DrawDot(Vector2 center, float radius, Color color)
@@ -1285,6 +2309,54 @@ namespace TiltDrive.UISystem
 
             texture.Apply();
             return texture;
+        }
+
+        private static Texture2D MakeRoundedBorderTexture(int width, int height, float radius, float borderWidth, Color borderColor)
+        {
+            Texture2D texture = new Texture2D(width, height, TextureFormat.RGBA32, false)
+            {
+                hideFlags = HideFlags.HideAndDontSave
+            };
+
+            float outerRadius = Mathf.Clamp(radius, 0f, Mathf.Min(width, height) * 0.5f);
+            float innerRadius = Mathf.Max(0f, outerRadius - borderWidth);
+            float maxX = width - 1f;
+            float maxY = height - 1f;
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    bool insideOuter = IsInsideRoundedRectPixel(x, y, maxX, maxY, outerRadius);
+                    bool insideInner = x >= borderWidth &&
+                        x <= maxX - borderWidth &&
+                        y >= borderWidth &&
+                        y <= maxY - borderWidth &&
+                        IsInsideRoundedRectPixel(
+                            x - borderWidth,
+                            y - borderWidth,
+                            maxX - borderWidth * 2f,
+                            maxY - borderWidth * 2f,
+                            innerRadius);
+
+                    texture.SetPixel(x, y, insideOuter && !insideInner ? borderColor : Color.clear);
+                }
+            }
+
+            texture.Apply();
+            return texture;
+        }
+
+        private static bool IsInsideRoundedRectPixel(float x, float y, float maxX, float maxY, float radius)
+        {
+            if (radius <= 0f)
+            {
+                return x >= 0f && x <= maxX && y >= 0f && y <= maxY;
+            }
+
+            float cornerX = x < radius ? radius : x > maxX - radius ? maxX - radius : x;
+            float cornerY = y < radius ? radius : y > maxY - radius ? maxY - radius : y;
+            return Vector2.Distance(new Vector2(x, y), new Vector2(cornerX, cornerY)) <= radius;
         }
 
         private static Texture2D MakeCircleTexture(int size)

@@ -240,6 +240,16 @@ namespace TiltDrive.ElectricalSystem
             state.lastWarningCode = string.Empty;
             state.lastWarningMessage = string.Empty;
 
+            bool starterSagWithUsableBattery =
+                state.starterActive &&
+                state.batteryChargePercent >= config.minimumIgnitionChargePercent &&
+                state.batteryVoltage >= config.minimumIgnitionVoltage;
+
+            if (starterSagWithUsableBattery)
+            {
+                return;
+            }
+
             if (state.systemVoltage <= config.criticalVoltage)
             {
                 state.hasElectricalWarning = true;

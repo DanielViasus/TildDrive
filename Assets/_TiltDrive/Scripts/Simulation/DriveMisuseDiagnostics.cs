@@ -352,6 +352,97 @@ namespace TiltDrive.Simulation
             return report;
         }
 
+        public static MisuseReport AnalyzeActiveGearConnection(
+            int currentGear,
+            float vehicleSpeedMS,
+            float wheelCircumferenceMeters,
+            float engineMaxRPM,
+            TransmissionConfig transmissionConfig,
+            DriveDamagePenaltyConfig damagePenaltyConfig)
+        {
+            MisuseReport report = new MisuseReport
+            {
+                code = string.Empty,
+                message = string.Empty,
+                currentGear = currentGear,
+                maxEngineRPM = Mathf.Max(0f, engineMaxRPM)
+            };
+
+            if (damagePenaltyConfig == null)
+            {
+                damagePenaltyConfig = new DriveDamagePenaltyConfig();
+            }
+
+            damagePenaltyConfig.ClampValues();
+
+            if (transmissionConfig == null || wheelCircumferenceMeters <= 0f)
+            {
+                return report;
+            }
+
+            if (currentGear < 0 && Mathf.Abs(vehicleSpeedMS) >= damagePenaltyConfig.reverseMisuseMinSpeedMS)
+            {
+                report.hasFault = true;
+                report.code = "REVERSE_WHILE_MOVING";
+                report.severity = 1f;
+                report.engineDamagePercent = Mathf.Min(
+                    damagePenaltyConfig.reverseWhileMovingEngineDamagePercent,
+                    damagePenaltyConfig.maxSingleEventEngineDamagePercent);
+                report.transmissionDamagePercent = Mathf.Min(
+                    damagePenaltyConfig.reverseWhileMovingTransmissionDamagePercent,
+                    damagePenaltyConfig.maxSingleEventTransmissionDamagePercent);
+                report.message =
+                    $"Reverse engaged while moving at {Mathf.Abs(vehicleSpeedMS) * 3.6f:F1} km/h.";
+                return report;
+            }
+
+            if (currentGear <= 0 || engineMaxRPM <= 0f)
+            {
+                return report;
+            }
+
+            float targetGearRatio = transmissionConfig.GetGearRatio(currentGear);
+            float targetTotalDriveRatio = targetGearRatio * transmissionConfig.finalDriveRatio;
+            if (targetTotalDriveRatio <= 0f)
+            {
+                return report;
+            }
+
+            float wheelRPM = Mathf.Abs(vehicleSpeedMS) / wheelCircumferenceMeters * 60f;
+            float requiredEngineRPM = wheelRPM * targetTotalDriveRatio;
+            report.requiredEngineRPM = requiredEngineRPM;
+
+            if (requiredEngineRPM <= engineMaxRPM)
+            {
+                return report;
+            }
+
+            float overRevRPM = requiredEngineRPM - engineMaxRPM;
+            float severity = Mathf.Clamp01(
+                overRevRPM / Mathf.Max(1f, engineMaxRPM * damagePenaltyConfig.overRevSeverityRPMWindowFactor));
+            float severityMultiplier = Mathf.Lerp(1f, damagePenaltyConfig.fullSeverityDamageMultiplier, severity);
+
+            report.hasFault = true;
+            report.code = "BAD_DOWNSHIFT_OVERREV";
+            report.severity = severity;
+            report.engineDamagePercent = Mathf.Min(
+                Mathf.Lerp(
+                    damagePenaltyConfig.downshiftEngineDamageMinPercent,
+                    damagePenaltyConfig.downshiftEngineDamageMaxPercent,
+                    severity) * severityMultiplier,
+                damagePenaltyConfig.maxSingleEventEngineDamagePercent);
+            report.transmissionDamagePercent = Mathf.Min(
+                Mathf.Lerp(
+                    damagePenaltyConfig.downshiftTransmissionDamageMinPercent,
+                    damagePenaltyConfig.downshiftTransmissionDamageMaxPercent,
+                    severity) * severityMultiplier,
+                damagePenaltyConfig.maxSingleEventTransmissionDamagePercent);
+            report.message =
+                $"Unsafe clutch release in gear {currentGear}: required RPM {requiredEngineRPM:F0} exceeds max {engineMaxRPM:F0}.";
+
+            return report;
+        }
+
         public static MisuseReport AnalyzeDownshift(
             int previousGear,
             int targetGear,

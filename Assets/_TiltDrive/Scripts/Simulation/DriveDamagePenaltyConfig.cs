@@ -28,6 +28,9 @@ namespace TiltDrive.Simulation
         [Tooltip("Multiplicador adicional aplicado cuando el exceso de RPM llega a severidad maxima.")]
         [Min(1f)] public float fullSeverityDamageMultiplier = 1.5f;
 
+        [Tooltip("Acople minimo del clutch desde el que una reduccion peligrosa se considera conectada al motor.")]
+        [Range(0f, 1f)] public float gearConnectionMisuseMinClutchEngagement = 0.35f;
+
         [Header("Casos Catastroficos")]
         [Tooltip("Velocidad minima para considerar peligrosa una solicitud de reversa en movimiento.")]
         [Min(0f)] public float reverseMisuseMinSpeedMS = 1f;
@@ -95,6 +98,7 @@ namespace TiltDrive.Simulation
                 downshiftTransmissionDamageMaxPercent);
             skippedGearDamageMultiplier = Mathf.Max(0f, skippedGearDamageMultiplier);
             fullSeverityDamageMultiplier = Mathf.Max(1f, fullSeverityDamageMultiplier);
+            gearConnectionMisuseMinClutchEngagement = Mathf.Clamp01(gearConnectionMisuseMinClutchEngagement);
             reverseMisuseMinSpeedMS = Mathf.Max(0f, reverseMisuseMinSpeedMS);
             reverseWhileMovingEngineDamagePercent = Mathf.Clamp(reverseWhileMovingEngineDamagePercent, 0f, 100f);
             reverseWhileMovingTransmissionDamagePercent = Mathf.Clamp(
