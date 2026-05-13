@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using TiltDrive.ElectricalSystem;
 using TiltDrive.EngineSystem;
+using TiltDrive.Platform;
 using TiltDrive.State;
 using TiltDrive.TransmissionSystem;
 using TiltDrive.VehicleSystem;
@@ -193,6 +194,7 @@ namespace TiltDrive.UISystem
         [SerializeField] [Min(0f)] private float instructorReportEntryGap = 8f;
         [SerializeField] [Range(0f, 24f)] private float instructorReportBorderRadius = 8f;
         [SerializeField] [Min(1f)] private float instructorReportBorderWidth = 2f;
+        [SerializeField] private bool sendInstructorReportsToPlatform = true;
 
         [Header("Reportes de mala manipulacion")]
         [SerializeField] [Range(0f, 100f)] private float batteryReportDischargedThreshold = 8f;
@@ -925,11 +927,35 @@ namespace TiltDrive.UISystem
                 DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture),
                 message,
                 severity));
+            SendInstructorReportToPlatform(severity, message);
 
             int maxEntries = Mathf.Max(1, instructorReportMaxEntries);
             while (instructorReports.Count > maxEntries)
             {
                 instructorReports.RemoveAt(0);
+            }
+        }
+
+        private void SendInstructorReportToPlatform(InstructorReportSeverity severity, string message)
+        {
+            if (!sendInstructorReportsToPlatform)
+            {
+                return;
+            }
+
+            TiltDrivePlatformClient client = TiltDrivePlatformClient.Instance;
+            if (client == null || !client.HasActiveSession)
+            {
+                return;
+            }
+
+            if (severity == InstructorReportSeverity.Error)
+            {
+                client.RecordError(message);
+            }
+            else
+            {
+                client.RecordBadPractice(message);
             }
         }
 
